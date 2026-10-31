@@ -24,7 +24,7 @@
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--wood);color:var(--cream);font-family:var(--body);font-size:16px;line-height:1.4;-webkit-text-size-adjust:100%}
-header{padding:28px 16px 18px;text-align:center;border-bottom:1px solid var(--line);background:radial-gradient(120% 90% at 50% 0%,#2c2824 0%,var(--wood) 70%)}
+header{padding:58px 16px 18px;text-align:center;border-bottom:1px solid var(--line);background:radial-gradient(120% 90% at 50% 0%,#2c2824 0%,var(--wood) 70%)}
 .zh{font-family:"Noto Serif SC",serif;color:var(--gold);letter-spacing:.3em;font-size:15px;margin:0 0 6px}
 h1{font-family:var(--display);font-weight:400;color:var(--gold);margin:0;font-size:clamp(26px,7vw,40px);letter-spacing:.04em;text-wrap:balance}
 .sub{margin:6px 0 0;color:var(--muted);font-size:14px}
@@ -102,10 +102,25 @@ header{position:relative}
 @keyframes pop{0%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1.06)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.welcome.run .w1,.welcome.run .w2,.welcome.run .w3,.welcome.run .tap{animation:none}}
 body.locked{overflow:hidden}
+.share-top{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--cream);font:inherit;font-size:13px;padding:6px 12px;min-height:32px;cursor:pointer}
+.share-top svg,.share-big svg{width:16px;height:16px;flex:0 0 auto}
+.share-top:focus-visible,.share-big:focus-visible,.sh-opt:focus-visible,.sh-close:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.share-big{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:1px solid var(--gold);background:none;color:var(--gold);font:inherit;font-weight:700;font-size:16px;border-radius:12px;padding:13px;cursor:pointer}
+.sheet{position:fixed;inset:0;z-index:25;background:rgba(10,9,8,.7);display:none;align-items:flex-end;justify-content:center}
+.sheet.open{display:flex}
+.sheet-box{width:100%;max-width:520px;background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:16px 16px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));display:grid;gap:10px}
+.sheet-box h3{margin:0 0 4px;font-family:var(--display);font-weight:400;color:var(--gold);font-size:22px}
+.sh-opt{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--cream);text-decoration:none;background:var(--wood);font:inherit;font-weight:600;cursor:pointer;width:100%;text-align:left}
+.sh-ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:15px;color:#fff;flex:0 0 auto}
+.sh-close{border:0;background:none;color:var(--muted);font:inherit;padding:10px;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:40;background:var(--cream);color:var(--wood);font-weight:700;border-radius:999px;padding:10px 18px;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.on{opacity:1}
+@media (max-width:360px){.share-top .lbl{display:none}}
 </style>
 </head>
 <body>
 <header>
+  <button type="button" class="share-top" id="shareTop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span class="lbl" id="shareTopLbl">Partager</span></button>
   <div class="lang" role="group" aria-label="Langue / Language / 语言"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="zh" aria-pressed="false">中文</button></div>
   <p class="zh">香格里拉饭店</p>
   <h1>Restaurant Chinois Shangri-La</h1>
@@ -128,6 +143,15 @@ body.locked{overflow:hidden}
 <section class="contact" id="contact"></section>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo du plat"><button class="x" id="lbx" type="button" aria-label="Fermer">×</button><figure><img id="lbimg" alt=""><figcaption><span class="name" id="lbname"></span><span class="price" id="lbprice"></span></figcaption></figure></div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle"><div class="sheet-box">
+  <h3 id="shTitle"></h3>
+  <a class="sh-opt" id="shWa" target="_blank" rel="noopener"><span class="sh-ic" style="background:#1f8f4e">✆</span><span>WhatsApp</span></a>
+  <a class="sh-opt" id="shFb" target="_blank" rel="noopener"><span class="sh-ic" style="background:#1877f2">f</span><span>Facebook</span></a>
+  <button type="button" class="sh-opt" id="shCopy"><span class="sh-ic" style="background:#6b5d48">⧉</span><span id="shCopyLbl"></span></button>
+  <button type="button" class="sh-close" id="shClose"></button>
+</div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <footer id="foot">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
 
@@ -1023,11 +1047,11 @@ const EN = {
 };
 
 const UI = {
- fr:{w1:"Bienvenue au", w2:"Restaurant Shangri-La", wtap:"Touchez pour voir le menu", sub:"Carte du restaurant · prix en francs CFA", search:"Rechercher un plat…", searchLabel:"Rechercher un plat", spicy:"🌶 Pimentés", ask:"Sur demande", nw:"Nouveau", empty:"Aucun plat ne correspond à votre recherche.", view:"Voir la photo : ", close:"Fermer", spicy1:"pimenté", spicy2:"très pimenté", nav:"Catégories",
+ fr:{share:"Partager", shareMenu:"Partager le menu", shareText:"Découvrez le menu du Restaurant Chinois Shangri-La à Ouaga 2000 :", copy:"Copier le lien", copied:"Lien copié !", cancel:"Annuler", w1:"Bienvenue au", w2:"Restaurant Shangri-La", wtap:"Touchez pour voir le menu", sub:"Carte du restaurant · prix en francs CFA", search:"Rechercher un plat…", searchLabel:"Rechercher un plat", spicy:"🌶 Pimentés", ask:"Sur demande", nw:"Nouveau", empty:"Aucun plat ne correspond à votre recherche.", view:"Voir la photo : ", close:"Fermer", spicy1:"pimenté", spicy2:"très pimenté", nav:"Catégories",
   foot:"📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur."},
- en:{w1:"Welcome to", w2:"Shangri-La Restaurant", wtap:"Tap to see the menu", sub:"Restaurant menu · prices in CFA francs", search:"Search for a dish…", searchLabel:"Search for a dish", spicy:"🌶 Spicy", ask:"Ask your server", nw:"New", empty:"No dish matches your search.", view:"See photo: ", close:"Close", spicy1:"spicy", spicy2:"very spicy", nav:"Categories",
+ en:{share:"Share", shareMenu:"Share the menu", shareText:"Check out the menu of Shangri-La Chinese Restaurant in Ouaga 2000:", copy:"Copy link", copied:"Link copied!", cancel:"Cancel", w1:"Welcome to", w2:"Shangri-La Restaurant", wtap:"Tap to see the menu", sub:"Restaurant menu · prices in CFA francs", search:"Search for a dish…", searchLabel:"Search for a dish", spicy:"🌶 Spicy", ask:"Ask your server", nw:"New", empty:"No dish matches your search.", view:"See photo: ", close:"Close", spicy1:"spicy", spicy2:"very spicy", nav:"Categories",
   foot:"📷 Tap a dish with a photo to enlarge it · 🌶 spicy · 🌶🌶 very spicy<br>Prices may change. Please ask your server."},
- zh:{w1:"欢迎光临", w2:"香格里拉饭店", wtap:"点击查看菜单", sub:"菜单 · 价格单位：西非法郎（F）", search:"搜索菜品…", searchLabel:"搜索菜品", spicy:"🌶 辣味", ask:"请询问服务员", nw:"新品", empty:"没有找到相关菜品。", view:"查看图片：", close:"关闭", spicy1:"辣", spicy2:"特辣", nav:"分类",
+ zh:{share:"分享", shareMenu:"分享菜单", shareText:"看看瓦加2000香格里拉饭店的菜单：", copy:"复制链接", copied:"链接已复制！", cancel:"取消", w1:"欢迎光临", w2:"香格里拉饭店", wtap:"点击查看菜单", sub:"菜单 · 价格单位：西非法郎（F）", search:"搜索菜品…", searchLabel:"搜索菜品", spicy:"🌶 辣味", ask:"请询问服务员", nw:"新品", empty:"没有找到相关菜品。", view:"查看图片：", close:"关闭", spicy1:"辣", spicy2:"特辣", nav:"分类",
   foot:"📷 点击有图片的菜品可放大 · 🌶 辣 · 🌶🌶 特辣<br>价格可能变动，请咨询服务员。"}
 };
 
@@ -1098,6 +1122,7 @@ function renderContact(){
     </div>
     <div><h3>Orange Money</h3><span class="om">+226 77 29 98 78</span></div>
     <div><h3>${c.addr}</h3><span class="addr">📍 Ouaga 2000, Ouagadougou</span></div>
+    <button type="button" class="share-big" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span>${T("shareMenu")}</span></button>
   </div>`;
 }
 
@@ -1142,6 +1167,38 @@ function hideWelcome(){ clearTimeout(wTimer); wel.classList.add("hide"); documen
 wel.addEventListener("click", hideWelcome);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !wel.classList.contains("hide")) hideWelcome(); });
 
+// Partage du menu
+const SHARE_URL = location.origin + location.pathname;
+const sheet = document.getElementById("sheet"), toast = document.getElementById("toast");
+let shareFocus = null;
+function flash(msg){ toast.textContent = msg; toast.classList.add("on"); setTimeout(() => toast.classList.remove("on"), 2000); }
+async function shareMenu(){
+  const data = {title: "Shangri-La", text: T("shareText"), url: SHARE_URL};
+  if (navigator.share){
+    try { await navigator.share(data); return; } catch(e){ if (e && e.name === "AbortError") return; }
+  }
+  const msg = T("shareText") + " " + SHARE_URL;
+  document.getElementById("shTitle").textContent = T("shareMenu");
+  document.getElementById("shWa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
+  document.getElementById("shFb").href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(SHARE_URL);
+  document.getElementById("shCopyLbl").textContent = T("copy");
+  document.getElementById("shClose").textContent = T("cancel");
+  shareFocus = document.activeElement; sheet.classList.add("open"); document.getElementById("shWa").focus();
+}
+function closeSheet(){ sheet.classList.remove("open"); if (shareFocus) shareFocus.focus(); }
+document.getElementById("shareTop").addEventListener("click", shareMenu);
+document.addEventListener("click", e => { if (e.target.closest("[data-share]")) shareMenu(); });
+sheet.addEventListener("click", e => { if (e.target === sheet || e.target.id === "shClose" || e.target.closest(".sh-opt:not(#shCopy)")) closeSheet(); });
+document.getElementById("shCopy").addEventListener("click", async () => {
+  let ok = false;
+  try { await navigator.clipboard.writeText(SHARE_URL); ok = true; } catch(e){
+    const t = document.createElement("textarea"); t.value = SHARE_URL; document.body.appendChild(t); t.select();
+    try { ok = document.execCommand("copy"); } catch(_){} t.remove();
+  }
+  closeSheet(); flash(ok ? T("copied") : SHARE_URL);
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && sheet.classList.contains("open")) closeSheet(); });
+
 function applyLang(){
   document.documentElement.lang = {fr:"fr", en:"en", zh:"zh-CN"}[LANG];
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === LANG));
@@ -1149,6 +1206,7 @@ function applyLang(){
   q.placeholder = T("search");
   document.getElementById("qlabel").textContent = T("searchLabel");
   spicyBtn.textContent = T("spicy");
+  document.getElementById("shareTopLbl").textContent = T("share");
   nav.setAttribute("aria-label", T("nav"));
   document.getElementById("lbx").setAttribute("aria-label", T("close"));
   document.getElementById("foot").innerHTML = T("foot");
