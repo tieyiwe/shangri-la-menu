@@ -67,19 +67,39 @@ li.photo:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-r
 .price.ask{color:var(--muted);font-weight:600;font-size:14px}
 .empty{color:var(--muted);text-align:center;padding:30px 0}
 footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 16px 30px;border-top:1px solid var(--line)}
+header{position:relative}
+.lang{position:absolute;top:12px;right:12px;display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel)}
+.lang button{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;padding:6px 12px;cursor:pointer;min-height:32px}
+.lang button[aria-pressed="true"]{background:var(--gold);color:var(--wood);font-weight:700}
+.lang button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.contact{max-width:760px;margin:0 auto;padding:8px 16px 32px;scroll-margin-top:118px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:16px}
+.card h3{margin:0 0 6px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.phones{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.phones a,.addr{display:flex;align-items:center;gap:8px;color:var(--cream);text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-variant-numeric:tabular-nums;font-weight:600}
+.phones a:focus-visible,.wa:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.om{font-variant-numeric:tabular-nums;font-weight:600}
+.wa{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:#1f8f4e;color:#fff;text-decoration:none;font-weight:700;border-radius:12px;padding:14px;font-size:17px}
+.wa-num{font-weight:600;font-size:15px;opacity:.9;font-variant-numeric:tabular-nums}
+.wa-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.wa-row .wa{flex:1 1 220px}
+.wa-qr{width:112px;height:112px;border-radius:8px;background:#fff;padding:4px}
+.wa-note{color:var(--muted);font-size:13px;margin:6px 0 0}
+@media (max-width:360px){.phones{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 </style>
 </head>
 <body>
 <header>
+  <div class="lang" role="group" aria-label="Langue / 语言"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="zh" aria-pressed="false">中文</button></div>
   <p class="zh">香格里拉饭店</p>
   <h1>Restaurant Chinois Shangri-La</h1>
-  <p class="sub">Carte du restaurant · prix en francs CFA</p>
+  <p class="sub" id="sub">Carte du restaurant · prix en francs CFA</p>
 </header>
 
 <div class="tools">
   <div class="search">
-    <label for="q" style="position:absolute;left:-9999px">Rechercher un plat</label>
+    <label for="q" id="qlabel" style="position:absolute;left:-9999px">Rechercher un plat</label>
     <input id="q" type="search" placeholder="Rechercher un plat…" autocomplete="off">
     <button id="spicy" class="spicy-toggle" type="button" aria-pressed="false">🌶 Pimentés</button>
   </div>
@@ -88,9 +108,11 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 16px 30p
 
 <main id="menu"></main>
 
+<section class="contact" id="contact"></section>
+
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo du plat"><button class="x" id="lbx" type="button" aria-label="Fermer">×</button><figure><img id="lbimg" alt=""><figcaption><span class="name" id="lbname"></span><span class="price" id="lbprice"></span></figcaption></figure></div>
 
-<footer>📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
+<footer id="foot">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
 
 <script>
 // s: 1 = pimenté, 2 = très pimenté. p: null = prix sur demande. n: numéro de carte (vide si "00").
@@ -420,10 +442,307 @@ const MENU = [
  ]}
 ];
 
+// Traductions chinoises, indexées par le nom français.
+const ZH_SECTIONS = {"specialites":"特色菜","legumes":"蔬菜","boeuf":"牛肉","poulet":"鸡肉","canard":"鸭肉","porc":"猪肉","fruits-de-mer":"海鲜","chauffants":"砂锅与铁板","riz-nouilles":"米饭与面食","desserts":"甜品","boissons-chaudes":"热饮","boissons-fraiches":"冷饮","aperitifs":"开胃酒与鸡尾酒","digestifs":"餐后酒","vins":"葡萄酒"};
+const ZH_GROUPS = {"Fondue chinoise":"火锅","Plats du chef":"厨师推荐","Crevettes et seiches":"虾与墨鱼","Gambas et langouste":"大虾与龙虾","Poisson":"鱼","Marmites":"砂锅","Plaques chauffantes":"铁板","Riz":"米饭","Nouilles et vermicelles":"面条与米粉","Accompagnements":"小吃","Thés glacés et bubble tea":"冰茶与珍珠奶茶","Sodas, jus et eaux":"汽水、果汁与矿泉水","Bières":"啤酒","Vin rosé":"桃红葡萄酒","Vin rouge":"红葡萄酒","Vin blanc et champagne":"白葡萄酒与香槟","Vin en pichet (rouge, rosé, blanc)":"壶装葡萄酒（红、桃红、白）"};
+const ZH = {
+"Fondue chinoise (petite portion)":["火锅（小份）"],
+"Fondue chinoise (grande portion)":["火锅（大份）"],
+"Poulet sauté piment rouge":["辣子鸡"],
+"Filet de poulet frit":["炸鸡柳"],
+"Soupe de poulet aux vermicelles":["鸡汤粉丝"],
+"Cuisse de porc à la vapeur":["蒸猪肘"],
+"Boulettes de porc sauce soja":["红烧狮子头"],
+"Porc au meicai":["梅菜扣肉"],
+"Crevettes à la vapeur":["清蒸虾"],
+"Crevettes à la moutarde":["芥末虾球"],
+"Petites crevettes frites":["炸小虾"],
+"Crevettes au pain frit":["面包虾"],
+"Crabe sauté au piment":["香辣蟹"],
+"Marmite au poisson":["香辣鱼锅"],
+"Salade au champignon noir":["凉拌木耳"],
+"Salade de pattes de poulet":["凉拌鸡爪"],
+"Suancaiyu":["酸菜鱼","酸辣"],
+"Suancai bœuf":["酸菜牛肉"],
+"Filet de bœuf dans l'huile pimentée":["水煮牛肉"],
+"Filet de capitaine dans l'huile pimentée":["水煮鱼片"],
+"Salade au journal (sautée)":["爆炒牛百叶"],
+"Mouton sauté au piment":["香辣羊肉"],
+"Bœuf aux pommes de terre et tomates":["番茄土豆炖牛肉"],
+"Golden soupe au bœuf":["金汤肥牛"],
+"Tête de poisson à la vapeur":["剁椒鱼头"],
+"Champignons noirs sautés":["清炒木耳"],
+"Tomates sautées aux œufs":["番茄炒蛋"],
+"Pommes de terre sautées":["酸辣土豆丝","酸辣"],
+"Pommes de terre grillées":["烤土豆"],
+"Marmite aux aubergines":["茄子煲"],
+"Chou sauté":["炒包菜"],
+"Marmite au chou":["干锅包菜"],
+"Pousses de bambou sautées":["炒竹笋"],
+"Mapo tofu":["麻婆豆腐"],
+"Tofu sauce soja":["红烧豆腐"],
+"Chou chinois sauté":["炒白菜"],
+"Salade d'algues vertes":["凉拌海带丝"],
+"Ciboulette chinoise sautée aux œufs":["韭菜炒蛋"],
+"Salade de concombres":["拍黄瓜"],
+"Tofu grillé":["烤豆腐"],
+"Tofu aux œufs de cent ans":["皮蛋豆腐"],
+"Salade de tofu bambou":["凉拌腐竹"],
+"Salade de pousses de bambou":["凉拌竹笋"],
+"Germes de soja sautés":["炒豆芽"],
+"Champignons blancs frits":["炸蘑菇"],
+"Filet de bœuf sauce piquante":["辣酱牛柳"],
+"Filet de bœuf à l'ananas":["菠萝牛柳"],
+"Filet de bœuf au gingembre":["姜丝牛柳"],
+"Filet de bœuf aux pousses de bambou":["竹笋牛柳"],
+"Filet de bœuf aux champignons noirs":["木耳牛柳"],
+"Filet de bœuf aux oignons":["洋葱牛柳"],
+"Filet de bœuf aux poivrons verts":["青椒牛柳"],
+"Filet de bœuf au curry":["咖喱牛柳"],
+"Filet de bœuf aux légumes":["蔬菜牛柳"],
+"Filet de bœuf aux champignons de Paris":["蘑菇牛柳"],
+"Filet de bœuf aux champignons et bambou":["蘑菇竹笋牛柳"],
+"Bœuf braisé aux épices":["五香卤牛肉"],
+"Salade de bœuf braisé aux épices":["凉拌卤牛肉"],
+"Bœuf sauté au piment vert":["青椒炒牛肉","干炒，无酱汁"],
+"Bœuf dans l'huile pimentée":["水煮牛肉"],
+"Poulet sauce piquante":["辣酱鸡丁"],
+"Poulet sauce aigre-douce":["糖醋鸡"],
+"Poulet aux noix de cajou":["腰果鸡丁"],
+"Poulet aux poivrons verts":["青椒鸡丁"],
+"Poulet aux champignons noirs":["木耳鸡丁"],
+"Poulet au curry":["咖喱鸡"],
+"Poulet au gingembre":["姜丝鸡"],
+"Poulet aux pousses de bambou":["竹笋鸡丁"],
+"Poulet au citron":["柠檬鸡"],
+"Poulet à l'ananas":["菠萝鸡"],
+"Poulet aux champignons de Paris":["蘑菇鸡丁"],
+"Poulet aux légumes":["蔬菜鸡丁"],
+"Poulet du chef sauce piquante":["厨师香辣鸡"],
+"Poulet sauce tomate":["番茄鸡"],
+"Poulet pané frit":["炸鸡"],
+"Ailes de poulet grillées":["烤鸡翅"],
+"Poulet sauté au piment vert":["青椒炒鸡","干炒，无酱汁"],
+"Poulet local sauté":["炒土鸡"],
+"Canard sauce piquante":["辣酱鸭"],
+"Canard aux légumes":["蔬菜炒鸭"],
+"Canard au gingembre":["姜丝鸭"],
+"Canard au curry":["咖喱鸭"],
+"Canard à l'ananas":["菠萝鸭"],
+"Canard aux champignons et bambou":["蘑菇竹笋鸭"],
+"Canard aux champignons noirs":["木耳鸭"],
+"Canard frit aux épices":["香酥鸭"],
+"Pigeon frit aux épices":["香酥乳鸽"],
+"Porc aux oignons":["洋葱肉片"],
+"Porc sauce piquante":["辣酱肉片"],
+"Porc aux poivrons verts":["青椒肉片"],
+"Porc au gingembre":["姜丝肉片"],
+"Porc aux champignons de Paris":["蘑菇肉片"],
+"Porc à l'ananas":["菠萝咕噜肉"],
+"Porc sauce aigre-douce":["糖醋里脊"],
+"Porc aux champignons noirs":["木耳肉片"],
+"Porc au caramel":["红烧肉"],
+"Porc aux légumes":["蔬菜肉片"],
+"Porc aux champignons et bambou":["蘑菇竹笋肉片"],
+"Pieds de porc sauce soja":["红烧猪蹄"],
+"Crevettes au gingembre":["姜丝虾仁"],
+"Crevettes aux légumes":["蔬菜虾仁"],
+"Crevettes aux tomates":["番茄虾仁"],
+"Crevettes à l'ail":["蒜蓉虾仁"],
+"Crevettes sauce piquante":["辣酱虾仁"],
+"Crevettes au curry":["咖喱虾仁"],
+"Crevettes aux noix de cajou":["腰果虾仁"],
+"Crevettes aux champignons noirs":["木耳虾仁"],
+"Crevettes sauce aigre-douce":["糖醋虾仁"],
+"Seiches sauce piquante":["辣酱墨鱼"],
+"Seiches sautées":["炒墨鱼"],
+"Crevettes frites":["炸虾"],
+"Gambas au caramel":["焦糖大虾"],
+"Gambas à la vapeur":["清蒸大虾"],
+"Gambas sauce piquante":["香辣大虾"],
+"Gambas sauce légumes":["蔬菜大虾"],
+"Gambas sauce tomate":["番茄大虾"],
+"Gambas grillées":["烤大虾"],
+"Langouste à la vapeur":["清蒸龙虾"],
+"Langouste sauce tomate":["番茄龙虾"],
+"Filet de capitaine sauce piquante":["辣酱鱼片"],
+"Filet de capitaine sauce aigre-douce":["糖醋鱼片"],
+"Filet de capitaine sauté":["炒鱼片"],
+"Filet de capitaine aux tomates":["番茄鱼片"],
+"Poisson entier à la vapeur":["清蒸全鱼"],
+"Poisson entier sauce légumes":["蔬菜汁全鱼"],
+"Poisson entier sauce aigre-douce":["糖醋全鱼"],
+"Saumon nature":["原味三文鱼"],
+"Marmite aux fruits de mer":["海鲜砂锅"],
+"Marmite aux crevettes":["鲜虾砂锅"],
+"Marmite aux trois trésors":["三鲜砂锅"],
+"Marmite aux vermicelles et crevettes":["粉丝虾煲"],
+"Poulet saté":["铁板沙爹鸡"],
+"Crevettes saté":["铁板沙爹虾"],
+"Bœuf saté":["铁板沙爹牛肉"],
+"Seiches":["铁板墨鱼"],
+"Gambas sucrées et pimentées":["铁板甜辣大虾"],
+"Gambas à l'ail":["铁板蒜蓉大虾"],
+"Mouton":["铁板羊肉"],
+"Chap shoue":["铁板杂碎"],
+"Crevettes à la tomate":["铁板番茄虾"],
+"Poisson saté":["铁板沙爹鱼"],
+"Tofu saté":["铁板沙爹豆腐"],
+"Riz nature":["白米饭"],
+"Riz cantonais au jambon":["火腿炒饭"],
+"Riz cantonais au bœuf":["牛肉炒饭"],
+"Riz cantonais aux crevettes":["虾仁炒饭"],
+"Riz sauté au curry":["咖喱鸡炒饭"],
+"Riz sauté à l'ananas":["菠萝炒饭","鸡肉和虾"],
+"Riz sauté à l'ail":["蒜香炒饭"],
+"Riz sauté aux légumes":["蔬菜炒饭"],
+"Nouilles sautées aux crevettes":["虾仁炒面"],
+"Nouilles sautées au bœuf":["牛肉炒面"],
+"Nouilles sautées au poulet":["鸡肉炒面"],
+"Nouilles sautées au porc":["猪肉炒面"],
+"Nouilles sautées aux trois trésors":["三鲜炒面"],
+"Nouilles sautées aux légumes":["蔬菜炒面"],
+"Vermicelles sautés au porc":["猪肉炒米粉"],
+"Vermicelles sautés aux crevettes":["虾仁炒米粉"],
+"Vermicelles sautés aux trois trésors":["三鲜炒米粉"],
+"Vermicelles sautés aux légumes":["蔬菜炒米粉"],
+"Soupe de nouilles au bœuf":["牛肉面"],
+"Soupe de vermicelles blancs au bœuf":["牛肉米线"],
+"Niangao sauté":["炒年糕","糯米年糕"],
+"Petits pains farcis à la vapeur":["包子","猪肉或牛肉"],
+"Frites":["薯条"],
+"Tarte à la citrouille":["南瓜饼"],
+"Golden pain grillé":["黄金烤饼"],
+"Litchis":["荔枝"],
+"Gingembre confit":["糖姜"],
+"Glace (1 boule)":["冰淇淋（1球）","香草、巧克力或草莓"],
+"Sorbet (1 boule)":["雪葩（1球）","咖啡、柠檬、苹果或芒果"],
+"Colonel":["上校雪葩","两球柠檬雪葩，伏特加"],
+"Dame blanche":["白夫人圣代","两球香草冰淇淋、巧克力酱、Get 27 薄荷酒、鲜奶油"],
+"Pêche Melba":["蜜桃梅尔巴","两球香草冰淇淋、桃子、巧克力酱、鲜奶油"],
+"Poire Belle-Hélène":["美丽海伦梨","两球香草冰淇淋、梨、巧克力酱、鲜奶油"],
+"Banana split":["香蕉船","香蕉、香草、巧克力、草莓冰淇淋、巧克力酱、鲜奶油"],
+"Salade de fruits":["水果沙拉"],
+"Ananas nature":["原味菠萝"],
+"Beignet de fruit":["炸水果","苹果、香蕉或菠萝"],
+"Beignet de fruit flambé":["火焰炸水果","苹果、香蕉或菠萝"],
+"Champignon blanc":["银耳羹"],
+"Lait chaud":["热牛奶"],
+"Café espresso":["意式浓缩咖啡"],
+"Irish coffee (cognac)":["爱尔兰咖啡（干邑）"],
+"Irish coffee (whisky)":["爱尔兰咖啡（威士忌）"],
+"Thé menthe, thé citron, thé Lipton":["薄荷茶、柠檬茶、立顿红茶"],
+"Thé chinois (thé vert)":["中国绿茶"],
+"Thé au jasmin":["茉莉花茶"],
+"Thé rouge":["红茶"],
+"Thé au chrysanthème":["菊花茶"],
+"Thé à la rose":["玫瑰花茶"],
+"Thé oolong, thé Pu'er":["乌龙茶、普洱茶"],
+"Thé au ginseng":["人参茶"],
+"Thé aux fleurs":["花茶"],
+"Bubble tea":["珍珠奶茶"],
+"Bubble tea goyave au thé jasmin":["芭乐茉莉珍珠茶"],
+"Bubble tea avocat au thé jasmin":["牛油果茉莉珍珠茶"],
+"Bubble tea café au thé":["咖啡珍珠奶茶"],
+"Thé jasmin passion":["百香果茉莉茶"],
+"Thé jasmin litchi":["荔枝茉莉茶"],
+"Thé jasmin pamplemousse":["西柚茉莉茶"],
+"Thé noir citron glacé":["柠檬冰红茶"],
+"Thé glacé":["冰茶"],
+"Coca, Fanta, Sprite":["可乐、芬达、雪碧"],
+"Coca Zéro":["零度可乐"],
+"Tonic (eau gazeuse)":["汤力水"],
+"Diabolo menthe":["薄荷汽水"],
+"Sirop à l'eau minérale 0,5 L":["糖浆兑矿泉水 0.5升","薄荷、黑加仑、石榴或柠檬"],
+"Eau minérale 0,5 L":["矿泉水 0.5升"],
+"Eau minérale 1,5 L":["矿泉水 1.5升"],
+"Jus de fruits (verre)":["果汁（杯）","橙、苹果、菠萝或芒果"],
+"Jus de fruits (boîte 1 L)":["果汁（1升盒装）","橙、苹果、菠萝或芒果"],
+"Jus de fruits pressé":["鲜榨果汁"],
+"Jus de gingembre (canette)":["姜汁（罐装）"],
+"Jus de tomate":["番茄汁"],
+"Malta":["麦芽饮料 Malta"],
+"Red Bull":["红牛"],
+"Yaourt nutritif":["营养酸奶"],
+"Vita milk":["维他奶"],
+"Bière 33 cl":["啤酒 33厘升","Flag、Beaufort、Castel、Brakina、Chill"],
+"Bière 66 cl":["啤酒 66厘升","Brakina、Sobbra、Flag、Castel、Beaufort、Chill、Tequila"],
+"Guinness ou Heineken 33 cl":["健力士或喜力 33厘升"],
+"Tsingtao 500 ml":["青岛啤酒 500毫升"],
+"Bière pression (verre)":["扎啤（杯）"],
+"Bière pression (1 L)":["扎啤（1升）"],
+"Johnnie Walker Red, J&B":["尊尼获加红牌、J&B"],
+"Ricard, pastis, vodka":["力加茴香酒、帕斯提斯、伏特加"],
+"Campari, gin, rhum":["金巴利、金酒、朗姆酒"],
+"Campari orange":["金巴利橙汁"],
+"Martini":["马天尼","红、桃红或白"],
+"Porto rouge":["红波特酒"],
+"Malibu":["马利宝"],
+"Vodka orange":["伏特加橙汁"],
+"Malibu ananas":["马利宝菠萝汁"],
+"Cocktail de jus (sans alcool)":["果汁鸡尾酒（无酒精）","薄荷糖浆、橙汁、菠萝汁、苹果汁、芒果汁"],
+"Cocktail maison":["招牌鸡尾酒","朗姆酒、石榴糖浆、橙汁、菠萝汁、苹果汁、芒果汁"],
+"Kir":["基尔","白葡萄酒、黑加仑利口酒"],
+"Kir royal":["皇家基尔","香槟、黑加仑利口酒"],
+"Perroquet":["鹦鹉","茴香酒、薄荷糖浆"],
+"Tomate":["番茄","茴香酒、石榴糖浆"],
+"Mauresque":["摩尔","茴香酒、杏仁糖浆"],
+"Americano":["美国佬","马天尼、金巴利"],
+"Bloody Mary":["血腥玛丽","伏特加、番茄汁"],
+"Mojito":["莫吉托","白朗姆酒、雪碧、薄荷、柠檬"],
+"Mojito sans alcool":["无酒精莫吉托","雪碧、薄荷、柠檬"],
+"Saké (alcool chinois)":["中国白酒"],
+"Marie Brizard":["玛丽布利扎"],
+"Get 27":["Get 27 薄荷酒"],
+"Armagnac":["雅文邑白兰地"],
+"Grand Marnier, Cointreau":["柑曼怡、君度"],
+"Chivas Regal, Johnnie Walker Black Label":["芝华士、尊尼获加黑牌"],
+"Cognac":["干邑"],
+"Listel Gris (1/2 bouteille)":["Listel Gris 桃红（半瓶）"],
+"Listel Gris":["Listel Gris 桃红"],
+"Côtes de Provence (1/2 bouteille)":["普罗旺斯桃红（半瓶）"],
+"Côtes de Provence":["普罗旺斯桃红"],
+"Vin rouge sucré":["甜红葡萄酒"],
+"J.P. Chenet":["J.P. Chenet 香奈"],
+"Chianti":["基安蒂"],
+"Beaujolais":["博若莱"],
+"Côtes du Rhône":["罗纳河谷"],
+"Côtes du Rhône (1/2 bouteille)":["罗纳河谷（半瓶）"],
+"Baron de Lestac Bordeaux":["巴龙德莱斯塔克 波尔多"],
+"Saint-Émilion Château":["圣埃美隆 酒庄"],
+"Haut-Médoc Château d'Arcins":["上梅多克 阿尔仙酒庄"],
+"Haut-Médoc Château Barreyre":["上梅多克 巴雷尔酒庄"],
+"Mouton Cadet Baron Philippe de Rothschild":["木桐嘉棣 菲利普罗斯柴尔德男爵"],
+"Châteauneuf-du-Pape":["教皇新堡"],
+"Maison Castel Pinot Noir":["卡思黛乐 黑皮诺"],
+"Sauvignon":["长相思"],
+"Baron d'Orcel":["奥塞尔男爵"],
+"Muscadet":["密斯卡岱"],
+"Champagne":["香槟"],
+"Verre de vin":["一杯葡萄酒"],
+"1/4 pichet":["1/4 壶"],
+"1/2 pichet":["半壶"]
+};
+const UI = {
+ fr:{sub:"Carte du restaurant · prix en francs CFA", search:"Rechercher un plat…", searchLabel:"Rechercher un plat", spicy:"🌶 Pimentés", ask:"Sur demande", nw:"Nouveau", empty:"Aucun plat ne correspond à votre recherche.", view:"Voir la photo : ", close:"Fermer", spicy1:"pimenté", spicy2:"très pimenté", nav:"Catégories",
+  foot:"📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur."},
+ zh:{sub:"菜单 · 价格单位：西非法郎（F）", search:"搜索菜品…", searchLabel:"搜索菜品", spicy:"🌶 辣味", ask:"请询问服务员", nw:"新品", empty:"没有找到相关菜品。", view:"查看图片：", close:"关闭", spicy1:"辣", spicy2:"特辣", nav:"分类",
+  foot:"📷 点击有图片的菜品可放大 · 🌶 辣 · 🌶🌶 特辣<br>价格可能变动，请咨询服务员。"}
+};
+
 const PHOTOS = {"Poulet sauté piment rouge": "img/poulet-saute-piment-rouge.jpg", "Filet de poulet frit": "img/filet-de-poulet-frit.jpg", "Soupe de poulet aux vermicelles": "img/soupe-de-poulet-aux-vermicelles.jpg", "Cuisse de porc à la vapeur": "img/cuisse-de-porc-a-la-vapeur.jpg", "Boulettes de porc sauce soja": "img/boulettes-de-porc-sauce-soja.jpg", "Porc au meicai": "img/porc-au-meicai.jpg", "Crevettes à la vapeur": "img/crevettes-a-la-vapeur.jpg", "Crevettes à la moutarde": "img/crevettes-a-la-moutarde.jpg", "Petites crevettes frites": "img/petites-crevettes-frites.jpg", "Crevettes au pain frit": "img/crevettes-au-pain-frit.jpg", "Crabe sauté au piment": "img/crabe-saute-au-piment.jpg", "Marmite au poisson": "img/marmite-au-poisson.jpg", "Salade au champignon noir": "img/salade-au-champignon-noir.jpg", "Salade de pattes de poulet": "img/salade-de-pattes-de-poulet.jpg", "Suancaiyu": "img/suancaiyu.jpg", "Filet de bœuf dans l'huile pimentée": "img/filet-de-boeuf-dans-l-huile-pimentee.jpg", "Salade au journal (sautée)": "img/salade-au-journal-sautee.jpg", "Mouton sauté au piment": "img/mouton-saute-au-piment.jpg", "Bœuf aux pommes de terre et tomates": "img/boeuf-aux-pommes-de-terre-et-tomates.jpg", "Golden soupe au bœuf": "img/golden-soupe-au-boeuf.jpg", "Tête de poisson à la vapeur": "img/tete-de-poisson-a-la-vapeur.jpg", "Fondue chinoise": "img/fondue-chinoise.jpg", "Salade de concombres": "img/salade-de-concombres.jpg", "Tofu grillé": "img/tofu-grille.jpg", "Tofu aux œufs de cent ans": "img/tofu-aux-oeufs-de-cent-ans.jpg", "Salade de tofu bambou": "img/salade-de-tofu-bambou.jpg", "Salade de pousses de bambou": "img/salade-de-pousses-de-bambou.jpg", "Germes de soja sautés": "img/germes-de-soja-sautes.jpg", "Champignons blancs frits": "img/champignons-blancs-frits.jpg", "Champignons noirs sautés": "img/champignons-noirs-sautes.jpg", "Pommes de terre grillées": "img/pommes-de-terre-grillees.jpg", "Tomates sautées aux œufs": "img/tomates-sautees-aux-oeufs.jpg", "Chou chinois sauté": "img/chou-chinois-saute.jpg", "Salade d'algues vertes": "img/salade-d-algues-vertes.jpg", "Ciboulette chinoise sautée aux œufs": "img/ciboulette-chinoise-sautee-aux-oeufs.jpg", "Mapo tofu": "img/mapo-tofu.jpg", "Marmite aux aubergines": "img/marmite-aux-aubergines.jpg", "Pommes de terre sautées": "img/pommes-de-terre-sautees.jpg", "Filet de bœuf au curry": "img/filet-de-boeuf-au-curry.jpg", "Filet de bœuf aux poivrons verts": "img/filet-de-boeuf-aux-poivrons-verts.jpg", "Bœuf braisé aux épices": "img/boeuf-braise-aux-epices.jpg", "Bœuf dans l'huile pimentée": "img/boeuf-dans-l-huile-pimentee.jpg", "Ailes de poulet grillées": "img/ailes-de-poulet-grillees.jpg", "Poulet sauté au piment vert": "img/poulet-saute-au-piment-vert.jpg", "Poulet au citron": "img/poulet-au-citron.jpg", "Poulet pané frit": "img/poulet-pane-frit.jpg", "Poulet sauce aigre-douce": "img/poulet-sauce-aigre-douce.jpg", "Canard frit aux épices": "img/canard-frit-aux-epices.jpg", "Pieds de porc sauce soja": "img/pieds-de-porc-sauce-soja.jpg", "Porc à l'ananas": "img/porc-a-l-ananas.jpg", "Crevettes aux noix de cajou": "img/crevettes-aux-noix-de-cajou.jpg", "Seiches sauce piquante": "img/seiches-sauce-piquante.jpg", "Langouste à la vapeur": "img/langouste-a-la-vapeur.jpg", "Poisson entier à la vapeur": "img/poisson-entier-a-la-vapeur.jpg", "Poisson entier sauce aigre-douce": "img/poisson-entier-sauce-aigre-douce.jpg", "Saumon nature": "img/saumon-nature.jpg", "Bœuf saté": "img/boeuf-sate.jpg", "Marmite aux fruits de mer": "img/marmite-aux-fruits-de-mer.jpg", "Nouilles sautées aux légumes": "img/nouilles-sautees-aux-legumes.jpg", "Riz cantonais au jambon": "img/riz-cantonais-au-jambon.jpg", "Niangao sauté": "img/niangao-saute.jpg", "Petits pains farcis à la vapeur": "img/petits-pains-farcis-a-la-vapeur.jpg", "Soupe de vermicelles blancs au bœuf": "img/soupe-de-vermicelles-blancs-au-boeuf.jpg", "Golden pain grillé": "img/golden-pain-grille.jpg", "Soupe de nouilles au bœuf": "img/soupe-de-nouilles-au-boeuf.jpg", "Tarte à la citrouille": "img/tarte-a-la-citrouille.jpg", "Litchis": "img/litchis.jpg", "Jus de fruits pressé": "img/jus-de-fruits-presse.jpg"};
 // Les deux fondues partagent la photo
 function photoFor(it){ return PHOTOS[it.name] || (it.name.startsWith("Fondue chinoise") ? PHOTOS["Fondue chinoise"] : null); }
 const ALL = [];
+let LANG = "fr";
+try { const v = localStorage.getItem("shangrila-lang"); if (v === "zh") LANG = "zh"; } catch(e){}
+const T = k => UI[LANG][k];
+const nm = it => LANG === "zh" && ZH[it.name] ? ZH[it.name][0] : it.name;
+const ds = it => {
+  if (LANG !== "zh") return it.d || "";
+  const z = ZH[it.name]; const zd = z && z[1] ? z[1] : "";
+  return [zd, it.name].filter(Boolean).join(" · ");   // en chinois : nom français dessous, pour commander facilement
+};
 
 const fmt = n => n.toLocaleString("fr-FR").replace(/ | /g," ") + " F";
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -435,7 +754,50 @@ const q = document.getElementById("q");
 const spicyBtn = document.getElementById("spicy");
 let spicyOnly = false;
 
-nav.innerHTML = MENU.map(c => `<a class="chip" href="#${c.id}" data-id="${c.id}">${esc(c.t)}</a>`).join("");
+function buildNav(){
+  nav.innerHTML = MENU.map(c => `<a class="chip" href="#${c.id}" data-id="${c.id}">${esc(LANG==="zh"?ZH_SECTIONS[c.id]:c.t)}</a>`).join("")
+    + `<a class="chip" href="#contact" data-id="contact">${LANG==="zh"?"联系我们":"Contact"}</a>`;
+}
+
+const PHONES = ["63335888","25375728","77299878","73986666"];
+const sp = n => n.replace(/(\d{2})(?=\d)/g,"$1 ");
+function renderContact(){
+  const zh = LANG === "zh";
+  document.getElementById("contact").innerHTML = `
+  <h2>${zh?"联系我们":"Contact"}</h2>
+  <div class="card">
+    <div><h3>${zh?"外卖订餐":"Plats à emporter"}</h3>
+      <div class="phones">${PHONES.map(n=>`<a href="tel:+226${n}">📞 ${sp(n)}</a>`).join("")}</div>
+    </div>
+    <div><h3>WhatsApp</h3>
+      <div class="wa-row">
+        <a class="wa" href="https://wa.me/22677299878"><span>${zh?"WhatsApp 联系我们":"Écrire sur WhatsApp"}</span><span class="wa-num">+226 77 29 98 78</span></a>
+        <img class="wa-qr" src="img/whatsapp-qr.png" alt="${zh?"WhatsApp 二维码":"QR code WhatsApp"}" loading="lazy">
+      </div>
+      <p class="wa-note">${zh?"也可以扫描二维码添加 WhatsApp 联系人。":"Vous pouvez aussi scanner le QR code pour ajouter le contact WhatsApp."}</p>
+    </div>
+    <div><h3>Orange Money</h3><span class="om">+226 77 29 98 78</span></div>
+    <div><h3>${zh?"地址":"Adresse"}</h3><span class="addr">📍 Ouaga 2000, Ouagadougou</span></div>
+  </div>`;
+}
+
+function applyLang(){
+  document.documentElement.lang = LANG === "zh" ? "zh-CN" : "fr";
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === LANG));
+  document.getElementById("sub").textContent = T("sub");
+  q.placeholder = T("search");
+  document.getElementById("qlabel").textContent = T("searchLabel");
+  spicyBtn.textContent = T("spicy");
+  nav.setAttribute("aria-label", T("nav"));
+  document.getElementById("lbx").setAttribute("aria-label", T("close"));
+  document.getElementById("foot").innerHTML = T("foot");
+  buildNav(); renderContact(); render();
+}
+document.querySelector(".lang").addEventListener("click", e => {
+  const b = e.target.closest("button[data-lang]"); if (!b || b.dataset.lang === LANG) return;
+  LANG = b.dataset.lang; try { localStorage.setItem("shangrila-lang", LANG); } catch(e){}
+  applyLang();
+});
 
 function render(){
   ALL.length = 0;
@@ -445,23 +807,24 @@ function render(){
     let rows = "", pendingGroup = null, count = 0;
     for (const it of cat.items){
       if (it.g){ pendingGroup = it.g; continue; }
-      const hay = norm((it.n||"") + " " + it.name + " " + (it.d||""));
+      const z = ZH[it.name] || [];
+      const hay = norm((it.n||"") + " " + it.name + " " + (it.d||"") + " " + z.join(" "));
       if (term && !hay.includes(term)) continue;
       if (spicyOnly && !it.s) continue;
-      if (pendingGroup){ rows += `<li class="group" style="display:block;border:0;padding:0">${esc(pendingGroup)}</li>`; pendingGroup = null; }
-      const chili = it.s ? `<span class="chili" aria-label="${it.s>1?"très pimenté":"pimenté"}">${"🌶".repeat(it.s)}</span>` : "";
-      const nw = it.nw ? `<span class="new">Nouveau</span>` : "";
-      const price = it.p == null ? `<span class="price ask">Sur demande</span>`
+      if (pendingGroup){ rows += `<li class="group" style="display:block;border:0;padding:0">${esc(LANG==="zh" ? (ZH_GROUPS[pendingGroup]||pendingGroup) : pendingGroup)}</li>`; pendingGroup = null; }
+      const chili = it.s ? `<span class="chili" aria-label="${it.s>1?T("spicy2"):T("spicy1")}">${"🌶".repeat(it.s)}</span>` : "";
+      const nw = it.nw ? `<span class="new">${T("nw")}</span>` : "";
+      const price = it.p == null ? `<span class="price ask">${T("ask")}</span>`
         : `<span class="price">${fmt(it.p)}${it.p2 ? `<br>${fmt(it.p2)}` : ""}</span>`;
       const ph = photoFor(it); let attrs = "";
-      if (ph){ ALL.push(it); attrs = ` class="photo" tabindex="0" role="button" data-i="${ALL.length-1}" aria-label="Voir la photo : ${esc(it.name)}"`; }
-      rows += `<li${attrs}>${ph?`<img class="thumb" src="${ph}" alt="" loading="lazy">`:""}${it.n?`<span class="no">${esc(it.n)}</span>`:""}<span class="name">${esc(it.name)}${chili}${nw}${it.d?`<span class="desc">${esc(it.d)}</span>`:""}</span>${price}</li>`;
+      if (ph){ ALL.push(it); attrs = ` class="photo" tabindex="0" role="button" data-i="${ALL.length-1}" aria-label="${T("view")}${esc(nm(it))}"`; }
+      rows += `<li${attrs}>${ph?`<img class="thumb" src="${ph}" alt="" loading="lazy">`:""}${it.n?`<span class="no">${esc(it.n)}</span>`:""}<span class="name">${esc(nm(it))}${chili}${nw}${ds(it)?`<span class="desc">${esc(ds(it))}</span>`:""}</span>${price}</li>`;
       count++;
     }
-    if (count){ shown += count; html += `<section id="${cat.id}"><h2>${esc(cat.t)}</h2><ul>${rows}</ul></section>`; }
+    if (count){ shown += count; html += `<section id="${cat.id}"><h2>${esc(LANG==="zh"?ZH_SECTIONS[cat.id]:cat.t)}</h2><ul>${rows}</ul></section>`; }
     nav.querySelector(`[data-id="${cat.id}"]`).style.display = count ? "" : "none";
   }
-  main.innerHTML = shown ? html : `<p class="empty">Aucun plat ne correspond à votre recherche.</p>`;
+  main.innerHTML = shown ? html : `<p class="empty">${T("empty")}</p>`;
   observe();
 }
 
@@ -475,13 +838,14 @@ function observe(){
     }
   }, {rootMargin:"-130px 0px -70% 0px"});
   main.querySelectorAll("section").forEach(s => io.observe(s));
+  io.observe(document.getElementById("contact"));
 }
 
 const lb=document.getElementById("lb"), lbimg=document.getElementById("lbimg");
 let lastFocus=null;
-function openLb(it){ lastFocus=document.activeElement; lbimg.src=photoFor(it); lbimg.alt=it.name;
-  document.getElementById("lbname").textContent=it.name;
-  document.getElementById("lbprice").textContent= it.p==null ? "Sur demande" : fmt(it.p);
+function openLb(it){ lastFocus=document.activeElement; lbimg.src=photoFor(it); lbimg.alt=nm(it);
+  document.getElementById("lbname").textContent=nm(it);
+  document.getElementById("lbprice").textContent= it.p==null ? T("ask") : fmt(it.p);
   lb.classList.add("open"); document.getElementById("lbx").focus(); }
 function closeLb(){ lb.classList.remove("open"); lbimg.removeAttribute("src"); if(lastFocus) lastFocus.focus(); }
 main.addEventListener("click", e=>{ const li=e.target.closest("li.photo"); if(li) openLb(ALL[+li.dataset.i]); });
@@ -490,7 +854,7 @@ lb.addEventListener("click", e=>{ if(e.target===lb || e.target.id==="lbx") close
 document.addEventListener("keydown", e=>{ if(e.key==="Escape" && lb.classList.contains("open")) closeLb(); });
 q.addEventListener("input", render);
 spicyBtn.addEventListener("click", () => { spicyOnly = !spicyOnly; spicyBtn.setAttribute("aria-pressed", spicyOnly); render(); });
-render();
+applyLang();
 </script>
 </body>
 </html>
