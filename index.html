@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menu Shangri-La</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Noto+Serif+SC:wght@600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout: lacquered dark-wood menu, gold leaf headings, sticky category rail, single column of dotted price rows */
+  --wood:#1d1b19;
+  --panel:#272421;
+  --line:#3a3530;
+  --gold:#d9ad55;
+  --cream:#f3ead8;
+  --muted:#b3a68f;
+  --chili:#e0533d;
+  --display:"Marcellus","Times New Roman",serif;
+  --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--wood);color:var(--cream);font-family:var(--body);font-size:16px;line-height:1.4;-webkit-text-size-adjust:100%}
+header{padding:28px 16px 18px;text-align:center;border-bottom:1px solid var(--line);background:radial-gradient(120% 90% at 50% 0%,#2c2824 0%,var(--wood) 70%)}
+.zh{font-family:"Noto Serif SC",serif;color:var(--gold);letter-spacing:.3em;font-size:15px;margin:0 0 6px}
+h1{font-family:var(--display);font-weight:400;color:var(--gold);margin:0;font-size:clamp(26px,7vw,40px);letter-spacing:.04em;text-wrap:balance}
+.sub{margin:6px 0 0;color:var(--muted);font-size:14px}
+.tools{position:sticky;top:0;z-index:5;background:rgba(29,27,25,.97);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.search{display:flex;gap:8px;padding:10px 16px 6px;max-width:760px;margin:0 auto}
+.search input{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);color:var(--cream);border-radius:10px;padding:10px 12px;font:inherit}
+.search input::placeholder{color:var(--muted)}
+.search input:focus,.chip:focus-visible,.spicy-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.spicy-toggle{background:var(--panel);border:1px solid var(--line);color:var(--cream);border-radius:10px;padding:0 12px;font:inherit;font-size:14px;cursor:pointer;white-space:nowrap}
+.spicy-toggle[aria-pressed="true"]{border-color:var(--chili);color:#fff;background:#4a2119}
+nav{display:flex;gap:8px;overflow-x:auto;padding:6px 16px 10px;max-width:760px;margin:0 auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;text-decoration:none;color:var(--cream);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;background:var(--panel)}
+.chip.on{border-color:var(--gold);color:var(--gold)}
+main{max-width:760px;margin:0 auto;padding:8px 16px 40px}
+section{padding-top:18px;scroll-margin-top:118px}
+h2{font-family:var(--display);font-weight:400;color:var(--gold);font-size:24px;margin:0 0 4px;display:flex;align-items:center;gap:12px}
+h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent);opacity:.5}
+.group{margin:14px 0 2px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+ul{list-style:none;margin:0;padding:0}
+li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:baseline;padding:10px 0;border-bottom:1px dashed var(--line)}
+.no{font-size:12px;font-weight:700;color:var(--wood);background:var(--gold);border-radius:4px;padding:1px 5px;min-width:30px;text-align:center;font-variant-numeric:tabular-nums}
+li.nonum{grid-template-columns:1fr auto}
+.name{font-weight:600}
+.desc{display:block;font-weight:400;color:var(--muted);font-size:14px;margin-top:2px}
+.chili{color:var(--chili);font-size:13px;margin-left:4px;white-space:nowrap}
+.new{font-size:11px;font-weight:700;color:var(--wood);background:var(--cream);border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:2px}
+.price{font-variant-numeric:tabular-nums;font-weight:700;color:var(--gold);white-space:nowrap;text-align:right}
+.price.ask{color:var(--muted);font-weight:600;font-size:14px}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 16px 30px;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+<header>
+  <p class="zh">香格里拉饭店</p>
+  <h1>Restaurant Chinois Shangri-La</h1>
+  <p class="sub">Carte du restaurant · prix en francs CFA</p>
+</header>
+
+<div class="tools">
+  <div class="search">
+    <label for="q" style="position:absolute;left:-9999px">Rechercher un plat</label>
+    <input id="q" type="search" placeholder="Rechercher un plat…" autocomplete="off">
+    <button id="spicy" class="spicy-toggle" type="button" aria-pressed="false">🌶 Pimentés</button>
+  </div>
+  <nav id="nav" aria-label="Catégories"></nav>
+</div>
+
+<main id="menu"></main>
+
+<footer>🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
+
+<script>
+// s: 1 = pimenté, 2 = très pimenté. p: null = prix sur demande. n: numéro de carte (vide si "00").
+const MENU = [
+ {id:"specialites", t:"Spécialités chinoises", items:[
+  {g:"Fondue chinoise"},
+  {name:"Fondue chinoise (petite portion)", p:38000},
+  {name:"Fondue chinoise (grande portion)", p:68000},
+  {g:"Plats du chef"},
+  {name:"Poulet sauté piment rouge", p:7500, s:1},
+  {name:"Filet de poulet frit", p:6000},
+  {name:"Soupe de poulet aux vermicelles", p:7500},
+  {name:"Cuisse de porc à la vapeur", p:9800},
+  {name:"Boulettes de porc sauce soja", p:6000},
+  {name:"Porc au meicai", p:7000},
+  {name:"Crevettes à la vapeur", p:8800},
+  {name:"Crevettes à la moutarde", p:8800, s:1},
+  {name:"Petites crevettes frites", p:8800},
+  {name:"Crevettes au pain frit", p:12800},
+  {name:"Crabe sauté au piment", p:13800, s:1},
+  {name:"Marmite au poisson", p:13800, s:1},
+  {name:"Salade au champignon noir", p:5500, s:1},
+  {name:"Salade de pattes de poulet", p:6500, s:1},
+  {name:"Suancaiyu", d:"Poisson aigre et pimenté", p:9800},
+  {name:"Suancai bœuf", p:8800, s:1},
+  {name:"Filet de bœuf dans l'huile pimentée", p:8800, s:1},
+  {name:"Filet de capitaine dans l'huile pimentée", p:10800, s:2},
+  {name:"Salade au journal (sautée)", p:6800, s:1},
+  {name:"Mouton sauté au piment", p:7500, s:1},
+  {name:"Bœuf aux pommes de terre et tomates", p:7000},
+  {name:"Golden soupe au bœuf", p:8800, s:1},
+  {name:"Tête de poisson à la vapeur", p:10800, s:2}
+ ]},
+ {id:"legumes", t:"Légumes", items:[
+  {n:"30", name:"Champignons noirs sautés", p:5500},
+  {n:"31", name:"Tomates sautées aux œufs", p:4000},
+  {n:"32", name:"Pommes de terre sautées", d:"Aigres et pimentées", p:4000, s:1},
+  {name:"Pommes de terre grillées", p:4000},
+  {n:"33", name:"Marmite aux aubergines", p:4000},
+  {n:"34", name:"Chou sauté", p:4000},
+  {n:"P3", name:"Marmite au chou", p:4500, s:1},
+  {n:"35", name:"Pousses de bambou sautées", p:6000},
+  {n:"P4", name:"Mapo tofu", p:4000, s:1},
+  {n:"P5", name:"Tofu sauce soja", p:4000},
+  {n:"P6", name:"Chou chinois sauté", p:4000},
+  {n:"P7", name:"Salade d'algues vertes", p:4500},
+  {name:"Ciboulette chinoise sautée aux œufs", p:5000},
+  {name:"Salade de concombres", p:2500},
+  {name:"Tofu grillé", p:4800, s:1},
+  {name:"Tofu aux œufs de cent ans", p:4800},
+  {name:"Salade de tofu bambou", p:6000},
+  {name:"Salade de pousses de bambou", p:6000},
+  {name:"Germes de soja sautés", p:5000},
+  {name:"Champignons blancs frits", p:8800}
+ ]},
+ {id:"boeuf", t:"Bœuf", items:[
+  {n:"36", name:"Filet de bœuf sauce piquante", p:5300, s:1},
+  {n:"37", name:"Filet de bœuf à l'ananas", p:5300},
+  {n:"38", name:"Filet de bœuf au gingembre", p:5300},
+  {n:"39", name:"Filet de bœuf aux pousses de bambou", p:6000},
+  {n:"40", name:"Filet de bœuf aux champignons noirs", p:6000},
+  {n:"41", name:"Filet de bœuf aux oignons", p:5300},
+  {n:"42", name:"Filet de bœuf aux poivrons verts", p:5300},
+  {n:"43", name:"Filet de bœuf au curry", p:5300},
+  {n:"44", name:"Filet de bœuf aux légumes", p:5300},
+  {n:"45", name:"Filet de bœuf aux champignons de Paris", p:6000},
+  {n:"46", name:"Filet de bœuf aux champignons et bambou", p:6000},
+  {n:"47", name:"Bœuf braisé aux épices", p:6000},
+  {n:"P13", name:"Salade de bœuf braisé aux épices", p:6500, s:1},
+  {n:"P14", name:"Bœuf sauté au piment vert", d:"Sans sauce", p:6500, s:1},
+  {n:"P15", name:"Bœuf dans l'huile pimentée", p:8800, s:2}
+ ]},
+ {id:"poulet", t:"Poulet", items:[
+  {n:"48", name:"Poulet sauce piquante", p:5300, s:1},
+  {n:"49", name:"Poulet sauce aigre-douce", p:6000},
+  {n:"50", name:"Poulet aux noix de cajou", p:6000},
+  {n:"51", name:"Poulet aux poivrons verts", p:5300},
+  {n:"52", name:"Poulet aux champignons noirs", p:6000},
+  {n:"53", name:"Poulet au curry", p:5300},
+  {n:"54", name:"Poulet au gingembre", p:5300},
+  {n:"55", name:"Poulet aux pousses de bambou", p:6000},
+  {n:"56", name:"Poulet au citron", p:6000},
+  {n:"57", name:"Poulet à l'ananas", p:5300},
+  {n:"58", name:"Poulet aux champignons de Paris", p:6000},
+  {n:"59", name:"Poulet aux légumes", p:5300},
+  {n:"60", name:"Poulet du chef sauce piquante", p:6000, s:1},
+  {n:"P9", name:"Poulet sauce tomate", p:6000},
+  {n:"P10", name:"Poulet pané frit", p:6000},
+  {n:"P11", name:"Ailes de poulet grillées", p:6000},
+  {n:"P12", name:"Poulet sauté au piment vert", d:"Sans sauce", p:6000, s:1},
+  {name:"Poulet local sauté", p:7000}
+ ]},
+ {id:"canard", t:"Canard", items:[
+  {n:"61", name:"Canard sauce piquante", p:7000, s:1},
+  {n:"62", name:"Canard aux légumes", p:7000},
+  {n:"63", name:"Canard au gingembre", p:7000},
+  {n:"64", name:"Canard au curry", p:7000},
+  {n:"65", name:"Canard à l'ananas", p:7000},
+  {n:"66", name:"Canard aux champignons et bambou", p:7000},
+  {n:"67", name:"Canard aux champignons noirs", p:7000},
+  {n:"P16", name:"Canard frit aux épices", p:7500},
+  {n:"P17", name:"Pigeon frit aux épices", p:5600}
+ ]},
+ {id:"porc", t:"Porc", items:[
+  {n:"68", name:"Porc aux oignons", p:5300},
+  {n:"69", name:"Porc sauce piquante", p:5300, s:1},
+  {n:"70", name:"Porc aux poivrons verts", p:5300},
+  {n:"71", name:"Porc au gingembre", p:5300},
+  {n:"72", name:"Porc aux champignons de Paris", p:6000},
+  {n:"73", name:"Porc à l'ananas", p:6000},
+  {n:"74", name:"Porc sauce aigre-douce", p:6000},
+  {n:"75", name:"Porc aux champignons noirs", p:6000},
+  {n:"76", name:"Porc au caramel", p:6000},
+  {n:"77", name:"Porc aux légumes", p:5300},
+  {n:"78", name:"Porc aux champignons et bambou", p:6000},
+  {name:"Pieds de porc sauce soja", p:6000}
+ ]},
+ {id:"fruits-de-mer", t:"Fruits de mer", items:[
+  {g:"Crevettes et seiches"},
+  {n:"79", name:"Crevettes au gingembre", p:8800},
+  {n:"80", name:"Crevettes aux légumes", p:8800},
+  {n:"81", name:"Crevettes aux tomates", p:8800},
+  {n:"82", name:"Crevettes à l'ail", p:8800},
+  {n:"83", name:"Crevettes sauce piquante", p:8800, s:1},
+  {n:"84", name:"Crevettes au curry", p:8800},
+  {n:"85", name:"Crevettes aux noix de cajou", p:8800},
+  {n:"86", name:"Crevettes aux champignons noirs", p:8800},
+  {n:"87", name:"Crevettes sauce aigre-douce", p:8800},
+  {n:"88", name:"Seiches sauce piquante", p:8800, s:1},
+  {n:"89", name:"Seiches sautées", p:8800},
+  {n:"P23", name:"Crevettes frites", p:8800},
+  {g:"Gambas et langouste"},
+  {n:"94", name:"Gambas au caramel", p:12800},
+  {n:"95", name:"Gambas à la vapeur", p:12800},
+  {n:"P18", name:"Gambas sauce piquante", p:12800, s:1},
+  {n:"P19", name:"Gambas sauce légumes", p:12800},
+  {n:"P20", name:"Gambas sauce tomate", p:12800},
+  {n:"P22", name:"Gambas grillées", p:12800},
+  {n:"96", name:"Langouste à la vapeur", p:16800},
+  {n:"P21", name:"Langouste sauce tomate", p:16800},
+  {g:"Poisson"},
+  {n:"90", name:"Filet de capitaine sauce piquante", p:7500, s:1},
+  {n:"91", name:"Filet de capitaine sauce aigre-douce", p:7500},
+  {n:"92", name:"Filet de capitaine sauté", p:7500},
+  {n:"93", name:"Filet de capitaine aux tomates", p:7500},
+  {name:"Poisson entier à la vapeur", p:9800},
+  {name:"Poisson entier sauce légumes", p:9800},
+  {name:"Poisson entier sauce aigre-douce", p:13800},
+  {name:"Saumon nature", p:29800}
+ ]},
+ {id:"chauffants", t:"Marmites et plaques chauffantes", items:[
+  {g:"Marmites"},
+  {n:"97", name:"Marmite aux fruits de mer", p:8800},
+  {n:"98", name:"Marmite aux crevettes", p:8800},
+  {n:"99", name:"Marmite aux trois trésors", p:7800},
+  {n:"100", name:"Marmite aux vermicelles et crevettes", p:8800},
+  {g:"Plaques chauffantes"},
+  {n:"101", name:"Poulet saté", p:7500},
+  {n:"102", name:"Crevettes saté", p:9500},
+  {n:"103", name:"Bœuf saté", p:7500},
+  {n:"104", name:"Seiches", p:8800},
+  {n:"105", name:"Gambas sucrées et pimentées", p:12800, s:1},
+  {n:"106", name:"Gambas à l'ail", p:12800},
+  {n:"107", name:"Mouton", p:7500},
+  {n:"108", name:"Chap shoue", p:8000},
+  {n:"109", name:"Crevettes à la tomate", p:9500},
+  {n:"110", name:"Poisson saté", p:8800},
+  {name:"Tofu saté", p:6000}
+ ]},
+ {id:"riz-nouilles", t:"Riz et nouilles", items:[
+  {g:"Riz"},
+  {n:"111", name:"Riz nature", p:1000},
+  {n:"112", name:"Riz cantonais au jambon", p:3800},
+  {n:"113", name:"Riz cantonais au bœuf", p:3800},
+  {n:"114", name:"Riz cantonais aux crevettes", p:4800},
+  {n:"115", name:"Riz sauté au curry", d:"Poulet", p:3800},
+  {n:"116", name:"Riz sauté à l'ananas", d:"Poulet et crevettes", p:4800},
+  {n:"117", name:"Riz sauté à l'ail", p:3000},
+  {n:"118", name:"Riz sauté aux légumes", p:3000},
+  {g:"Nouilles et vermicelles"},
+  {n:"119", name:"Nouilles sautées aux crevettes", p:5500},
+  {n:"120", name:"Nouilles sautées au bœuf", p:5000},
+  {n:"P25", name:"Nouilles sautées au poulet", p:5000},
+  {n:"P26", name:"Nouilles sautées au porc", p:5000},
+  {n:"121", name:"Nouilles sautées aux trois trésors", p:5000},
+  {n:"122", name:"Nouilles sautées aux légumes", p:4500},
+  {n:"123", name:"Vermicelles sautés au porc", p:5000},
+  {n:"124", name:"Vermicelles sautés aux crevettes", p:5800},
+  {n:"125", name:"Vermicelles sautés aux trois trésors", p:5500},
+  {n:"126", name:"Vermicelles sautés aux légumes", p:4500},
+  {name:"Soupe de nouilles au bœuf", p:5000},
+  {name:"Soupe de vermicelles blancs au bœuf", p:5000, s:1},
+  {g:"Accompagnements"},
+  {n:"127", name:"Niangao sauté", d:"Galettes de riz gluant", p:5500},
+  {n:"128", name:"Petits pains farcis à la vapeur", d:"Porc ou bœuf", p:4500},
+  {n:"129", name:"Frites", p:1500},
+  {name:"Tarte à la citrouille", p:4500},
+  {name:"Golden pain grillé", p:4500}
+ ]},
+ {id:"desserts", t:"Desserts", items:[
+  {name:"Litchis", p:3000},
+  {name:"Gingembre confit", p:3000},
+  {name:"Glace (1 boule)", d:"Vanille, chocolat ou fraise", p:1500},
+  {name:"Sorbet (1 boule)", d:"Café, citron, pomme ou mangue", p:1800},
+  {name:"Colonel", d:"2 boules sorbet citron, vodka", p:4500},
+  {name:"Dame blanche", d:"2 boules vanille, sauce chocolat, Get 27, chantilly", p:4500},
+  {name:"Pêche Melba", d:"2 boules vanille, pêche, sauce chocolat, chantilly", p:4500},
+  {name:"Poire Belle-Hélène", d:"2 boules vanille, poire, sauce chocolat, chantilly", p:4500},
+  {name:"Banana split", d:"Banane, vanille, chocolat, fraise, sauce chocolat, chantilly", p:4500},
+  {name:"Salade de fruits", p:1500},
+  {name:"Ananas nature", p:1500},
+  {name:"Beignet de fruit", d:"Pomme, banane ou ananas", p:2500},
+  {name:"Beignet de fruit flambé", d:"Pomme, banane ou ananas", p:3800},
+  {name:"Champignon blanc", p:2500, nw:1}
+ ]},
+ {id:"boissons-chaudes", t:"Boissons chaudes", items:[
+  {name:"Lait chaud", p:1800},
+  {name:"Café espresso", p:1800},
+  {name:"Irish coffee (cognac)", p:4800},
+  {name:"Irish coffee (whisky)", p:3800},
+  {name:"Thé menthe, thé citron, thé Lipton", p:1500},
+  {name:"Thé chinois (thé vert)", p:3500},
+  {name:"Thé au jasmin", p:3500},
+  {name:"Thé rouge", p:3500},
+  {name:"Thé au chrysanthème", p:4500},
+  {name:"Thé à la rose", p:4500},
+  {name:"Thé oolong, thé Pu'er", p:3500},
+  {name:"Thé au ginseng", p:6800},
+  {name:"Thé aux fleurs", p:6800}
+ ]},
+ {id:"boissons-fraiches", t:"Boissons fraîches", items:[
+  {g:"Thés glacés et bubble tea"},
+  {name:"Bubble tea", p:2800, nw:1},
+  {name:"Bubble tea goyave au thé jasmin", p:3800, nw:1},
+  {name:"Bubble tea avocat au thé jasmin", p:3800, nw:1},
+  {name:"Bubble tea café au thé", p:3800, nw:1},
+  {name:"Thé jasmin passion", p:3800, nw:1},
+  {name:"Thé jasmin litchi", p:3800, nw:1},
+  {name:"Thé jasmin pamplemousse", p:3800, nw:1},
+  {name:"Thé noir citron glacé", p:1800, nw:1},
+  {name:"Thé glacé", p:1500},
+  {g:"Sodas, jus et eaux"},
+  {name:"Coca, Fanta, Sprite", p:1500},
+  {name:"Coca Zéro", p:1800},
+  {name:"Tonic (eau gazeuse)", p:1800},
+  {name:"Diabolo menthe", p:2000, nw:1},
+  {name:"Sirop à l'eau minérale 0,5 L", d:"Menthe, cassis, grenadine ou citron", p:1800},
+  {name:"Eau minérale 0,5 L", p:500},
+  {name:"Eau minérale 1,5 L", p:1500},
+  {name:"Jus de fruits (verre)", d:"Orange, pomme, ananas ou mangue", p:1800},
+  {name:"Jus de fruits (boîte 1 L)", d:"Orange, pomme, ananas ou mangue", p:4500},
+  {name:"Jus de fruits pressé", p:3000},
+  {name:"Jus de gingembre (canette)", p:1800},
+  {name:"Jus de tomate", p:2000},
+  {name:"Malta", p:1800},
+  {name:"Red Bull", p:1800},
+  {name:"Yaourt nutritif", p:1800},
+  {name:"Vita milk", p:1500},
+  {g:"Bières"},
+  {name:"Bière 33 cl", d:"Flag, Beaufort, Castel, Brakina, Chill", p:1500},
+  {name:"Bière 66 cl", d:"Brakina, Sobbra, Flag, Castel, Beaufort, Chill, Tequila", p:2000},
+  {name:"Guinness ou Heineken 33 cl", p:2000},
+  {name:"Tsingtao 500 ml", p:2000},
+  {name:"Bière pression (verre)", p:1500},
+  {name:"Bière pression (1 L)", p:3000}
+ ]},
+ {id:"aperitifs", t:"Apéritifs et cocktails", items:[
+  {name:"Johnnie Walker Red, J&B", p:3800},
+  {name:"Ricard, pastis, vodka", p:3200},
+  {name:"Campari, gin, rhum", p:3200},
+  {name:"Campari orange", p:4500},
+  {name:"Martini", d:"Rouge, rosé ou blanc", p:3200},
+  {name:"Porto rouge", p:3500},
+  {name:"Malibu", p:3800},
+  {name:"Vodka orange", p:4500},
+  {name:"Malibu ananas", p:4500},
+  {name:"Cocktail de jus (sans alcool)", d:"Sirop menthe, jus d'orange, ananas, pomme, mangue", p:2800},
+  {name:"Cocktail maison", d:"Rhum, grenadine, jus d'orange, ananas, pomme, mangue", p:4500},
+  {name:"Kir", d:"Vin blanc, crème de cassis", p:3500},
+  {name:"Kir royal", d:"Champagne, crème de cassis", p:5500},
+  {name:"Perroquet", d:"Pastis, sirop de menthe", p:3800},
+  {name:"Tomate", d:"Pastis, sirop de grenadine", p:3800},
+  {name:"Mauresque", d:"Pastis, sirop d'orgeat", p:3800},
+  {name:"Americano", d:"Martini rouge, rosé, blanc, Campari", p:3800},
+  {name:"Bloody Mary", d:"Vodka, jus de tomate", p:4500},
+  {name:"Mojito", d:"Rhum blanc, Sprite, menthe, citron", p:4500},
+  {name:"Mojito sans alcool", d:"Sprite, menthe, citron", p:2500}
+ ]},
+ {id:"digestifs", t:"Digestifs", items:[
+  {name:"Saké (alcool chinois)", p:null},
+  {name:"Marie Brizard", p:3800},
+  {name:"Get 27", p:3800},
+  {name:"Armagnac", p:3800},
+  {name:"Grand Marnier, Cointreau", p:4800},
+  {name:"Chivas Regal, Johnnie Walker Black Label", p:4800},
+  {name:"Cognac", p:null}
+ ]},
+ {id:"vins", t:"Vins", items:[
+  {g:"Vin rosé"},
+  {name:"Listel Gris (1/2 bouteille)", p:8000},
+  {name:"Listel Gris", p:14000},
+  {name:"Côtes de Provence (1/2 bouteille)", p:8500},
+  {name:"Côtes de Provence", p:16000},
+  {g:"Vin rouge"},
+  {name:"Vin rouge sucré", p:10500, nw:1},
+  {name:"J.P. Chenet", p:12000},
+  {name:"Chianti", p:17000},
+  {name:"Beaujolais", p:16000},
+  {name:"Côtes du Rhône", p:17000},
+  {name:"Côtes du Rhône (1/2 bouteille)", p:8500},
+  {name:"Baron de Lestac Bordeaux", p:18000},
+  {name:"Saint-Émilion Château", p:26000},
+  {name:"Haut-Médoc Château d'Arcins", p:39500},
+  {name:"Haut-Médoc Château Barreyre", p:36000},
+  {name:"Mouton Cadet Baron Philippe de Rothschild", p:19000},
+  {name:"Châteauneuf-du-Pape", p:39500},
+  {name:"Maison Castel Pinot Noir", p:17000},
+  {g:"Vin blanc et champagne"},
+  {name:"Sauvignon", p:14000},
+  {name:"Baron d'Orcel", p:12000},
+  {name:"Muscadet", p:16000},
+  {name:"Champagne", p:48000, p2:78000},
+  {g:"Vin en pichet (rouge, rosé, blanc)"},
+  {name:"Verre de vin", p:2800},
+  {name:"1/4 pichet", p:3800},
+  {name:"1/2 pichet", p:6500}
+ ]}
+];
+
+const fmt = n => n.toLocaleString("fr-FR").replace(/ | /g," ") + " F";
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+
+const nav = document.getElementById("nav");
+const main = document.getElementById("menu");
+const q = document.getElementById("q");
+const spicyBtn = document.getElementById("spicy");
+let spicyOnly = false;
+
+nav.innerHTML = MENU.map(c => `<a class="chip" href="#${c.id}" data-id="${c.id}">${esc(c.t)}</a>`).join("");
+
+function render(){
+  const term = norm(q.value.trim());
+  let html = "", shown = 0;
+  for (const cat of MENU){
+    let rows = "", pendingGroup = null, count = 0;
+    for (const it of cat.items){
+      if (it.g){ pendingGroup = it.g; continue; }
+      const hay = norm((it.n||"") + " " + it.name + " " + (it.d||""));
+      if (term && !hay.includes(term)) continue;
+      if (spicyOnly && !it.s) continue;
+      if (pendingGroup){ rows += `<li class="group" style="display:block;border:0;padding:0">${esc(pendingGroup)}</li>`; pendingGroup = null; }
+      const chili = it.s ? `<span class="chili" aria-label="${it.s>1?"très pimenté":"pimenté"}">${"🌶".repeat(it.s)}</span>` : "";
+      const nw = it.nw ? `<span class="new">Nouveau</span>` : "";
+      const price = it.p == null ? `<span class="price ask">Sur demande</span>`
+        : `<span class="price">${fmt(it.p)}${it.p2 ? `<br>${fmt(it.p2)}` : ""}</span>`;
+      rows += `<li${it.n?"":' class="nonum"'}>${it.n?`<span class="no">${esc(it.n)}</span>`:""}<span class="name">${esc(it.name)}${chili}${nw}${it.d?`<span class="desc">${esc(it.d)}</span>`:""}</span>${price}</li>`;
+      count++;
+    }
+    if (count){ shown += count; html += `<section id="${cat.id}"><h2>${esc(cat.t)}</h2><ul>${rows}</ul></section>`; }
+    nav.querySelector(`[data-id="${cat.id}"]`).style.display = count ? "" : "none";
+  }
+  main.innerHTML = shown ? html : `<p class="empty">Aucun plat ne correspond à votre recherche.</p>`;
+  observe();
+}
+
+let io;
+function observe(){
+  if (io) io.disconnect();
+  io = new IntersectionObserver(entries => {
+    for (const e of entries) if (e.isIntersecting){
+      nav.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c.dataset.id === e.target.id));
+      const on = nav.querySelector(".chip.on"); if (on) on.scrollIntoView({block:"nearest",inline:"center"});
+    }
+  }, {rootMargin:"-130px 0px -70% 0px"});
+  main.querySelectorAll("section").forEach(s => io.observe(s));
+}
+
+q.addEventListener("input", render);
+spicyBtn.addEventListener("click", () => { spicyOnly = !spicyOnly; spicyBtn.setAttribute("aria-pressed", spicyOnly); render(); });
+render();
+</script>
+</body>
+</html>
