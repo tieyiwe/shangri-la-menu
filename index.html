@@ -106,7 +106,7 @@ header{position:relative}
 </head>
 <body>
 <header>
-  <div class="lang" role="group" aria-label="Langue / 语言"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="zh" aria-pressed="false">中文</button></div>
+  <div class="lang" role="group" aria-label="Langue / Language / 语言"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="zh" aria-pressed="false">中文</button></div>
   <p class="zh">香格里拉饭店</p>
   <h1>Restaurant Chinois Shangri-La</h1>
   <p class="sub" id="sub">Carte du restaurant · prix en francs CFA</p>
@@ -740,9 +740,293 @@ const ZH = {
 "1/4 pichet":["1/4 壶"],
 "1/2 pichet":["半壶"]
 };
+// English translations, keyed by the French name.
+const EN_SECTIONS = {"specialites":"Chinese specialties","legumes":"Vegetables","boeuf":"Beef","poulet":"Chicken","canard":"Duck","porc":"Pork","fruits-de-mer":"Seafood","chauffants":"Hot pots & sizzling plates","riz-nouilles":"Rice & noodles","desserts":"Desserts","boissons-chaudes":"Hot drinks","boissons-fraiches":"Cold drinks","aperitifs":"Aperitifs & cocktails","digestifs":"After-dinner drinks","vins":"Wines"};
+const EN_GROUPS = {"Fondue chinoise":"Chinese hot pot","Plats du chef":"Chef's dishes","Crevettes et seiches":"Shrimp & cuttlefish","Gambas et langouste":"King prawns & lobster","Poisson":"Fish","Marmites":"Hot pots","Plaques chauffantes":"Sizzling plates","Riz":"Rice","Nouilles et vermicelles":"Noodles & vermicelli","Accompagnements":"Sides & snacks","Thés glacés et bubble tea":"Iced teas & bubble tea","Sodas, jus et eaux":"Sodas, juices & water","Bières":"Beers","Vin rosé":"Rosé wine","Vin rouge":"Red wine","Vin blanc et champagne":"White wine & champagne","Vin en pichet (rouge, rosé, blanc)":"Wine by the carafe (red, rosé, white)"};
+const EN = {
+"Fondue chinoise (petite portion)":["Chinese hot pot (small)"],
+"Fondue chinoise (grande portion)":["Chinese hot pot (large)"],
+"Poulet sauté piment rouge":["Stir-fried chicken with red chili"],
+"Filet de poulet frit":["Fried chicken strips"],
+"Soupe de poulet aux vermicelles":["Chicken vermicelli soup"],
+"Cuisse de porc à la vapeur":["Steamed pork knuckle"],
+"Boulettes de porc sauce soja":["Pork meatballs in soy sauce"],
+"Porc au meicai":["Pork belly with preserved mustard greens"],
+"Crevettes à la vapeur":["Steamed shrimp"],
+"Crevettes à la moutarde":["Mustard shrimp"],
+"Petites crevettes frites":["Crispy small shrimp"],
+"Crevettes au pain frit":["Breaded fried shrimp"],
+"Crabe sauté au piment":["Spicy stir-fried crab"],
+"Marmite au poisson":["Spicy fish pot"],
+"Salade au champignon noir":["Black fungus salad"],
+"Salade de pattes de poulet":["Chicken feet salad"],
+"Suancaiyu":["Suancaiyu","Fish in sour and spicy pickled cabbage broth"],
+"Suancai bœuf":["Beef with pickled cabbage"],
+"Filet de bœuf dans l'huile pimentée":["Beef fillet in chili oil"],
+"Filet de capitaine dans l'huile pimentée":["Nile perch fillet in chili oil"],
+"Salade au journal (sautée)":["Stir-fried beef tripe"],
+"Mouton sauté au piment":["Spicy stir-fried mutton"],
+"Bœuf aux pommes de terre et tomates":["Beef stew with potatoes and tomatoes"],
+"Golden soupe au bœuf":["Golden beef soup"],
+"Tête de poisson à la vapeur":["Steamed fish head with chili"],
+"Champignons noirs sautés":["Stir-fried black fungus"],
+"Tomates sautées aux œufs":["Stir-fried tomatoes and eggs"],
+"Pommes de terre sautées":["Stir-fried shredded potatoes","Sour and spicy"],
+"Pommes de terre grillées":["Grilled potatoes"],
+"Marmite aux aubergines":["Eggplant clay pot"],
+"Chou sauté":["Stir-fried cabbage"],
+"Marmite au chou":["Dry-pot cabbage"],
+"Pousses de bambou sautées":["Stir-fried bamboo shoots"],
+"Mapo tofu":["Mapo tofu"],
+"Tofu sauce soja":["Tofu in soy sauce"],
+"Chou chinois sauté":["Stir-fried Chinese cabbage"],
+"Salade d'algues vertes":["Seaweed salad"],
+"Ciboulette chinoise sautée aux œufs":["Chinese chives stir-fried with eggs"],
+"Salade de concombres":["Smashed cucumber salad"],
+"Tofu grillé":["Grilled tofu"],
+"Tofu aux œufs de cent ans":["Tofu with century eggs"],
+"Salade de tofu bambou":["Tofu skin salad"],
+"Salade de pousses de bambou":["Bamboo shoot salad"],
+"Germes de soja sautés":["Stir-fried bean sprouts"],
+"Champignons blancs frits":["Crispy fried mushrooms"],
+"Filet de bœuf sauce piquante":["Beef fillet in spicy sauce"],
+"Filet de bœuf à l'ananas":["Beef fillet with pineapple"],
+"Filet de bœuf au gingembre":["Beef fillet with ginger"],
+"Filet de bœuf aux pousses de bambou":["Beef fillet with bamboo shoots"],
+"Filet de bœuf aux champignons noirs":["Beef fillet with black fungus"],
+"Filet de bœuf aux oignons":["Beef fillet with onions"],
+"Filet de bœuf aux poivrons verts":["Beef fillet with green peppers"],
+"Filet de bœuf au curry":["Curry beef fillet"],
+"Filet de bœuf aux légumes":["Beef fillet with vegetables"],
+"Filet de bœuf aux champignons de Paris":["Beef fillet with button mushrooms"],
+"Filet de bœuf aux champignons et bambou":["Beef fillet with mushrooms and bamboo"],
+"Bœuf braisé aux épices":["Spiced braised beef"],
+"Salade de bœuf braisé aux épices":["Spiced braised beef salad"],
+"Bœuf sauté au piment vert":["Beef stir-fried with green chili","Dry, no sauce"],
+"Bœuf dans l'huile pimentée":["Beef in chili oil"],
+"Poulet sauce piquante":["Chicken in spicy sauce"],
+"Poulet sauce aigre-douce":["Sweet and sour chicken"],
+"Poulet aux noix de cajou":["Cashew chicken"],
+"Poulet aux poivrons verts":["Chicken with green peppers"],
+"Poulet aux champignons noirs":["Chicken with black fungus"],
+"Poulet au curry":["Curry chicken"],
+"Poulet au gingembre":["Ginger chicken"],
+"Poulet aux pousses de bambou":["Chicken with bamboo shoots"],
+"Poulet au citron":["Lemon chicken"],
+"Poulet à l'ananas":["Pineapple chicken"],
+"Poulet aux champignons de Paris":["Chicken with button mushrooms"],
+"Poulet aux légumes":["Chicken with vegetables"],
+"Poulet du chef sauce piquante":["Chef's spicy chicken"],
+"Poulet sauce tomate":["Chicken in tomato sauce"],
+"Poulet pané frit":["Breaded fried chicken"],
+"Ailes de poulet grillées":["Grilled chicken wings"],
+"Poulet sauté au piment vert":["Chicken stir-fried with green chili","Dry, no sauce"],
+"Poulet local sauté":["Stir-fried free-range chicken"],
+"Canard sauce piquante":["Duck in spicy sauce"],
+"Canard aux légumes":["Duck with vegetables"],
+"Canard au gingembre":["Ginger duck"],
+"Canard au curry":["Curry duck"],
+"Canard à l'ananas":["Pineapple duck"],
+"Canard aux champignons et bambou":["Duck with mushrooms and bamboo"],
+"Canard aux champignons noirs":["Duck with black fungus"],
+"Canard frit aux épices":["Crispy spiced duck"],
+"Pigeon frit aux épices":["Crispy spiced pigeon"],
+"Porc aux oignons":["Pork with onions"],
+"Porc sauce piquante":["Pork in spicy sauce"],
+"Porc aux poivrons verts":["Pork with green peppers"],
+"Porc au gingembre":["Ginger pork"],
+"Porc aux champignons de Paris":["Pork with button mushrooms"],
+"Porc à l'ananas":["Pineapple pork"],
+"Porc sauce aigre-douce":["Sweet and sour pork"],
+"Porc aux champignons noirs":["Pork with black fungus"],
+"Porc au caramel":["Caramelized braised pork"],
+"Porc aux légumes":["Pork with vegetables"],
+"Porc aux champignons et bambou":["Pork with mushrooms and bamboo"],
+"Pieds de porc sauce soja":["Pig's feet in soy sauce"],
+"Crevettes au gingembre":["Ginger shrimp"],
+"Crevettes aux légumes":["Shrimp with vegetables"],
+"Crevettes aux tomates":["Shrimp with tomatoes"],
+"Crevettes à l'ail":["Garlic shrimp"],
+"Crevettes sauce piquante":["Shrimp in spicy sauce"],
+"Crevettes au curry":["Curry shrimp"],
+"Crevettes aux noix de cajou":["Cashew shrimp"],
+"Crevettes aux champignons noirs":["Shrimp with black fungus"],
+"Crevettes sauce aigre-douce":["Sweet and sour shrimp"],
+"Seiches sauce piquante":["Cuttlefish in spicy sauce"],
+"Seiches sautées":["Stir-fried cuttlefish"],
+"Crevettes frites":["Fried shrimp"],
+"Gambas au caramel":["Caramelized king prawns"],
+"Gambas à la vapeur":["Steamed king prawns"],
+"Gambas sauce piquante":["King prawns in spicy sauce"],
+"Gambas sauce légumes":["King prawns in vegetable sauce"],
+"Gambas sauce tomate":["King prawns in tomato sauce"],
+"Gambas grillées":["Grilled king prawns"],
+"Langouste à la vapeur":["Steamed lobster"],
+"Langouste sauce tomate":["Lobster in tomato sauce"],
+"Filet de capitaine sauce piquante":["Nile perch fillet in spicy sauce"],
+"Filet de capitaine sauce aigre-douce":["Sweet and sour Nile perch fillet"],
+"Filet de capitaine sauté":["Stir-fried Nile perch fillet"],
+"Filet de capitaine aux tomates":["Nile perch fillet with tomatoes"],
+"Poisson entier à la vapeur":["Steamed whole fish"],
+"Poisson entier sauce légumes":["Whole fish in vegetable sauce"],
+"Poisson entier sauce aigre-douce":["Sweet and sour whole fish"],
+"Saumon nature":["Plain salmon"],
+"Marmite aux fruits de mer":["Seafood hot pot"],
+"Marmite aux crevettes":["Shrimp hot pot"],
+"Marmite aux trois trésors":["Three treasures hot pot"],
+"Marmite aux vermicelles et crevettes":["Vermicelli and shrimp hot pot"],
+"Poulet saté":["Sizzling satay chicken"],
+"Crevettes saté":["Sizzling satay shrimp"],
+"Bœuf saté":["Sizzling satay beef"],
+"Seiches":["Sizzling cuttlefish"],
+"Gambas sucrées et pimentées":["Sizzling sweet chili king prawns"],
+"Gambas à l'ail":["Sizzling garlic king prawns"],
+"Mouton":["Sizzling mutton"],
+"Chap shoue":["Sizzling chop suey"],
+"Crevettes à la tomate":["Sizzling tomato shrimp"],
+"Poisson saté":["Sizzling satay fish"],
+"Tofu saté":["Sizzling satay tofu"],
+"Riz nature":["Steamed rice"],
+"Riz cantonais au jambon":["Ham fried rice"],
+"Riz cantonais au bœuf":["Beef fried rice"],
+"Riz cantonais aux crevettes":["Shrimp fried rice"],
+"Riz sauté au curry":["Curry fried rice","Chicken"],
+"Riz sauté à l'ananas":["Pineapple fried rice","Chicken and shrimp"],
+"Riz sauté à l'ail":["Garlic fried rice"],
+"Riz sauté aux légumes":["Vegetable fried rice"],
+"Nouilles sautées aux crevettes":["Shrimp fried noodles"],
+"Nouilles sautées au bœuf":["Beef fried noodles"],
+"Nouilles sautées au poulet":["Chicken fried noodles"],
+"Nouilles sautées au porc":["Pork fried noodles"],
+"Nouilles sautées aux trois trésors":["Three treasures fried noodles"],
+"Nouilles sautées aux légumes":["Vegetable fried noodles"],
+"Vermicelles sautés au porc":["Pork fried vermicelli"],
+"Vermicelles sautés aux crevettes":["Shrimp fried vermicelli"],
+"Vermicelles sautés aux trois trésors":["Three treasures fried vermicelli"],
+"Vermicelles sautés aux légumes":["Vegetable fried vermicelli"],
+"Soupe de nouilles au bœuf":["Beef noodle soup"],
+"Soupe de vermicelles blancs au bœuf":["Beef rice-noodle soup"],
+"Niangao sauté":["Stir-fried rice cakes","Glutinous rice cakes"],
+"Petits pains farcis à la vapeur":["Steamed stuffed buns","Pork or beef"],
+"Frites":["French fries"],
+"Tarte à la citrouille":["Pumpkin cakes"],
+"Golden pain grillé":["Golden toasted bread"],
+"Litchis":["Lychees"],
+"Gingembre confit":["Candied ginger"],
+"Glace (1 boule)":["Ice cream (1 scoop)","Vanilla, chocolate or strawberry"],
+"Sorbet (1 boule)":["Sorbet (1 scoop)","Coffee, lemon, apple or mango"],
+"Colonel":["Colonel","2 scoops lemon sorbet, vodka"],
+"Dame blanche":["Dame blanche sundae","2 scoops vanilla, chocolate sauce, Get 27, whipped cream"],
+"Pêche Melba":["Peach Melba","2 scoops vanilla, peach, chocolate sauce, whipped cream"],
+"Poire Belle-Hélène":["Pear Belle-Hélène","2 scoops vanilla, pear, chocolate sauce, whipped cream"],
+"Banana split":["Banana split","Banana, vanilla, chocolate, strawberry, chocolate sauce, whipped cream"],
+"Salade de fruits":["Fruit salad"],
+"Ananas nature":["Fresh pineapple"],
+"Beignet de fruit":["Fruit fritters","Apple, banana or pineapple"],
+"Beignet de fruit flambé":["Flambéed fruit fritters","Apple, banana or pineapple"],
+"Champignon blanc":["White fungus dessert soup"],
+"Lait chaud":["Hot milk"],
+"Café espresso":["Espresso"],
+"Irish coffee (cognac)":["Irish coffee (cognac)"],
+"Irish coffee (whisky)":["Irish coffee (whisky)"],
+"Thé menthe, thé citron, thé Lipton":["Mint tea, lemon tea, Lipton tea"],
+"Thé chinois (thé vert)":["Chinese green tea"],
+"Thé au jasmin":["Jasmine tea"],
+"Thé rouge":["Black tea"],
+"Thé au chrysanthème":["Chrysanthemum tea"],
+"Thé à la rose":["Rose tea"],
+"Thé oolong, thé Pu'er":["Oolong tea, Pu'er tea"],
+"Thé au ginseng":["Ginseng tea"],
+"Thé aux fleurs":["Flower tea"],
+"Bubble tea":["Bubble tea"],
+"Bubble tea goyave au thé jasmin":["Guava jasmine bubble tea"],
+"Bubble tea avocat au thé jasmin":["Avocado jasmine bubble tea"],
+"Bubble tea café au thé":["Coffee milk tea with bubbles"],
+"Thé jasmin passion":["Passion fruit jasmine tea"],
+"Thé jasmin litchi":["Lychee jasmine tea"],
+"Thé jasmin pamplemousse":["Grapefruit jasmine tea"],
+"Thé noir citron glacé":["Iced lemon black tea"],
+"Thé glacé":["Iced tea"],
+"Coca, Fanta, Sprite":["Coke, Fanta, Sprite"],
+"Coca Zéro":["Coke Zero"],
+"Tonic (eau gazeuse)":["Tonic water"],
+"Diabolo menthe":["Mint lemonade soda"],
+"Sirop à l'eau minérale 0,5 L":["Syrup with mineral water 0.5 L","Mint, blackcurrant, grenadine or lemon"],
+"Eau minérale 0,5 L":["Mineral water 0.5 L"],
+"Eau minérale 1,5 L":["Mineral water 1.5 L"],
+"Jus de fruits (verre)":["Fruit juice (glass)","Orange, apple, pineapple or mango"],
+"Jus de fruits (boîte 1 L)":["Fruit juice (1 L carton)","Orange, apple, pineapple or mango"],
+"Jus de fruits pressé":["Fresh-squeezed juice"],
+"Jus de gingembre (canette)":["Ginger juice (can)"],
+"Jus de tomate":["Tomato juice"],
+"Malta":["Malta (malt drink)"],
+"Red Bull":["Red Bull"],
+"Yaourt nutritif":["Drinking yogurt"],
+"Vita milk":["Vitamilk soy milk"],
+"Bière 33 cl":["Beer 33 cl","Flag, Beaufort, Castel, Brakina, Chill"],
+"Bière 66 cl":["Beer 66 cl","Brakina, Sobbra, Flag, Castel, Beaufort, Chill, Tequila"],
+"Guinness ou Heineken 33 cl":["Guinness or Heineken 33 cl"],
+"Tsingtao 500 ml":["Tsingtao 500 ml"],
+"Bière pression (verre)":["Draft beer (glass)"],
+"Bière pression (1 L)":["Draft beer (1 L)"],
+"Johnnie Walker Red, J&B":["Johnnie Walker Red, J&B"],
+"Ricard, pastis, vodka":["Ricard, pastis, vodka"],
+"Campari, gin, rhum":["Campari, gin, rum"],
+"Campari orange":["Campari orange"],
+"Martini":["Martini","Red, rosé or white"],
+"Porto rouge":["Red port"],
+"Malibu":["Malibu"],
+"Vodka orange":["Vodka orange"],
+"Malibu ananas":["Malibu pineapple"],
+"Cocktail de jus (sans alcool)":["Juice cocktail (alcohol-free)","Mint syrup, orange, pineapple, apple, mango juice"],
+"Cocktail maison":["House cocktail","Rum, grenadine, orange, pineapple, apple, mango juice"],
+"Kir":["Kir","White wine, crème de cassis"],
+"Kir royal":["Kir royal","Champagne, crème de cassis"],
+"Perroquet":["Perroquet","Pastis, mint syrup"],
+"Tomate":["Tomate","Pastis, grenadine syrup"],
+"Mauresque":["Mauresque","Pastis, orgeat syrup"],
+"Americano":["Americano","Martini, Campari"],
+"Bloody Mary":["Bloody Mary","Vodka, tomato juice"],
+"Mojito":["Mojito","White rum, Sprite, mint, lime"],
+"Mojito sans alcool":["Virgin mojito","Sprite, mint, lime"],
+"Saké (alcool chinois)":["Chinese rice spirit"],
+"Marie Brizard":["Marie Brizard"],
+"Get 27":["Get 27 (mint liqueur)"],
+"Armagnac":["Armagnac"],
+"Grand Marnier, Cointreau":["Grand Marnier, Cointreau"],
+"Chivas Regal, Johnnie Walker Black Label":["Chivas Regal, Johnnie Walker Black Label"],
+"Cognac":["Cognac"],
+"Listel Gris (1/2 bouteille)":["Listel Gris (half bottle)"],
+"Listel Gris":["Listel Gris"],
+"Côtes de Provence (1/2 bouteille)":["Côtes de Provence (half bottle)"],
+"Côtes de Provence":["Côtes de Provence"],
+"Vin rouge sucré":["Sweet red wine"],
+"J.P. Chenet":["J.P. Chenet"],
+"Chianti":["Chianti"],
+"Beaujolais":["Beaujolais"],
+"Côtes du Rhône":["Côtes du Rhône"],
+"Côtes du Rhône (1/2 bouteille)":["Côtes du Rhône (half bottle)"],
+"Baron de Lestac Bordeaux":["Baron de Lestac Bordeaux"],
+"Saint-Émilion Château":["Saint-Émilion Château"],
+"Haut-Médoc Château d'Arcins":["Haut-Médoc Château d'Arcins"],
+"Haut-Médoc Château Barreyre":["Haut-Médoc Château Barreyre"],
+"Mouton Cadet Baron Philippe de Rothschild":["Mouton Cadet Baron Philippe de Rothschild"],
+"Châteauneuf-du-Pape":["Châteauneuf-du-Pape"],
+"Maison Castel Pinot Noir":["Maison Castel Pinot Noir"],
+"Sauvignon":["Sauvignon"],
+"Baron d'Orcel":["Baron d'Orcel"],
+"Muscadet":["Muscadet"],
+"Champagne":["Champagne"],
+"Verre de vin":["Glass of wine"],
+"1/4 pichet":["1/4 carafe"],
+"1/2 pichet":["1/2 carafe"]
+};
+
 const UI = {
  fr:{w1:"Bienvenue au", w2:"Restaurant Shangri-La", wtap:"Touchez pour voir le menu", sub:"Carte du restaurant · prix en francs CFA", search:"Rechercher un plat…", searchLabel:"Rechercher un plat", spicy:"🌶 Pimentés", ask:"Sur demande", nw:"Nouveau", empty:"Aucun plat ne correspond à votre recherche.", view:"Voir la photo : ", close:"Fermer", spicy1:"pimenté", spicy2:"très pimenté", nav:"Catégories",
   foot:"📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur."},
+ en:{w1:"Welcome to", w2:"Shangri-La Restaurant", wtap:"Tap to see the menu", sub:"Restaurant menu · prices in CFA francs", search:"Search for a dish…", searchLabel:"Search for a dish", spicy:"🌶 Spicy", ask:"Ask your server", nw:"New", empty:"No dish matches your search.", view:"See photo: ", close:"Close", spicy1:"spicy", spicy2:"very spicy", nav:"Categories",
+  foot:"📷 Tap a dish with a photo to enlarge it · 🌶 spicy · 🌶🌶 very spicy<br>Prices may change. Please ask your server."},
  zh:{w1:"欢迎光临", w2:"香格里拉饭店", wtap:"点击查看菜单", sub:"菜单 · 价格单位：西非法郎（F）", search:"搜索菜品…", searchLabel:"搜索菜品", spicy:"🌶 辣味", ask:"请询问服务员", nw:"新品", empty:"没有找到相关菜品。", view:"查看图片：", close:"关闭", spicy1:"辣", spicy2:"特辣", nav:"分类",
   foot:"📷 点击有图片的菜品可放大 · 🌶 辣 · 🌶🌶 特辣<br>价格可能变动，请咨询服务员。"}
 };
@@ -752,14 +1036,19 @@ const PHOTOS = {"Poulet sauté piment rouge": "img/poulet-saute-piment-rouge.jpg
 function photoFor(it){ return PHOTOS[it.name] || (it.name.startsWith("Fondue chinoise") ? PHOTOS["Fondue chinoise"] : null); }
 const ALL = [];
 let LANG = "fr";
-try { const v = localStorage.getItem("shangrila-lang"); if (v === "zh") LANG = "zh"; } catch(e){}
+try { const v = localStorage.getItem("shangrila-lang"); if (v === "zh" || v === "en") LANG = v; } catch(e){}
 const T = k => UI[LANG][k];
-const nm = it => LANG === "zh" && ZH[it.name] ? ZH[it.name][0] : it.name;
+const DICT = {zh: ZH, en: EN}, SECT = {zh: ZH_SECTIONS, en: EN_SECTIONS}, GRP = {zh: ZH_GROUPS, en: EN_GROUPS};
+const tr = it => (DICT[LANG] && DICT[LANG][it.name]) || [];
+const nm = it => tr(it)[0] || it.name;
 const ds = it => {
-  if (LANG !== "zh") return it.d || "";
-  const z = ZH[it.name]; const zd = z && z[1] ? z[1] : "";
-  return [zd, it.name].filter(Boolean).join(" · ");   // en chinois : nom français dessous, pour commander facilement
+  if (LANG === "fr") return it.d || "";
+  const d = tr(it)[1] || "";
+  // Nom français affiché dessous pour faciliter la commande auprès du personnel
+  return [d, nm(it) !== it.name ? it.name : ""].filter(Boolean).join(" · ");
 };
+const secT = c => (SECT[LANG] && SECT[LANG][c.id]) || c.t;
+const grpT = g => (GRP[LANG] && GRP[LANG][g]) || g;
 
 const fmt = n => n.toLocaleString("fr-FR").replace(/ | /g," ") + " F";
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -772,29 +1061,34 @@ const spicyBtn = document.getElementById("spicy");
 let spicyOnly = false;
 
 function buildNav(){
-  nav.innerHTML = MENU.map(c => `<a class="chip" href="#${c.id}" data-id="${c.id}">${esc(LANG==="zh"?ZH_SECTIONS[c.id]:c.t)}</a>`).join("")
-    + `<a class="chip" href="#contact" data-id="contact">${LANG==="zh"?"联系我们":"Contact"}</a>`;
+  nav.innerHTML = MENU.map(c => `<a class="chip" href="#${c.id}" data-id="${c.id}">${esc(secT(c))}</a>`).join("")
+    + `<a class="chip" href="#contact" data-id="contact">${CT[LANG].title}</a>`;
 }
 
 const PHONES = ["63335888","25375728","77299878","73986666"];
 const sp = n => n.replace(/(\d{2})(?=\d)/g,"$1 ");
+const CT = {
+ fr:{title:"Contact", take:"Plats à emporter", wa:"Écrire sur WhatsApp", qr:"QR code WhatsApp", note:"Vous pouvez aussi scanner le QR code pour ajouter le contact WhatsApp.", addr:"Adresse"},
+ en:{title:"Contact", take:"Takeaway orders", wa:"Message us on WhatsApp", qr:"WhatsApp QR code", note:"You can also scan the QR code to add our WhatsApp contact.", addr:"Address"},
+ zh:{title:"联系我们", take:"外卖订餐", wa:"WhatsApp 联系我们", qr:"WhatsApp 二维码", note:"也可以扫描二维码添加 WhatsApp 联系人。", addr:"地址"}
+};
 function renderContact(){
-  const zh = LANG === "zh";
+  const c = CT[LANG];
   document.getElementById("contact").innerHTML = `
-  <h2>${zh?"联系我们":"Contact"}</h2>
+  <h2>${c.title}</h2>
   <div class="card">
-    <div><h3>${zh?"外卖订餐":"Plats à emporter"}</h3>
+    <div><h3>${c.take}</h3>
       <div class="phones">${PHONES.map(n=>`<a href="tel:+226${n}">📞 ${sp(n)}</a>`).join("")}</div>
     </div>
     <div><h3>WhatsApp</h3>
       <div class="wa-row">
-        <a class="wa" href="https://wa.me/22677299878"><span>${zh?"WhatsApp 联系我们":"Écrire sur WhatsApp"}</span><span class="wa-num">+226 77 29 98 78</span></a>
-        <img class="wa-qr" src="img/whatsapp-qr.png" alt="${zh?"WhatsApp 二维码":"QR code WhatsApp"}" loading="lazy">
+        <a class="wa" href="https://wa.me/22677299878"><span>${c.wa}</span><span class="wa-num">+226 77 29 98 78</span></a>
+        <img class="wa-qr" src="img/whatsapp-qr.png" alt="${c.qr}" loading="lazy">
       </div>
-      <p class="wa-note">${zh?"也可以扫描二维码添加 WhatsApp 联系人。":"Vous pouvez aussi scanner le QR code pour ajouter le contact WhatsApp."}</p>
+      <p class="wa-note">${c.note}</p>
     </div>
     <div><h3>Orange Money</h3><span class="om">+226 77 29 98 78</span></div>
-    <div><h3>${zh?"地址":"Adresse"}</h3><span class="addr">📍 Ouaga 2000, Ouagadougou</span></div>
+    <div><h3>${c.addr}</h3><span class="addr">📍 Ouaga 2000, Ouagadougou</span></div>
   </div>`;
 }
 
@@ -839,7 +1133,7 @@ wel.addEventListener("click", hideWelcome);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !wel.classList.contains("hide")) hideWelcome(); });
 
 function applyLang(){
-  document.documentElement.lang = LANG === "zh" ? "zh-CN" : "fr";
+  document.documentElement.lang = {fr:"fr", en:"en", zh:"zh-CN"}[LANG];
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === LANG));
   document.getElementById("sub").textContent = T("sub");
   q.placeholder = T("search");
@@ -864,11 +1158,10 @@ function render(){
     let rows = "", pendingGroup = null, count = 0;
     for (const it of cat.items){
       if (it.g){ pendingGroup = it.g; continue; }
-      const z = ZH[it.name] || [];
-      const hay = norm((it.n||"") + " " + it.name + " " + (it.d||"") + " " + z.join(" "));
+      const hay = norm([it.n||"", it.name, it.d||"", ...(ZH[it.name]||[]), ...(EN[it.name]||[])].join(" "));
       if (term && !hay.includes(term)) continue;
       if (spicyOnly && !it.s) continue;
-      if (pendingGroup){ rows += `<li class="group" style="display:block;border:0;padding:0">${esc(LANG==="zh" ? (ZH_GROUPS[pendingGroup]||pendingGroup) : pendingGroup)}</li>`; pendingGroup = null; }
+      if (pendingGroup){ rows += `<li class="group" style="display:block;border:0;padding:0">${esc(grpT(pendingGroup))}</li>`; pendingGroup = null; }
       const chili = it.s ? `<span class="chili" aria-label="${it.s>1?T("spicy2"):T("spicy1")}">${"🌶".repeat(it.s)}</span>` : "";
       const nw = it.nw ? `<span class="new">${T("nw")}</span>` : "";
       const price = it.p == null ? `<span class="price ask">${T("ask")}</span>`
@@ -878,7 +1171,7 @@ function render(){
       rows += `<li${attrs}>${ph?`<img class="thumb" src="${ph}" alt="" loading="lazy">`:""}${it.n?`<span class="no">${esc(it.n)}</span>`:""}<span class="name">${esc(nm(it))}${chili}${nw}${ds(it)?`<span class="desc">${esc(ds(it))}</span>`:""}</span>${price}</li>`;
       count++;
     }
-    if (count){ shown += count; html += `<section id="${cat.id}"><h2>${esc(LANG==="zh"?ZH_SECTIONS[cat.id]:cat.t)}</h2><ul>${rows}</ul></section>`; }
+    if (count){ shown += count; html += `<section id="${cat.id}"><h2>${esc(secT(cat))}</h2><ul>${rows}</ul></section>`; }
     nav.querySelector(`[data-id="${cat.id}"]`).style.display = count ? "" : "none";
   }
   main.innerHTML = shown ? html : `<p class="empty">${T("empty")}</p>`;
