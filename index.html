@@ -45,9 +45,20 @@ h2{font-family:var(--display);font-weight:400;color:var(--gold);font-size:24px;m
 h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent);opacity:.5}
 .group{margin:14px 0 2px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 ul{list-style:none;margin:0;padding:0}
-li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:baseline;padding:10px 0;border-bottom:1px dashed var(--line)}
+li{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+li .name{flex:1;min-width:0}
+li.photo{cursor:pointer}
+li.photo:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+.thumb{flex:0 0 56px;width:56px;height:56px;border-radius:8px;object-fit:cover;border:1px solid var(--line);background:var(--panel)}
+.cam{display:inline-block;font-size:12px;color:var(--muted);margin-top:3px}
+.lb{position:fixed;inset:0;z-index:20;background:rgba(10,9,8,.88);display:none;align-items:center;justify-content:center;padding:16px}
+.lb.open{display:flex}
+.lb figure{margin:0;max-width:640px;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.lb img{display:block;width:100%;max-height:70vh;object-fit:contain;background:#000}
+.lb figcaption{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;align-items:baseline}
+.lb .x{position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--cream);font-size:22px;cursor:pointer}
+.lb .x:focus-visible{outline:2px solid var(--gold)}
 .no{font-size:12px;font-weight:700;color:var(--wood);background:var(--gold);border-radius:4px;padding:1px 5px;min-width:30px;text-align:center;font-variant-numeric:tabular-nums}
-li.nonum{grid-template-columns:1fr auto}
 .name{font-weight:600}
 .desc{display:block;font-weight:400;color:var(--muted);font-size:14px;margin-top:2px}
 .chili{color:var(--chili);font-size:13px;margin-left:4px;white-space:nowrap}
@@ -77,7 +88,9 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 16px 30p
 
 <main id="menu"></main>
 
-<footer>🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo du plat"><button class="x" id="lbx" type="button" aria-label="Fermer">×</button><figure><img id="lbimg" alt=""><figcaption><span class="name" id="lbname"></span><span class="price" id="lbprice"></span></figcaption></figure></div>
+
+<footer>📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Photos à titre indicatif. Les prix peuvent changer. Demandez à votre serveur.</footer>
 
 <script>
 // s: 1 = pimenté, 2 = très pimenté. p: null = prix sur demande. n: numéro de carte (vide si "00").
@@ -407,6 +420,11 @@ const MENU = [
  ]}
 ];
 
+const PHOTOS = {"Poulet sauté piment rouge": "img/poulet-saute-piment-rouge.jpg", "Filet de poulet frit": "img/filet-de-poulet-frit.jpg", "Soupe de poulet aux vermicelles": "img/soupe-de-poulet-aux-vermicelles.jpg", "Cuisse de porc à la vapeur": "img/cuisse-de-porc-a-la-vapeur.jpg", "Boulettes de porc sauce soja": "img/boulettes-de-porc-sauce-soja.jpg", "Porc au meicai": "img/porc-au-meicai.jpg", "Crevettes à la vapeur": "img/crevettes-a-la-vapeur.jpg", "Crevettes à la moutarde": "img/crevettes-a-la-moutarde.jpg", "Petites crevettes frites": "img/petites-crevettes-frites.jpg", "Crevettes au pain frit": "img/crevettes-au-pain-frit.jpg", "Crabe sauté au piment": "img/crabe-saute-au-piment.jpg", "Marmite au poisson": "img/marmite-au-poisson.jpg", "Salade au champignon noir": "img/salade-au-champignon-noir.jpg", "Salade de pattes de poulet": "img/salade-de-pattes-de-poulet.jpg", "Suancaiyu": "img/suancaiyu.jpg", "Filet de bœuf dans l'huile pimentée": "img/filet-de-boeuf-dans-l-huile-pimentee.jpg", "Salade au journal (sautée)": "img/salade-au-journal-sautee.jpg", "Mouton sauté au piment": "img/mouton-saute-au-piment.jpg", "Bœuf aux pommes de terre et tomates": "img/boeuf-aux-pommes-de-terre-et-tomates.jpg", "Golden soupe au bœuf": "img/golden-soupe-au-boeuf.jpg", "Tête de poisson à la vapeur": "img/tete-de-poisson-a-la-vapeur.jpg", "Fondue chinoise": "img/fondue-chinoise.jpg", "Salade de concombres": "img/salade-de-concombres.jpg", "Tofu grillé": "img/tofu-grille.jpg", "Tofu aux œufs de cent ans": "img/tofu-aux-oeufs-de-cent-ans.jpg", "Salade de tofu bambou": "img/salade-de-tofu-bambou.jpg", "Salade de pousses de bambou": "img/salade-de-pousses-de-bambou.jpg", "Germes de soja sautés": "img/germes-de-soja-sautes.jpg", "Champignons blancs frits": "img/champignons-blancs-frits.jpg", "Champignons noirs sautés": "img/champignons-noirs-sautes.jpg", "Pommes de terre grillées": "img/pommes-de-terre-grillees.jpg", "Tomates sautées aux œufs": "img/tomates-sautees-aux-oeufs.jpg", "Chou chinois sauté": "img/chou-chinois-saute.jpg", "Salade d'algues vertes": "img/salade-d-algues-vertes.jpg", "Ciboulette chinoise sautée aux œufs": "img/ciboulette-chinoise-sautee-aux-oeufs.jpg", "Mapo tofu": "img/mapo-tofu.jpg", "Marmite aux aubergines": "img/marmite-aux-aubergines.jpg", "Pommes de terre sautées": "img/pommes-de-terre-sautees.jpg", "Filet de bœuf au curry": "img/filet-de-boeuf-au-curry.jpg", "Filet de bœuf aux poivrons verts": "img/filet-de-boeuf-aux-poivrons-verts.jpg", "Bœuf braisé aux épices": "img/boeuf-braise-aux-epices.jpg", "Bœuf dans l'huile pimentée": "img/boeuf-dans-l-huile-pimentee.jpg", "Ailes de poulet grillées": "img/ailes-de-poulet-grillees.jpg", "Poulet sauté au piment vert": "img/poulet-saute-au-piment-vert.jpg", "Poulet au citron": "img/poulet-au-citron.jpg", "Poulet pané frit": "img/poulet-pane-frit.jpg", "Poulet sauce aigre-douce": "img/poulet-sauce-aigre-douce.jpg", "Canard frit aux épices": "img/canard-frit-aux-epices.jpg", "Pieds de porc sauce soja": "img/pieds-de-porc-sauce-soja.jpg", "Porc à l'ananas": "img/porc-a-l-ananas.jpg", "Crevettes aux noix de cajou": "img/crevettes-aux-noix-de-cajou.jpg", "Seiches sauce piquante": "img/seiches-sauce-piquante.jpg", "Langouste à la vapeur": "img/langouste-a-la-vapeur.jpg", "Poisson entier à la vapeur": "img/poisson-entier-a-la-vapeur.jpg", "Poisson entier sauce aigre-douce": "img/poisson-entier-sauce-aigre-douce.jpg", "Saumon nature": "img/saumon-nature.jpg", "Bœuf saté": "img/boeuf-sate.jpg", "Marmite aux fruits de mer": "img/marmite-aux-fruits-de-mer.jpg", "Nouilles sautées aux légumes": "img/nouilles-sautees-aux-legumes.jpg", "Riz cantonais au jambon": "img/riz-cantonais-au-jambon.jpg", "Niangao sauté": "img/niangao-saute.jpg", "Petits pains farcis à la vapeur": "img/petits-pains-farcis-a-la-vapeur.jpg", "Soupe de vermicelles blancs au bœuf": "img/soupe-de-vermicelles-blancs-au-boeuf.jpg", "Golden pain grillé": "img/golden-pain-grille.jpg", "Soupe de nouilles au bœuf": "img/soupe-de-nouilles-au-boeuf.jpg", "Tarte à la citrouille": "img/tarte-a-la-citrouille.jpg", "Litchis": "img/litchis.jpg", "Jus de fruits pressé": "img/jus-de-fruits-presse.jpg"};
+// Les deux fondues partagent la photo
+function photoFor(it){ return PHOTOS[it.name] || (it.name.startsWith("Fondue chinoise") ? PHOTOS["Fondue chinoise"] : null); }
+const ALL = [];
+
 const fmt = n => n.toLocaleString("fr-FR").replace(/ | /g," ") + " F";
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
@@ -420,6 +438,7 @@ let spicyOnly = false;
 nav.innerHTML = MENU.map(c => `<a class="chip" href="#${c.id}" data-id="${c.id}">${esc(c.t)}</a>`).join("");
 
 function render(){
+  ALL.length = 0;
   const term = norm(q.value.trim());
   let html = "", shown = 0;
   for (const cat of MENU){
@@ -434,7 +453,9 @@ function render(){
       const nw = it.nw ? `<span class="new">Nouveau</span>` : "";
       const price = it.p == null ? `<span class="price ask">Sur demande</span>`
         : `<span class="price">${fmt(it.p)}${it.p2 ? `<br>${fmt(it.p2)}` : ""}</span>`;
-      rows += `<li${it.n?"":' class="nonum"'}>${it.n?`<span class="no">${esc(it.n)}</span>`:""}<span class="name">${esc(it.name)}${chili}${nw}${it.d?`<span class="desc">${esc(it.d)}</span>`:""}</span>${price}</li>`;
+      const ph = photoFor(it); let attrs = "";
+      if (ph){ ALL.push(it); attrs = ` class="photo" tabindex="0" role="button" data-i="${ALL.length-1}" aria-label="Voir la photo : ${esc(it.name)}"`; }
+      rows += `<li${attrs}>${ph?`<img class="thumb" src="${ph}" alt="" loading="lazy">`:""}${it.n?`<span class="no">${esc(it.n)}</span>`:""}<span class="name">${esc(it.name)}${chili}${nw}${it.d?`<span class="desc">${esc(it.d)}</span>`:""}</span>${price}</li>`;
       count++;
     }
     if (count){ shown += count; html += `<section id="${cat.id}"><h2>${esc(cat.t)}</h2><ul>${rows}</ul></section>`; }
@@ -456,6 +477,17 @@ function observe(){
   main.querySelectorAll("section").forEach(s => io.observe(s));
 }
 
+const lb=document.getElementById("lb"), lbimg=document.getElementById("lbimg");
+let lastFocus=null;
+function openLb(it){ lastFocus=document.activeElement; lbimg.src=photoFor(it); lbimg.alt=it.name;
+  document.getElementById("lbname").textContent=it.name;
+  document.getElementById("lbprice").textContent= it.p==null ? "Sur demande" : fmt(it.p);
+  lb.classList.add("open"); document.getElementById("lbx").focus(); }
+function closeLb(){ lb.classList.remove("open"); lbimg.removeAttribute("src"); if(lastFocus) lastFocus.focus(); }
+main.addEventListener("click", e=>{ const li=e.target.closest("li.photo"); if(li) openLb(ALL[+li.dataset.i]); });
+main.addEventListener("keydown", e=>{ const li=e.target.closest("li.photo"); if(li && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); openLb(ALL[+li.dataset.i]); }});
+lb.addEventListener("click", e=>{ if(e.target===lb || e.target.id==="lbx") closeLb(); });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && lb.classList.contains("open")) closeLb(); });
 q.addEventListener("input", render);
 spicyBtn.addEventListener("click", () => { spicyOnly = !spicyOnly; spicyBtn.setAttribute("aria-pressed", spicyOnly); render(); });
 render();
