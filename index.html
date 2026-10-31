@@ -101,7 +101,7 @@ header{position:relative}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes pop{0%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1.06)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.welcome.run .w1,.welcome.run .w2,.welcome.run .w3,.welcome.run .tap{animation:none}}
-@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body.locked{overflow:hidden}
 </style>
 </head>
 <body>
@@ -1031,6 +1031,15 @@ const UI = {
   foot:"📷 点击有图片的菜品可放大 · 🌶 辣 · 🌶🌶 特辣<br>价格可能变动，请咨询服务员。"}
 };
 
+// Toujours ouvrir le menu en haut, quel que soit l'appareil ou le navigateur
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+function toTop(){ window.scrollTo({top: 0, left: 0, behavior: "instant"}); }
+toTop();
+addEventListener("DOMContentLoaded", toTop);
+addEventListener("load", () => { toTop(); setTimeout(toTop, 50); });
+addEventListener("pageshow", e => { if (e.persisted) toTop(); });
+
 const PHOTOS = {"Poulet sauté piment rouge": "img/poulet-saute-piment-rouge.jpg", "Filet de poulet frit": "img/filet-de-poulet-frit.jpg", "Soupe de poulet aux vermicelles": "img/soupe-de-poulet-aux-vermicelles.jpg", "Cuisse de porc à la vapeur": "img/cuisse-de-porc-a-la-vapeur.jpg", "Boulettes de porc sauce soja": "img/boulettes-de-porc-sauce-soja.jpg", "Porc au meicai": "img/porc-au-meicai.jpg", "Crevettes à la vapeur": "img/crevettes-a-la-vapeur.jpg", "Crevettes à la moutarde": "img/crevettes-a-la-moutarde.jpg", "Petites crevettes frites": "img/petites-crevettes-frites.jpg", "Crevettes au pain frit": "img/crevettes-au-pain-frit.jpg", "Crabe sauté au piment": "img/crabe-saute-au-piment.jpg", "Marmite au poisson": "img/marmite-au-poisson.jpg", "Salade au champignon noir": "img/salade-au-champignon-noir.jpg", "Salade de pattes de poulet": "img/salade-de-pattes-de-poulet.jpg", "Suancaiyu": "img/suancaiyu.jpg", "Filet de bœuf dans l'huile pimentée": "img/filet-de-boeuf-dans-l-huile-pimentee.jpg", "Salade au journal (sautée)": "img/salade-au-journal-sautee.jpg", "Mouton sauté au piment": "img/mouton-saute-au-piment.jpg", "Bœuf aux pommes de terre et tomates": "img/boeuf-aux-pommes-de-terre-et-tomates.jpg", "Golden soupe au bœuf": "img/golden-soupe-au-boeuf.jpg", "Tête de poisson à la vapeur": "img/tete-de-poisson-a-la-vapeur.jpg", "Fondue chinoise": "img/fondue-chinoise.jpg", "Salade de concombres": "img/salade-de-concombres.jpg", "Tofu grillé": "img/tofu-grille.jpg", "Tofu aux œufs de cent ans": "img/tofu-aux-oeufs-de-cent-ans.jpg", "Salade de tofu bambou": "img/salade-de-tofu-bambou.jpg", "Salade de pousses de bambou": "img/salade-de-pousses-de-bambou.jpg", "Germes de soja sautés": "img/germes-de-soja-sautes.jpg", "Champignons blancs frits": "img/champignons-blancs-frits.jpg", "Champignons noirs sautés": "img/champignons-noirs-sautes.jpg", "Pommes de terre grillées": "img/pommes-de-terre-grillees.jpg", "Tomates sautées aux œufs": "img/tomates-sautees-aux-oeufs.jpg", "Chou chinois sauté": "img/chou-chinois-saute.jpg", "Salade d'algues vertes": "img/salade-d-algues-vertes.jpg", "Ciboulette chinoise sautée aux œufs": "img/ciboulette-chinoise-sautee-aux-oeufs.jpg", "Mapo tofu": "img/mapo-tofu.jpg", "Marmite aux aubergines": "img/marmite-aux-aubergines.jpg", "Pommes de terre sautées": "img/pommes-de-terre-sautees.jpg", "Filet de bœuf au curry": "img/filet-de-boeuf-au-curry.jpg", "Filet de bœuf aux poivrons verts": "img/filet-de-boeuf-aux-poivrons-verts.jpg", "Bœuf braisé aux épices": "img/boeuf-braise-aux-epices.jpg", "Bœuf dans l'huile pimentée": "img/boeuf-dans-l-huile-pimentee.jpg", "Ailes de poulet grillées": "img/ailes-de-poulet-grillees.jpg", "Poulet sauté au piment vert": "img/poulet-saute-au-piment-vert.jpg", "Poulet au citron": "img/poulet-au-citron.jpg", "Poulet pané frit": "img/poulet-pane-frit.jpg", "Poulet sauce aigre-douce": "img/poulet-sauce-aigre-douce.jpg", "Canard frit aux épices": "img/canard-frit-aux-epices.jpg", "Pieds de porc sauce soja": "img/pieds-de-porc-sauce-soja.jpg", "Porc à l'ananas": "img/porc-a-l-ananas.jpg", "Crevettes aux noix de cajou": "img/crevettes-aux-noix-de-cajou.jpg", "Seiches sauce piquante": "img/seiches-sauce-piquante.jpg", "Langouste à la vapeur": "img/langouste-a-la-vapeur.jpg", "Poisson entier à la vapeur": "img/poisson-entier-a-la-vapeur.jpg", "Poisson entier sauce aigre-douce": "img/poisson-entier-sauce-aigre-douce.jpg", "Saumon nature": "img/saumon-nature.jpg", "Bœuf saté": "img/boeuf-sate.jpg", "Marmite aux fruits de mer": "img/marmite-aux-fruits-de-mer.jpg", "Nouilles sautées aux légumes": "img/nouilles-sautees-aux-legumes.jpg", "Riz cantonais au jambon": "img/riz-cantonais-au-jambon.jpg", "Niangao sauté": "img/niangao-saute.jpg", "Petits pains farcis à la vapeur": "img/petits-pains-farcis-a-la-vapeur.jpg", "Soupe de vermicelles blancs au bœuf": "img/soupe-de-vermicelles-blancs-au-boeuf.jpg", "Golden pain grillé": "img/golden-pain-grille.jpg", "Soupe de nouilles au bœuf": "img/soupe-de-nouilles-au-boeuf.jpg", "Tarte à la citrouille": "img/tarte-a-la-citrouille.jpg", "Litchis": "img/litchis.jpg", "Jus de fruits pressé": "img/jus-de-fruits-presse.jpg"};
 // Les deux fondues partagent la photo
 function photoFor(it){ return PHOTOS[it.name] || (it.name.startsWith("Fondue chinoise") ? PHOTOS["Fondue chinoise"] : null); }
@@ -1125,10 +1134,11 @@ function showWelcome(){
   document.getElementById("w2").textContent = T("w2");
   document.getElementById("wtap").textContent = T("wtap");
   document.getElementById("w3").hidden = LANG === "zh";
+  document.body.classList.add("locked"); toTop();
   wel.classList.remove("hide","run"); void wel.offsetWidth; wel.classList.add("run");
   confetti(); clearTimeout(wTimer); wTimer = setTimeout(hideWelcome, 4200);
 }
-function hideWelcome(){ clearTimeout(wTimer); wel.classList.add("hide"); setTimeout(() => cancelAnimationFrame(raf), 650); }
+function hideWelcome(){ clearTimeout(wTimer); wel.classList.add("hide"); document.body.classList.remove("locked"); setTimeout(() => cancelAnimationFrame(raf), 650); }
 wel.addEventListener("click", hideWelcome);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !wel.classList.contains("hide")) hideWelcome(); });
 
@@ -1144,6 +1154,13 @@ function applyLang(){
   document.getElementById("foot").innerHTML = T("foot");
   buildNav(); renderContact(); render();
 }
+nav.addEventListener("click", e => {
+  const a = e.target.closest("a.chip"); if (!a) return;
+  e.preventDefault();
+  const t = document.getElementById(a.dataset.id); if (!t) return;
+  const smooth = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({top: t.getBoundingClientRect().top + scrollY - 112, behavior: smooth ? "smooth" : "instant"});
+});
 document.querySelector(".lang").addEventListener("click", e => {
   const b = e.target.closest("button[data-lang]"); if (!b || b.dataset.lang === LANG) return;
   LANG = b.dataset.lang; try { localStorage.setItem("shangrila-lang", LANG); } catch(e){}
@@ -1184,7 +1201,7 @@ function observe(){
   io = new IntersectionObserver(entries => {
     for (const e of entries) if (e.isIntersecting){
       nav.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c.dataset.id === e.target.id));
-      const on = nav.querySelector(".chip.on"); if (on) on.scrollIntoView({block:"nearest",inline:"center"});
+      const on = nav.querySelector(".chip.on"); if (on) nav.scrollTo({left: on.offsetLeft - (nav.clientWidth - on.offsetWidth)/2});
     }
   }, {rootMargin:"-130px 0px -70% 0px"});
   main.querySelectorAll("section").forEach(s => io.observe(s));
