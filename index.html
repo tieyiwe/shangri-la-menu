@@ -86,6 +86,21 @@ header{position:relative}
 .wa-qr{width:112px;height:112px;border-radius:8px;background:#fff;padding:4px}
 .wa-note{color:var(--muted);font-size:13px;margin:6px 0 0}
 @media (max-width:360px){.phones{grid-template-columns:1fr}}
+.welcome{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:radial-gradient(90% 70% at 50% 45%,#3c1812,#100e0c);cursor:pointer;transition:opacity .6s ease}
+.welcome.hide{opacity:0;pointer-events:none}
+.welcome canvas{position:absolute;inset:0;width:100%;height:100%}
+.wbox{position:relative;text-align:center;padding:24px}
+.wbox .w1{font-family:var(--display);color:var(--cream);font-size:clamp(22px,6vw,30px);letter-spacing:.08em;margin:0}
+.wbox .w2{font-family:var(--display);color:var(--gold);font-size:clamp(34px,10vw,58px);margin:8px 0 6px;text-wrap:balance;text-shadow:0 2px 24px rgba(217,173,85,.35)}
+.wbox .w3{font-family:"Noto Serif SC",serif;color:var(--gold);letter-spacing:.35em;font-size:16px;margin:0}
+.wbox .tap{color:var(--muted);font-size:13px;margin-top:22px}
+.welcome.run .w1{animation:rise .7s .15s both}
+.welcome.run .w2{animation:pop .9s .45s both}
+.welcome.run .w3{animation:rise .7s .9s both}
+.welcome.run .tap{animation:rise .6s 1.4s both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1.06)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.welcome.run .w1,.welcome.run .w2,.welcome.run .w3,.welcome.run .tap{animation:none}}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 </style>
 </head>
@@ -105,6 +120,8 @@ header{position:relative}
   </div>
   <nav id="nav" aria-label="Catégories"></nav>
 </div>
+
+<div class="welcome hide" id="welcome" role="dialog" aria-modal="true" aria-labelledby="w2"><canvas id="confetti" aria-hidden="true"></canvas><div class="wbox"><p class="w1" id="w1"></p><p class="w2" id="w2"></p><p class="w3" id="w3">香格里拉饭店</p><p class="tap" id="wtap"></p></div></div>
 
 <main id="menu"></main>
 
@@ -724,9 +741,9 @@ const ZH = {
 "1/2 pichet":["半壶"]
 };
 const UI = {
- fr:{sub:"Carte du restaurant · prix en francs CFA", search:"Rechercher un plat…", searchLabel:"Rechercher un plat", spicy:"🌶 Pimentés", ask:"Sur demande", nw:"Nouveau", empty:"Aucun plat ne correspond à votre recherche.", view:"Voir la photo : ", close:"Fermer", spicy1:"pimenté", spicy2:"très pimenté", nav:"Catégories",
+ fr:{w1:"Bienvenue au", w2:"Restaurant Shangri-La", wtap:"Touchez pour voir le menu", sub:"Carte du restaurant · prix en francs CFA", search:"Rechercher un plat…", searchLabel:"Rechercher un plat", spicy:"🌶 Pimentés", ask:"Sur demande", nw:"Nouveau", empty:"Aucun plat ne correspond à votre recherche.", view:"Voir la photo : ", close:"Fermer", spicy1:"pimenté", spicy2:"très pimenté", nav:"Catégories",
   foot:"📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur."},
- zh:{sub:"菜单 · 价格单位：西非法郎（F）", search:"搜索菜品…", searchLabel:"搜索菜品", spicy:"🌶 辣味", ask:"请询问服务员", nw:"新品", empty:"没有找到相关菜品。", view:"查看图片：", close:"关闭", spicy1:"辣", spicy2:"特辣", nav:"分类",
+ zh:{w1:"欢迎光临", w2:"香格里拉饭店", wtap:"点击查看菜单", sub:"菜单 · 价格单位：西非法郎（F）", search:"搜索菜品…", searchLabel:"搜索菜品", spicy:"🌶 辣味", ask:"请询问服务员", nw:"新品", empty:"没有找到相关菜品。", view:"查看图片：", close:"关闭", spicy1:"辣", spicy2:"特辣", nav:"分类",
   foot:"📷 点击有图片的菜品可放大 · 🌶 辣 · 🌶🌶 特辣<br>价格可能变动，请咨询服务员。"}
 };
 
@@ -781,6 +798,46 @@ function renderContact(){
   </div>`;
 }
 
+// Accueil animé avec confettis
+const wel = document.getElementById("welcome"), cv = document.getElementById("confetti");
+let wTimer = null, raf = null;
+function confetti(){
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const ctx = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 2);
+  const W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr;
+  const cols = ["#d9ad55","#f3d38a","#e0533d","#c4302b","#f3ead8","#ffcf4a"];
+  const P = Array.from({length: 160}, (_, i) => ({
+    x: W/2 + (Math.random()-.5) * W * .2, y: H * .45,
+    vx: (Math.random()-.5) * 16 * dpr, vy: (-Math.random()*14 - 6) * dpr,
+    w: (6 + Math.random()*6) * dpr, h: (3 + Math.random()*5) * dpr,
+    r: Math.random()*Math.PI, vr: (Math.random()-.5) * .3, c: cols[i % cols.length], d: i * 4
+  }));
+  const t0 = performance.now();
+  cancelAnimationFrame(raf);
+  (function frame(t){
+    const el = t - t0; ctx.clearRect(0,0,W,H); let alive = false;
+    for (const p of P){
+      if (el < p.d) { alive = true; continue; }
+      p.vy += .32 * dpr; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      if (p.y < H + 20) alive = true;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, Math.abs(Math.cos(p.r)) * p.h + 1); ctx.restore();
+    }
+    if (alive && el < 6000) raf = requestAnimationFrame(frame); else ctx.clearRect(0,0,W,H);
+  })(t0);
+}
+function showWelcome(){
+  document.getElementById("w1").textContent = T("w1");
+  document.getElementById("w2").textContent = T("w2");
+  document.getElementById("wtap").textContent = T("wtap");
+  document.getElementById("w3").hidden = LANG === "zh";
+  wel.classList.remove("hide","run"); void wel.offsetWidth; wel.classList.add("run");
+  confetti(); clearTimeout(wTimer); wTimer = setTimeout(hideWelcome, 4200);
+}
+function hideWelcome(){ clearTimeout(wTimer); wel.classList.add("hide"); setTimeout(() => cancelAnimationFrame(raf), 650); }
+wel.addEventListener("click", hideWelcome);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !wel.classList.contains("hide")) hideWelcome(); });
+
 function applyLang(){
   document.documentElement.lang = LANG === "zh" ? "zh-CN" : "fr";
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === LANG));
@@ -796,7 +853,7 @@ function applyLang(){
 document.querySelector(".lang").addEventListener("click", e => {
   const b = e.target.closest("button[data-lang]"); if (!b || b.dataset.lang === LANG) return;
   LANG = b.dataset.lang; try { localStorage.setItem("shangrila-lang", LANG); } catch(e){}
-  applyLang();
+  applyLang(); showWelcome();
 });
 
 function render(){
@@ -855,6 +912,7 @@ document.addEventListener("keydown", e=>{ if(e.key==="Escape" && lb.classList.co
 q.addEventListener("input", render);
 spicyBtn.addEventListener("click", () => { spicyOnly = !spicyOnly; spicyBtn.setAttribute("aria-pressed", spicyOnly); render(); });
 applyLang();
+showWelcome();
 </script>
 </body>
 </html>
