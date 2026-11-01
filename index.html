@@ -270,7 +270,7 @@ body.hasbar footer{padding-bottom:96px}
 </div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<footer id="foot" data-build="2026.11.01-2153">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
+<footer id="foot" data-build="2026.11.01-2154">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
 
 <script src="lib/qrcode.js"></script>
 <script>
@@ -1275,11 +1275,11 @@ function confetti(){
 function showWelcome(){
   document.getElementById("w1").textContent = T("w1");
   document.getElementById("w2").textContent = T("w2");
-  document.getElementById("wtap").textContent = T("wtap");
+  document.getElementById("wtap").textContent = "";
   document.getElementById("w3").hidden = LANG === "zh";
   document.body.classList.add("locked"); toTop();
   wel.classList.remove("hide","run"); void wel.offsetWidth; wel.classList.add("run");
-  confetti(); clearTimeout(wTimer); wTimer = setTimeout(hideWelcome, 4200);
+  confetti(); clearTimeout(wTimer); wTimer = setTimeout(hideWelcome, 3200);
 }
 function hideWelcome(){ clearTimeout(wTimer); wel.classList.add("hide"); document.body.classList.remove("locked"); setTimeout(() => cancelAnimationFrame(raf), 650); }
 wel.addEventListener("click", hideWelcome);
