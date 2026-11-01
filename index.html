@@ -152,6 +152,14 @@ body.hasbar footer{padding-bottom:96px}
 .waiter .tot{display:flex;justify-content:space-between;font-size:24px;font-weight:800;padding:14px 4px}
 .wqr{display:flex;align-items:center;gap:14px;margin:16px 0 8px;padding:12px;border:2px dashed #c9b27a;border-radius:12px}
 .wqr[hidden]{display:none}
+.wact{display:grid;gap:10px;margin:14px 0 10px}
+.wact[hidden]{display:none}
+.wact .btn{background:#fff;color:#111;border:2px solid #111;font-size:17px;padding:14px}
+.wact .btn.done{background:#1f8f4e;border-color:#1f8f4e;color:#fff}
+.wact .btn[disabled]{opacity:.45}
+.wact p{margin:0;font-size:15px;color:#1f8f4e;font-weight:700;min-height:20px}
+.ostat{display:none;margin:0 0 4px;padding:6px 10px;border-radius:999px;font-size:13px;font-weight:700;background:rgba(0,0,0,.12)}
+.ostat.on{display:inline-block}
 .wqr img{width:150px;height:150px;flex:0 0 auto;image-rendering:pixelated}
 .wqr p{margin:0;color:#333;font-size:15px}
 .wqr b{display:block;font-size:17px;color:#111;margin-bottom:4px}
@@ -220,6 +228,7 @@ body.hasbar footer{padding-bottom:96px}
 
 <div class="sheet" id="selSheet" role="dialog" aria-modal="true" aria-labelledby="selTitle"><div class="sheet-box">
   <h3 id="selTitle"></h3>
+  <span class="ostat" id="selStat"></span>
   <ul class="sel-list" id="selList"></ul>
   <div class="sel-total"><span id="selTotL"></span><span id="selTotR"></span></div>
   <p class="sel-note" id="selNote"></p>
@@ -242,6 +251,11 @@ body.hasbar footer{padding-bottom:96px}
   <table id="wTable"></table>
   <div class="tot"><span>TOTAL</span><span id="wTot"></span></div>
   <div class="wqr" id="wQr"><img id="wQrImg" alt="QR code de la commande"><p><b>Serveur</b>Scannez ce code avec votre téléphone pour recevoir la commande.</p></div>
+  <div class="wact" id="wAct" hidden>
+    <button type="button" class="btn" id="wAccept">👨‍🍳 Commande acceptée · en préparation</button>
+    <button type="button" class="btn done" id="wServed">🍽 Commande servie · terminée</button>
+    <p id="wActMsg" role="status" aria-live="polite"></p>
+  </div>
   <button type="button" class="btn" id="wClose"></button>
 </div>
 
@@ -1151,11 +1165,11 @@ const EN = {
 };
 
 const UI = {
- fr:{hist:"Sélections précédentes", histT:"Mes sélections précédentes", reuse:"Reprendre", del:"Supprimer", delAll:"Tout supprimer", histEmpty:"Aucune sélection précédente.", add:"Ajouter", selTitle:"Ma sélection", dish:"article", dishes:"articles", see:"Voir", total:"Total", noteAsk:"Certains prix sont à confirmer avec le serveur.", waiterBtn:"Montrer au serveur", takeL:"Commander à emporter :", namePh:"Votre nom", timePh:"Heure de retrait", waBtn:"Envoyer la commande sur WhatsApp", clear:"Tout effacer", closeSel:"Fermer", waiterSub:"Merci de préparer cette commande.", cookieT:"Votre biscuit de la chance", cookieTap:"Touchez le biscuit pour l\u2019ouvrir", again:"Un autre", shareF:"Partager", lucky:"Numéros porte-bonheur :", share:"Partager", shareMenu:"Partager le menu", shareText:"Découvrez le menu du Restaurant Chinois Shangri-La à Ouaga 2000 :", copy:"Copier le lien", copied:"Lien copié !", cancel:"Annuler", w1:"Bienvenue au", w2:"Restaurant Shangri-La", wtap:"Touchez pour voir le menu", sub:"Carte du restaurant · prix en francs CFA", search:"Rechercher un plat…", searchLabel:"Rechercher un plat", spicy:"🌶 Pimentés", ask:"Sur demande", nw:"Nouveau", empty:"Aucun plat ne correspond à votre recherche.", view:"Voir la photo : ", close:"Fermer", spicy1:"pimenté", spicy2:"très pimenté", nav:"Catégories",
+ fr:{stPending:"⏳ Commande montrée au serveur", stAccepted:"👨‍🍳 Votre commande est en préparation", srv1:"✅ Commande terminée", srv2:"Vous avez été servi !", srv3:"Bon appétit et merci de votre visite", served:"servie", hist:"Sélections précédentes", histT:"Mes sélections précédentes", reuse:"Reprendre", del:"Supprimer", delAll:"Tout supprimer", histEmpty:"Aucune sélection précédente.", add:"Ajouter", selTitle:"Ma sélection", dish:"article", dishes:"articles", see:"Voir", total:"Total", noteAsk:"Certains prix sont à confirmer avec le serveur.", waiterBtn:"Montrer au serveur", takeL:"Commander à emporter :", namePh:"Votre nom", timePh:"Heure de retrait", waBtn:"Envoyer la commande sur WhatsApp", clear:"Tout effacer", closeSel:"Fermer", waiterSub:"Merci de préparer cette commande.", cookieT:"Votre biscuit de la chance", cookieTap:"Touchez le biscuit pour l\u2019ouvrir", again:"Un autre", shareF:"Partager", lucky:"Numéros porte-bonheur :", share:"Partager", shareMenu:"Partager le menu", shareText:"Découvrez le menu du Restaurant Chinois Shangri-La à Ouaga 2000 :", copy:"Copier le lien", copied:"Lien copié !", cancel:"Annuler", w1:"Bienvenue au", w2:"Restaurant Shangri-La", wtap:"Touchez pour voir le menu", sub:"Carte du restaurant · prix en francs CFA", search:"Rechercher un plat…", searchLabel:"Rechercher un plat", spicy:"🌶 Pimentés", ask:"Sur demande", nw:"Nouveau", empty:"Aucun plat ne correspond à votre recherche.", view:"Voir la photo : ", close:"Fermer", spicy1:"pimenté", spicy2:"très pimenté", nav:"Catégories",
   foot:"📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur."},
- en:{hist:"Previous selections", histT:"My previous selections", reuse:"Reuse", del:"Delete", delAll:"Delete all", histEmpty:"No previous selection.", add:"Add", selTitle:"My selection", dish:"item", dishes:"items", see:"View", total:"Total", noteAsk:"Some prices need to be confirmed with your server.", waiterBtn:"Show to the waiter", takeL:"Order for takeaway:", namePh:"Your name", timePh:"Pickup time", waBtn:"Send the order on WhatsApp", clear:"Clear all", closeSel:"Close", waiterSub:"Please prepare this order.", cookieT:"Your fortune cookie", cookieTap:"Tap the cookie to open it", again:"Another one", shareF:"Share", lucky:"Lucky numbers:", share:"Share", shareMenu:"Share the menu", shareText:"Check out the menu of Shangri-La Chinese Restaurant in Ouaga 2000:", copy:"Copy link", copied:"Link copied!", cancel:"Cancel", w1:"Welcome to", w2:"Shangri-La Restaurant", wtap:"Tap to see the menu", sub:"Restaurant menu · prices in CFA francs", search:"Search for a dish…", searchLabel:"Search for a dish", spicy:"🌶 Spicy", ask:"Ask your server", nw:"New", empty:"No dish matches your search.", view:"See photo: ", close:"Close", spicy1:"spicy", spicy2:"very spicy", nav:"Categories",
+ en:{stPending:"⏳ Order shown to the server", stAccepted:"👨‍🍳 Your order is being prepared", srv1:"✅ Order completed", srv2:"You have been served!", srv3:"Enjoy your meal and thank you for visiting", served:"served", hist:"Previous selections", histT:"My previous selections", reuse:"Reuse", del:"Delete", delAll:"Delete all", histEmpty:"No previous selection.", add:"Add", selTitle:"My selection", dish:"item", dishes:"items", see:"View", total:"Total", noteAsk:"Some prices need to be confirmed with your server.", waiterBtn:"Show to the waiter", takeL:"Order for takeaway:", namePh:"Your name", timePh:"Pickup time", waBtn:"Send the order on WhatsApp", clear:"Clear all", closeSel:"Close", waiterSub:"Please prepare this order.", cookieT:"Your fortune cookie", cookieTap:"Tap the cookie to open it", again:"Another one", shareF:"Share", lucky:"Lucky numbers:", share:"Share", shareMenu:"Share the menu", shareText:"Check out the menu of Shangri-La Chinese Restaurant in Ouaga 2000:", copy:"Copy link", copied:"Link copied!", cancel:"Cancel", w1:"Welcome to", w2:"Shangri-La Restaurant", wtap:"Tap to see the menu", sub:"Restaurant menu · prices in CFA francs", search:"Search for a dish…", searchLabel:"Search for a dish", spicy:"🌶 Spicy", ask:"Ask your server", nw:"New", empty:"No dish matches your search.", view:"See photo: ", close:"Close", spicy1:"spicy", spicy2:"very spicy", nav:"Categories",
   foot:"📷 Tap a dish with a photo to enlarge it · 🌶 spicy · 🌶🌶 very spicy<br>Prices may change. Please ask your server."},
- zh:{hist:"历史选菜", histT:"我的历史选菜", reuse:"重新使用", del:"删除", delAll:"全部删除", histEmpty:"暂无历史选菜。", add:"加入", selTitle:"我的选菜", dish:"项", dishes:"项", see:"查看", total:"合计", noteAsk:"部分价格请向服务员确认。", waiterBtn:"出示给服务员", takeL:"外卖下单：", namePh:"您的姓名", timePh:"取餐时间", waBtn:"通过 WhatsApp 发送订单", clear:"全部清空", closeSel:"关闭", waiterSub:"请准备以下菜品。", cookieT:"您的幸运饼干", cookieTap:"点击饼干打开", again:"再来一个", shareF:"分享", lucky:"幸运数字：", share:"分享", shareMenu:"分享菜单", shareText:"看看瓦加2000香格里拉饭店的菜单：", copy:"复制链接", copied:"链接已复制！", cancel:"取消", w1:"欢迎光临", w2:"香格里拉饭店", wtap:"点击查看菜单", sub:"菜单 · 价格单位：西非法郎（F）", search:"搜索菜品…", searchLabel:"搜索菜品", spicy:"🌶 辣味", ask:"请询问服务员", nw:"新品", empty:"没有找到相关菜品。", view:"查看图片：", close:"关闭", spicy1:"辣", spicy2:"特辣", nav:"分类",
+ zh:{stPending:"⏳ 订单已出示给服务员", stAccepted:"👨‍🍳 您的订单正在准备中", srv1:"✅ 订单已完成", srv2:"您的菜已上齐！", srv3:"祝您用餐愉快，感谢光临", served:"已上菜", hist:"历史选菜", histT:"我的历史选菜", reuse:"重新使用", del:"删除", delAll:"全部删除", histEmpty:"暂无历史选菜。", add:"加入", selTitle:"我的选菜", dish:"项", dishes:"项", see:"查看", total:"合计", noteAsk:"部分价格请向服务员确认。", waiterBtn:"出示给服务员", takeL:"外卖下单：", namePh:"您的姓名", timePh:"取餐时间", waBtn:"通过 WhatsApp 发送订单", clear:"全部清空", closeSel:"关闭", waiterSub:"请准备以下菜品。", cookieT:"您的幸运饼干", cookieTap:"点击饼干打开", again:"再来一个", shareF:"分享", lucky:"幸运数字：", share:"分享", shareMenu:"分享菜单", shareText:"看看瓦加2000香格里拉饭店的菜单：", copy:"复制链接", copied:"链接已复制！", cancel:"取消", w1:"欢迎光临", w2:"香格里拉饭店", wtap:"点击查看菜单", sub:"菜单 · 价格单位：西非法郎（F）", search:"搜索菜品…", searchLabel:"搜索菜品", spicy:"🌶 辣味", ask:"请询问服务员", nw:"新品", empty:"没有找到相关菜品。", view:"查看图片：", close:"关闭", spicy1:"辣", spicy2:"特辣", nav:"分类",
   foot:"📷 点击有图片的菜品可放大 · 🌶 辣 · 🌶🌶 特辣<br>价格可能变动，请咨询服务员。"}
 };
 
@@ -1318,7 +1332,9 @@ const saveHist = () => { try { localStorage.setItem("shangrila-hist", JSON.strin
   try { last = +localStorage.getItem("shangrila-sel-at") || 0; } catch(e){}
   const stale = last && Date.now() - last > 3 * 3600 * 1000;
   const items = Object.entries(SEL).filter(([k, q]) => BYNAME[k] && q > 0);
-  if (items.length && (!sameVisit || stale)){
+  let pending = false;
+  try { const o = JSON.parse(localStorage.getItem("shangrila-order") || "null"); pending = !!(o && Date.now() - o.at < 12 * 3600 * 1000); } catch(e){}
+  if (items.length && !pending && (!sameVisit || stale)){
     HIST.unshift({at: last || Date.now(), items: Object.fromEntries(items)}); HIST = HIST.slice(0, 10); saveHist();
     SEL = {}; try { localStorage.setItem("shangrila-sel", "{}"); } catch(e){}
   }
@@ -1340,6 +1356,7 @@ function updateBar(){
   bar.classList.toggle("on", count > 0); document.body.classList.toggle("hasbar", count > 0);
   document.getElementById("selbarL").textContent = `🧾 ${T("selTitle")} · ${count} ${count > 1 ? T("dishes") : T("dish")}`;
   document.getElementById("selbarR").textContent = fmt(total);
+  if (typeof ORDER !== "undefined" && ORDER && ORDER.status === "accepted" && count) document.getElementById("selbarL").textContent = T("stAccepted");
 }
 function refreshAdd(name){
   const q = SEL[name] || 0;
@@ -1369,6 +1386,7 @@ function waMessage(){
 function renderSel(){
   const {total, unknown} = selStats(), entries = Object.entries(SEL);
   if (!entries.length){ closeSel(); return; }
+  showOrderStatus();
   document.getElementById("selTitle").textContent = T("selTitle");
   document.getElementById("selList").innerHTML = entries.map(([k, q]) => { const it = BYNAME[k], u = unitP(it);
     return `<li><span class="nm">${it.n ? `<span class="no" style="margin-right:6px">${esc(it.n)}</span>` : ""}${esc(nm(it))}${LANG !== "fr" ? `<small>${esc(it.name)}</small>` : ""}<small>${u != null ? fmt(u * q) : T("ask")}</small></span>
@@ -1392,7 +1410,7 @@ document.getElementById("selbar").addEventListener("click", openSel);
 document.getElementById("selSheet").addEventListener("click", e => {
   const qb = e.target.closest(".qbtn"); if (qb){ changeQty(qb.dataset.k, +qb.dataset.q); return; }
   if (e.target.id === "selSheet" || e.target.id === "selClose") closeSel();
-  if (e.target.id === "selClear"){ const ks = Object.keys(SEL); SEL = {}; saveSel(); ks.forEach(refreshAdd); updateBar(); closeSel(); }
+  if (e.target.id === "selClear"){ const ks = Object.keys(SEL); SEL = {}; ORDER = null; saveOrder(); if (es){ es.close(); es = null; } saveSel(); ks.forEach(refreshAdd); updateBar(); closeSel(); }
   if (e.target.id === "selWaiter") openWaiter();
 });
 ["selName","selTime"].forEach(id => document.getElementById(id).addEventListener("input", () => {
@@ -1410,7 +1428,7 @@ function renderHist(){
   document.getElementById("histList").innerHTML = HIST.length ? HIST.map((h, i) => {
     const d = new Date(h.at), names = Object.entries(h.items).filter(([k]) => BYNAME[k]).map(([k, q]) => `${q} × ${nm(BYNAME[k])}`);
     const n = Object.values(h.items).reduce((a, b) => a + b, 0);
-    return `<li><div class="hd"><span>${d.toLocaleDateString(loc, {day:"numeric", month:"short"})} · ${d.toLocaleTimeString(loc, {hour:"2-digit", minute:"2-digit"})} · ${n} ${n > 1 ? T("dishes") : T("dish")}</span><span>${histTotal(h.items)}</span></div>
+    return `<li><div class="hd"><span>${d.toLocaleDateString(loc, {day:"numeric", month:"short"})} · ${d.toLocaleTimeString(loc, {hour:"2-digit", minute:"2-digit"})} · ${n} ${n > 1 ? T("dishes") : T("dish")}${h.served ? " · ✅ " + T("served") : ""}</span><span>${histTotal(h.items)}</span></div>
       <div class="it">${esc(names.join(", "))}</div>
       <div class="acts"><button type="button" class="btn gold" data-reuse="${i}">↺ ${T("reuse")}</button><button type="button" class="btn" data-del="${i}">🗑 ${T("del")}</button></div></li>`;
   }).join("") : `<li class="it">${T("histEmpty")}</li>`;
@@ -1439,7 +1457,76 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && document.g
 const ITEMS = []; for (const c of MENU) for (const it of c.items) if (!it.g) ITEMS.push(it);
 function orderLink(sel){
   const code = Object.entries(sel).map(([k, q]) => ITEMS.indexOf(BYNAME[k]) + "-" + q).join(".");
-  return SHARE_URL + "?o=" + code + "&t=" + Math.floor(Date.now() / 60000).toString(36);
+  return SHARE_URL + "?o=" + code + "&t=" + Math.floor(Date.now() / 60000).toString(36) + "&id=" + ensureOrder().id;
+}
+
+// ===== Suivi de commande (serveur -> client) via ntfy.sh, canal privé aléatoire par commande =====
+const NTFY = "https://ntfy.sh/";
+const topic = id => "shangrila-menu-" + id;
+let ORDER = null, es = null;
+try { ORDER = JSON.parse(localStorage.getItem("shangrila-order") || "null"); } catch(e){}
+if (ORDER && Date.now() - ORDER.at > 12 * 3600 * 1000) ORDER = null;       // au-delà de 12 h, on oublie
+const saveOrder = () => { try { localStorage.setItem("shangrila-order", JSON.stringify(ORDER)); } catch(e){} };
+function ensureOrder(){
+  if (!ORDER){
+    const a = new Uint8Array(9); (crypto.getRandomValues ? crypto.getRandomValues(a) : a.forEach((_, i) => a[i] = Math.random() * 256));
+    ORDER = {id: [...a].map(b => b.toString(36).padStart(2, "0")).join("").slice(0, 14), at: Date.now(), status: "pending"};
+    saveOrder();
+  }
+  listenOrder();
+  return ORDER;
+}
+function orderStatusText(){ return !ORDER ? "" : ORDER.status === "accepted" ? T("stAccepted") : T("stPending"); }
+function showOrderStatus(){
+  const el = document.getElementById("selStat"); const t = orderStatusText();
+  el.textContent = t; el.classList.toggle("on", !!t);
+  if (ORDER && ORDER.status === "accepted") document.getElementById("selbarL").textContent = T("stAccepted");
+}
+function onOrderMsg(msg){
+  if (!ORDER) return;
+  if (msg === "accepted" && ORDER.status !== "accepted"){ ORDER.status = "accepted"; saveOrder(); showOrderStatus(); flash(T("stAccepted")); }
+  if (msg === "served"){
+    const items = {...SEL};
+    if (Object.keys(items).length){ HIST.unshift({at: Date.now(), items, served: true}); HIST = HIST.slice(0, 10); saveHist(); }
+    const old = Object.keys(SEL); SEL = {}; saveSel(); old.forEach(refreshAdd);
+    ORDER = null; saveOrder(); if (es){ es.close(); es = null; }
+    closeSel(); document.getElementById("waiter").classList.remove("open");
+    updateBar(); updateHistBtn(); celebrate(T("srv1"), T("srv2"), T("srv3"));
+  }
+}
+function listenOrder(){
+  if (!ORDER || es || !("EventSource" in window)) return;
+  const id = ORDER.id;
+  // messages déjà envoyés pendant que la page était fermée
+  fetch(NTFY + topic(id) + "/json?poll=1&since=all").then(r => r.text()).then(txt => {
+    txt.split("\n").filter(Boolean).forEach(l => { try { const m = JSON.parse(l); if (m.event === "message") onOrderMsg(m.message); } catch(_){} });
+  }).catch(() => {});
+  try {
+    es = new EventSource(NTFY + topic(id) + "/sse");
+    es.onmessage = e => { try { const m = JSON.parse(e.data); if (m.event === "message") onOrderMsg(m.message); } catch(_){} };
+  } catch(_){}
+}
+function celebrate(a, b, c){
+  document.getElementById("w1").textContent = a;
+  document.getElementById("w2").textContent = b;
+  document.getElementById("wtap").textContent = c;
+  document.getElementById("w3").hidden = false;
+  document.body.classList.add("locked");
+  wel.classList.remove("hide","run"); void wel.offsetWidth; wel.classList.add("run");
+  confetti(); clearTimeout(wTimer); wTimer = setTimeout(hideWelcome, 8000);
+}
+// Côté serveur
+async function sendStatus(id, status, btn){
+  const msg = document.getElementById("wActMsg"); btn.disabled = true; msg.style.color = "#555"; msg.textContent = "Envoi…";
+  try {
+    const r = await fetch(NTFY + topic(id), {method: "POST", body: status});
+    if (!r.ok) throw new Error(r.status);
+    msg.style.color = "#1f8f4e";
+    msg.textContent = status === "served" ? "✅ Le client a été notifié : commande terminée." : "✅ Le client voit : commande en préparation.";
+    if (status === "served") document.getElementById("wAccept").disabled = true; else btn.disabled = true;
+  } catch(e){
+    btn.disabled = false; msg.style.color = "#b3261e"; msg.textContent = "Échec de l'envoi. Vérifiez la connexion internet et réessayez.";
+  }
 }
 function qrImg(text){
   const qr = qrcode(0, "M"); qr.addData(text); qr.make();
@@ -1452,6 +1539,10 @@ function openWaiter(received){
   for (const [k, q] of Object.entries(sel)){ const u = unitP(BYNAME[k]); if (u == null) unknown = true; else total += u * q; }
   document.getElementById("wTitle").textContent = received ? "Commande reçue · Shangri-La" : "Commande · Shangri-La";
   document.getElementById("wQr").hidden = !!received;
+  const rid = received && received.__id; document.getElementById("wAct").hidden = !rid; document.getElementById("wActMsg").textContent = "";
+  if (rid){ document.getElementById("wAccept").disabled = false; document.getElementById("wServed").disabled = false;
+    document.getElementById("wAccept").onclick = e => sendStatus(rid, "accepted", e.currentTarget);
+    document.getElementById("wServed").onclick = e => sendStatus(rid, "served", e.currentTarget); }
   if (!received) { try { document.getElementById("wQrImg").src = qrImg(orderLink(sel)); } catch(e){ document.getElementById("wQr").hidden = true; } }
   document.getElementById("wSub").textContent = received ? received.__when : T("waiterSub") + (LANG !== "fr" ? " / Merci de préparer cette commande." : "");
   document.getElementById("wTable").innerHTML = Object.entries(sel).filter(([k]) => k !== "__when").map(([k, q]) => { const it = BYNAME[k], u = unitP(it);
@@ -1469,6 +1560,8 @@ function readOrderFromLink(){
   if (!Object.keys(sel).length) return null;
   const t = parseInt(ps.get("t") || "", 36);
   const when = t ? new Date(t * 60000) : null;
+  const rid = (ps.get("id") || "").replace(/[^a-z0-9]/g, "").slice(0, 20);
+  Object.defineProperty(sel, "__id", {value: rid, enumerable: false});
   Object.defineProperty(sel, "__when", {value: when ? "Envoyée à " + when.toLocaleTimeString("fr-FR", {hour: "2-digit", minute: "2-digit"}) + " · " + when.toLocaleDateString("fr-FR") : "", enumerable: false});
   return sel;
 }
@@ -1542,7 +1635,7 @@ function applyLang(){
   nav.setAttribute("aria-label", T("nav"));
   document.getElementById("lbx").setAttribute("aria-label", T("close"));
   document.getElementById("foot").innerHTML = T("foot");
-  buildNav(); renderContact(); renderFortune(); render(); updateBar(); updateHistBtn();
+  buildNav(); renderContact(); renderFortune(); render(); updateBar(); updateHistBtn(); showOrderStatus();
   if (document.getElementById("histSheet").classList.contains("open")) renderHist();
   if (document.getElementById("selSheet").classList.contains("open")) renderSel();
 }
@@ -1615,6 +1708,7 @@ q.addEventListener("input", render);
 spicyBtn.addEventListener("click", () => { spicyOnly = !spicyOnly; spicyBtn.setAttribute("aria-pressed", spicyOnly); render(); });
 applyLang();
 const RECEIVED = readOrderFromLink();
+if (!RECEIVED && ORDER) listenOrder();
 if (RECEIVED) { document.body.classList.add("locked"); openWaiter(RECEIVED); } else showWelcome();
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 </script>
