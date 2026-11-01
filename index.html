@@ -270,7 +270,7 @@ body.hasbar footer{padding-bottom:96px}
 </div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<footer id="foot">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
+<footer id="foot" data-build="2026.11.01-2153">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
 
 <script src="lib/qrcode.js"></script>
 <script>
@@ -1419,8 +1419,8 @@ document.getElementById("selSheet").addEventListener("click", e => {
 function histTotal(items){ let t = 0, u = false; for (const [k, q] of Object.entries(items)){ const it = BYNAME[k]; if (!it) continue; const p = unitP(it); if (p == null) u = true; else t += p * q; } return fmt(t) + (u ? " +" : ""); }
 function updateHistBtn(){
   const b = document.getElementById("histBtn");
-  b.classList.toggle("on", HIST.length > 0);
-  b.textContent = `🕘 ${T("hist")} (${HIST.length})`;
+  b.classList.add("on");
+  b.textContent = `🕘 ${T("hist")}${HIST.length ? " (" + HIST.length + ")" : ""}`;
 }
 function renderHist(){
   const loc = {fr:"fr-FR", en:"en-GB", zh:"zh-CN"}[LANG];
@@ -1634,7 +1634,7 @@ function applyLang(){
   document.getElementById("shareTopLbl").textContent = T("share");
   nav.setAttribute("aria-label", T("nav"));
   document.getElementById("lbx").setAttribute("aria-label", T("close"));
-  document.getElementById("foot").innerHTML = T("foot");
+  document.getElementById("foot").innerHTML = T("foot") + `<br><span style="opacity:.55;font-size:11px">Version ${document.getElementById("foot").dataset.build}</span>`;
   buildNav(); renderContact(); renderFortune(); render(); updateBar(); updateHistBtn(); showOrderStatus();
   if (document.getElementById("histSheet").classList.contains("open")) renderHist();
   if (document.getElementById("selSheet").classList.contains("open")) renderSel();
@@ -1710,7 +1710,18 @@ applyLang();
 const RECEIVED = readOrderFromLink();
 if (!RECEIVED && ORDER) listenOrder();
 if (RECEIVED) { document.body.classList.add("locked"); openWaiter(RECEIVED); } else showWelcome();
-if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  const hadController = !!navigator.serviceWorker.controller;
+  addEventListener("load", () => navigator.serviceWorker.register("sw.js", {updateViaCache: "none"}).then(r => r.update()).catch(() => {}));
+  // Nouvelle version installée : on recharge une fois pour l'afficher (sauf si une commande reçue est affichée)
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!hadController || location.search) return;
+    try { if (sessionStorage.getItem("shangrila-reloaded") === "1") return; sessionStorage.setItem("shangrila-reloaded", "1"); } catch(e){}
+    location.reload();
+  });
+  // Quand on revient sur l'onglet ou l'appli, on vérifie s'il y a une mise à jour
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") navigator.serviceWorker.getRegistration().then(r => r && r.update()).catch(() => {}); });
+}
 </script>
 </body>
 </html>
