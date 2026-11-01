@@ -140,6 +140,11 @@ body.hasbar footer{padding-bottom:96px}
 .waiter td.n{width:54px;color:#8a6a1e;font-weight:700}
 .waiter td.pr{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .waiter .tot{display:flex;justify-content:space-between;font-size:24px;font-weight:800;padding:14px 4px}
+.wqr{display:flex;align-items:center;gap:14px;margin:16px 0 8px;padding:12px;border:2px dashed #c9b27a;border-radius:12px}
+.wqr[hidden]{display:none}
+.wqr img{width:150px;height:150px;flex:0 0 auto;image-rendering:pixelated}
+.wqr p{margin:0;color:#333;font-size:15px}
+.wqr b{display:block;font-size:17px;color:#111;margin-bottom:4px}
 .waiter .btn{margin-top:auto;background:#111;color:#fff;border-color:#111}
 .fortune{max-width:760px;margin:0 auto;padding:8px 16px 8px;scroll-margin-top:118px}
 .fcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 16px;text-align:center;display:grid;gap:10px;justify-items:center}
@@ -219,6 +224,7 @@ body.hasbar footer{padding-bottom:96px}
   <p id="wSub"></p>
   <table id="wTable"></table>
   <div class="tot"><span>TOTAL</span><span id="wTot"></span></div>
+  <div class="wqr" id="wQr"><img id="wQrImg" alt="QR code de la commande"><p><b>Serveur</b>Scannez ce code avec votre téléphone pour recevoir la commande.</p></div>
   <button type="button" class="btn" id="wClose"></button>
 </div>
 
@@ -235,6 +241,7 @@ body.hasbar footer{padding-bottom:96px}
 
 <footer id="foot">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
 
+<script src="lib/qrcode.js"></script>
 <script>
 // s: 1 = pimenté, 2 = très pimenté. p: null = prix sur demande. n: numéro de carte (vide si "00").
 const MENU = [
@@ -1358,16 +1365,43 @@ document.getElementById("selSheet").addEventListener("click", e => {
 });
 ["selName","selTime"].forEach(id => document.getElementById(id).addEventListener("input", () => {
   document.getElementById("selWa").href = `https://wa.me/${WA_NUM}?text=${encodeURIComponent(waMessage())}`; }));
-function openWaiter(){
-  const {total, unknown} = selStats();
-  document.getElementById("wSub").textContent = T("waiterSub") + (LANG !== "fr" ? " / Merci de préparer cette commande." : "");
-  document.getElementById("wTable").innerHTML = Object.entries(SEL).map(([k, q]) => { const it = BYNAME[k], u = unitP(it);
+// Commande en QR : le lien contient la commande (index de l'article + quantité), aucun serveur nécessaire
+const ITEMS = []; for (const c of MENU) for (const it of c.items) if (!it.g) ITEMS.push(it);
+function orderLink(sel){
+  const code = Object.entries(sel).map(([k, q]) => ITEMS.indexOf(BYNAME[k]) + "-" + q).join(".");
+  return SHARE_URL + "?o=" + code + "&t=" + Math.floor(Date.now() / 60000).toString(36);
+}
+function qrImg(text){
+  const qr = qrcode(0, "M"); qr.addData(text); qr.make();
+  return qr.createDataURL(6, 2);
+}
+let WAITER_SEL = null;   // commande affichée (la sienne ou celle reçue par QR)
+function openWaiter(received){
+  const sel = received || SEL; WAITER_SEL = sel;
+  let total = 0, unknown = false;
+  for (const [k, q] of Object.entries(sel)){ const u = unitP(BYNAME[k]); if (u == null) unknown = true; else total += u * q; }
+  document.getElementById("wTitle").textContent = received ? "Commande reçue · Shangri-La" : "Commande · Shangri-La";
+  document.getElementById("wQr").hidden = !!received;
+  if (!received) { try { document.getElementById("wQrImg").src = qrImg(orderLink(sel)); } catch(e){ document.getElementById("wQr").hidden = true; } }
+  document.getElementById("wSub").textContent = received ? received.__when : T("waiterSub") + (LANG !== "fr" ? " / Merci de préparer cette commande." : "");
+  document.getElementById("wTable").innerHTML = Object.entries(sel).filter(([k]) => k !== "__when").map(([k, q]) => { const it = BYNAME[k], u = unitP(it);
     return `<tr><td class="q">${q} ×</td><td class="n">${it.n ? esc(it.n) : ""}</td><td>${esc(it.name)}</td><td class="pr">${u != null ? fmt(u * q) : "?"}</td></tr>`; }).join("");
   document.getElementById("wTot").textContent = fmt(total) + (unknown ? " +" : "");
-  document.getElementById("wClose").textContent = T("closeSel");
+  document.getElementById("wClose").textContent = received ? "Ouvrir le menu" : T("closeSel");
   document.getElementById("waiter").classList.add("open"); document.getElementById("wClose").focus();
 }
-document.getElementById("wClose").addEventListener("click", () => { document.getElementById("waiter").classList.remove("open"); });
+document.getElementById("wClose").addEventListener("click", () => { document.getElementById("waiter").classList.remove("open"); document.body.classList.remove("locked");
+  if (location.search) history.replaceState(null, "", location.pathname); });
+function readOrderFromLink(){
+  const ps = new URLSearchParams(location.search), o = ps.get("o"); if (!o) return null;
+  const sel = {};
+  for (const part of o.split(".")){ const [i, q] = part.split("-").map(Number); const it = ITEMS[i]; if (it && q > 0 && q < 100) sel[it.name] = (sel[it.name] || 0) + q; }
+  if (!Object.keys(sel).length) return null;
+  const t = parseInt(ps.get("t") || "", 36);
+  const when = t ? new Date(t * 60000) : null;
+  Object.defineProperty(sel, "__when", {value: when ? "Envoyée à " + when.toLocaleTimeString("fr-FR", {hour: "2-digit", minute: "2-digit"}) + " · " + when.toLocaleDateString("fr-FR") : "", enumerable: false});
+  return sel;
+}
 document.addEventListener("keydown", e => { if (e.key !== "Escape") return;
   if (document.getElementById("waiter").classList.contains("open")) document.getElementById("waiter").classList.remove("open");
   else if (document.getElementById("selSheet").classList.contains("open")) closeSel(); });
@@ -1509,7 +1543,8 @@ document.addEventListener("keydown", e=>{ if(e.key==="Escape" && lb.classList.co
 q.addEventListener("input", render);
 spicyBtn.addEventListener("click", () => { spicyOnly = !spicyOnly; spicyBtn.setAttribute("aria-pressed", spicyOnly); render(); });
 applyLang();
-showWelcome();
+const RECEIVED = readOrderFromLink();
+if (RECEIVED) { document.body.classList.add("locked"); openWaiter(RECEIVED); } else showWelcome();
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 </script>
 </body>
