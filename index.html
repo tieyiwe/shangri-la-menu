@@ -313,7 +313,7 @@ body.hasbar .totop{bottom:calc(84px + env(safe-area-inset-bottom))}
 </div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<footer id="foot" data-build="2026.11.01-2205">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
+<footer id="foot" data-build="2026.11.01-2223">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
 
 <script src="lib/qrcode.js"></script>
 <script>
@@ -484,6 +484,19 @@ const MENU = [
   {n:"110", name:"Poisson saté", p:8800},
   {name:"Tofu saté", p:6000}
  ]},
+ {id:"brochettes", t:"Brochettes", late:true, items:[
+  {g:"Prix par portion"},
+  {name:"Brochettes de crevettes grillées", zh:"烤虾", p:7000},
+  {name:"Brochettes de calamar grillé", zh:"烤鱿鱼", p:7000},
+  {name:"Brochettes de bœuf", zh:"牛肉串", p:6000},
+  {name:"Rognons d'agneau grillés", zh:"烤羊腰", p:8000},
+  {name:"Pattes de poulet grillées", zh:"生烤鸡爪", p:6000},
+  {name:"Gésiers de poulet grillés", zh:"烤鸡胗", p:6000},
+  {name:"Poitrine de porc grillée", zh:"烤五花肉", p:6000},
+  {name:"Pommes de terre grillées en brochette", zh:"烤土豆片", p:4000},
+  {name:"Tofu grillé en brochette", zh:"烤豆腐", p:5000},
+  {name:"Lotus grillé en brochette", zh:"烤藕片", p:8000}
+ ]},
  {id:"riz-nouilles", t:"Riz et nouilles", items:[
   {g:"Riz"},
   {n:"111", name:"Riz nature", p:1000},
@@ -645,9 +658,19 @@ const MENU = [
 ];
 
 // Traductions chinoises, indexées par le nom français.
-const ZH_SECTIONS = {"specialites":"招牌特色菜","legumes":"蔬菜","boeuf":"牛肉","poulet":"鸡肉","canard":"鸭肉","porc":"猪肉","fruits-de-mer":"海鲜","chauffants":"砂锅与铁板","riz-nouilles":"米饭与面食","desserts":"甜品","boissons-chaudes":"热饮","boissons-fraiches":"冷饮","aperitifs":"开胃酒与鸡尾酒","digestifs":"餐后酒","vins":"葡萄酒"};
-const ZH_GROUPS = {"Fondue chinoise":"火锅","Plats du chef":"厨师推荐","Crevettes et seiches":"虾与墨鱼","Gambas et langouste":"大虾与龙虾","Poisson":"鱼","Marmites":"砂锅","Plaques chauffantes":"铁板","Riz":"米饭","Nouilles et vermicelles":"面条与米粉","Accompagnements":"点心小吃","Thés glacés et bubble tea":"冰茶与珍珠奶茶","Sodas, jus et eaux":"汽水、果汁与矿泉水","Bières":"啤酒","Vin rosé":"桃红葡萄酒","Vin rouge":"红葡萄酒","Vin blanc et champagne":"白葡萄酒与香槟","Vin en pichet (rouge, rosé, blanc)":"壶装葡萄酒（红、桃红、白）"};
+const ZH_SECTIONS = {"brochettes":"烧烤串","specialites":"招牌特色菜","legumes":"蔬菜","boeuf":"牛肉","poulet":"鸡肉","canard":"鸭肉","porc":"猪肉","fruits-de-mer":"海鲜","chauffants":"砂锅与铁板","riz-nouilles":"米饭与面食","desserts":"甜品","boissons-chaudes":"热饮","boissons-fraiches":"冷饮","aperitifs":"开胃酒与鸡尾酒","digestifs":"餐后酒","vins":"葡萄酒"};
+const ZH_GROUPS = {"Prix par portion":"价格按份计","Fondue chinoise":"火锅","Plats du chef":"厨师推荐","Crevettes et seiches":"虾与墨鱼","Gambas et langouste":"大虾与龙虾","Poisson":"鱼","Marmites":"砂锅","Plaques chauffantes":"铁板","Riz":"米饭","Nouilles et vermicelles":"面条与米粉","Accompagnements":"点心小吃","Thés glacés et bubble tea":"冰茶与珍珠奶茶","Sodas, jus et eaux":"汽水、果汁与矿泉水","Bières":"啤酒","Vin rosé":"桃红葡萄酒","Vin rouge":"红葡萄酒","Vin blanc et champagne":"白葡萄酒与香槟","Vin en pichet (rouge, rosé, blanc)":"壶装葡萄酒（红、桃红、白）"};
 const ZH = {
+"Brochettes de crevettes grillées":["烤虾"],
+"Brochettes de calamar grillé":["烤鱿鱼"],
+"Brochettes de bœuf":["牛肉串"],
+"Rognons d'agneau grillés":["烤羊腰"],
+"Pattes de poulet grillées":["生烤鸡爪"],
+"Gésiers de poulet grillés":["烤鸡胗"],
+"Poitrine de porc grillée":["烤五花肉"],
+"Pommes de terre grillées en brochette":["烤土豆片"],
+"Tofu grillé en brochette":["烤豆腐"],
+"Lotus grillé en brochette":["烤藕片"],
 "Fondue chinoise (petite portion)":["鸳鸯火锅（小份）"],
 "Fondue chinoise (grande portion)":["鸳鸯火锅（大份）"],
 "Poulet sauté piment rouge":["辣子鸡"],
@@ -926,9 +949,19 @@ const ZH = {
 "1/2 pichet":["半壶"]
 };
 // English translations, keyed by the French name.
-const EN_SECTIONS = {"specialites":"Chinese specialties","legumes":"Vegetables","boeuf":"Beef","poulet":"Chicken","canard":"Duck","porc":"Pork","fruits-de-mer":"Seafood","chauffants":"Hot pots & sizzling plates","riz-nouilles":"Rice & noodles","desserts":"Desserts","boissons-chaudes":"Hot drinks","boissons-fraiches":"Cold drinks","aperitifs":"Aperitifs & cocktails","digestifs":"After-dinner drinks","vins":"Wines"};
-const EN_GROUPS = {"Fondue chinoise":"Chinese hot pot","Plats du chef":"Chef's dishes","Crevettes et seiches":"Shrimp & cuttlefish","Gambas et langouste":"King prawns & lobster","Poisson":"Fish","Marmites":"Hot pots","Plaques chauffantes":"Sizzling plates","Riz":"Rice","Nouilles et vermicelles":"Noodles & vermicelli","Accompagnements":"Sides & snacks","Thés glacés et bubble tea":"Iced teas & bubble tea","Sodas, jus et eaux":"Sodas, juices & water","Bières":"Beers","Vin rosé":"Rosé wine","Vin rouge":"Red wine","Vin blanc et champagne":"White wine & champagne","Vin en pichet (rouge, rosé, blanc)":"Wine by the carafe (red, rosé, white)"};
+const EN_SECTIONS = {"brochettes":"Skewers","specialites":"Chinese specialties","legumes":"Vegetables","boeuf":"Beef","poulet":"Chicken","canard":"Duck","porc":"Pork","fruits-de-mer":"Seafood","chauffants":"Hot pots & sizzling plates","riz-nouilles":"Rice & noodles","desserts":"Desserts","boissons-chaudes":"Hot drinks","boissons-fraiches":"Cold drinks","aperitifs":"Aperitifs & cocktails","digestifs":"After-dinner drinks","vins":"Wines"};
+const EN_GROUPS = {"Prix par portion":"Price per portion","Fondue chinoise":"Chinese hot pot","Plats du chef":"Chef's dishes","Crevettes et seiches":"Shrimp & cuttlefish","Gambas et langouste":"King prawns & lobster","Poisson":"Fish","Marmites":"Hot pots","Plaques chauffantes":"Sizzling plates","Riz":"Rice","Nouilles et vermicelles":"Noodles & vermicelli","Accompagnements":"Sides & snacks","Thés glacés et bubble tea":"Iced teas & bubble tea","Sodas, jus et eaux":"Sodas, juices & water","Bières":"Beers","Vin rosé":"Rosé wine","Vin rouge":"Red wine","Vin blanc et champagne":"White wine & champagne","Vin en pichet (rouge, rosé, blanc)":"Wine by the carafe (red, rosé, white)"};
 const EN = {
+"Brochettes de crevettes grillées":["Grilled shrimp skewers"],
+"Brochettes de calamar grillé":["Grilled squid skewers"],
+"Brochettes de bœuf":["Beef skewers"],
+"Rognons d'agneau grillés":["Grilled lamb kidneys"],
+"Pattes de poulet grillées":["Grilled chicken feet"],
+"Gésiers de poulet grillés":["Grilled chicken gizzards"],
+"Poitrine de porc grillée":["Grilled pork belly"],
+"Pommes de terre grillées en brochette":["Grilled potato slices"],
+"Tofu grillé en brochette":["Grilled tofu skewers"],
+"Lotus grillé en brochette":["Grilled lotus root slices"],
 "Fondue chinoise (petite portion)":["Chinese hot pot (small)"],
 "Fondue chinoise (grande portion)":["Chinese hot pot (large)"],
 "Poulet sauté piment rouge":["Stir-fried chicken with red chili"],
@@ -1225,7 +1258,7 @@ addEventListener("DOMContentLoaded", toTop);
 addEventListener("load", () => { toTop(); setTimeout(toTop, 50); });
 addEventListener("pageshow", e => { if (e.persisted) toTop(); });
 
-const PHOTOS = {"Poulet sauté piment rouge": "img/poulet-saute-piment-rouge.jpg", "Filet de poulet frit": "img/filet-de-poulet-frit.jpg", "Soupe de poulet aux vermicelles": "img/soupe-de-poulet-aux-vermicelles.jpg", "Cuisse de porc à la vapeur": "img/cuisse-de-porc-a-la-vapeur.jpg", "Boulettes de porc sauce soja": "img/boulettes-de-porc-sauce-soja.jpg", "Porc au meicai": "img/porc-au-meicai.jpg", "Crevettes à la vapeur": "img/crevettes-a-la-vapeur.jpg", "Crevettes à la moutarde": "img/crevettes-a-la-moutarde.jpg", "Petites crevettes frites": "img/petites-crevettes-frites.jpg", "Crevettes au pain frit": "img/crevettes-au-pain-frit.jpg", "Crabe sauté au piment": "img/crabe-saute-au-piment.jpg", "Marmite au poisson": "img/marmite-au-poisson.jpg", "Salade au champignon noir": "img/salade-au-champignon-noir.jpg", "Salade de pattes de poulet": "img/salade-de-pattes-de-poulet.jpg", "Suancaiyu": "img/suancaiyu.jpg", "Filet de bœuf dans l'huile pimentée": "img/filet-de-boeuf-dans-l-huile-pimentee.jpg", "Salade au journal (sautée)": "img/salade-au-journal-sautee.jpg", "Mouton sauté au piment": "img/mouton-saute-au-piment.jpg", "Bœuf aux pommes de terre et tomates": "img/boeuf-aux-pommes-de-terre-et-tomates.jpg", "Golden soupe au bœuf": "img/golden-soupe-au-boeuf.jpg", "Tête de poisson à la vapeur": "img/tete-de-poisson-a-la-vapeur.jpg", "Fondue chinoise": "img/fondue-chinoise.jpg", "Salade de concombres": "img/salade-de-concombres.jpg", "Tofu grillé": "img/tofu-grille.jpg", "Tofu aux œufs de cent ans": "img/tofu-aux-oeufs-de-cent-ans.jpg", "Salade de tofu bambou": "img/salade-de-tofu-bambou.jpg", "Salade de pousses de bambou": "img/salade-de-pousses-de-bambou.jpg", "Germes de soja sautés": "img/germes-de-soja-sautes.jpg", "Champignons blancs frits": "img/champignons-blancs-frits.jpg", "Champignons noirs sautés": "img/champignons-noirs-sautes.jpg", "Pommes de terre grillées": "img/pommes-de-terre-grillees.jpg", "Tomates sautées aux œufs": "img/tomates-sautees-aux-oeufs.jpg", "Chou chinois sauté": "img/chou-chinois-saute.jpg", "Salade d'algues vertes": "img/salade-d-algues-vertes.jpg", "Ciboulette chinoise sautée aux œufs": "img/ciboulette-chinoise-sautee-aux-oeufs.jpg", "Mapo tofu": "img/mapo-tofu.jpg", "Marmite aux aubergines": "img/marmite-aux-aubergines.jpg", "Pommes de terre sautées": "img/pommes-de-terre-sautees.jpg", "Filet de bœuf au curry": "img/filet-de-boeuf-au-curry.jpg", "Filet de bœuf aux poivrons verts": "img/filet-de-boeuf-aux-poivrons-verts.jpg", "Bœuf braisé aux épices": "img/boeuf-braise-aux-epices.jpg", "Bœuf dans l'huile pimentée": "img/boeuf-dans-l-huile-pimentee.jpg", "Ailes de poulet grillées": "img/ailes-de-poulet-grillees.jpg", "Poulet sauté au piment vert": "img/poulet-saute-au-piment-vert.jpg", "Poulet au citron": "img/poulet-au-citron.jpg", "Poulet pané frit": "img/poulet-pane-frit.jpg", "Poulet sauce aigre-douce": "img/poulet-sauce-aigre-douce.jpg", "Canard frit aux épices": "img/canard-frit-aux-epices.jpg", "Pieds de porc sauce soja": "img/pieds-de-porc-sauce-soja.jpg", "Porc à l'ananas": "img/porc-a-l-ananas.jpg", "Crevettes aux noix de cajou": "img/crevettes-aux-noix-de-cajou.jpg", "Seiches sauce piquante": "img/seiches-sauce-piquante.jpg", "Langouste à la vapeur": "img/langouste-a-la-vapeur.jpg", "Poisson entier à la vapeur": "img/poisson-entier-a-la-vapeur.jpg", "Poisson entier sauce aigre-douce": "img/poisson-entier-sauce-aigre-douce.jpg", "Saumon nature": "img/saumon-nature.jpg", "Bœuf saté": "img/boeuf-sate.jpg", "Marmite aux fruits de mer": "img/marmite-aux-fruits-de-mer.jpg", "Nouilles sautées aux légumes": "img/nouilles-sautees-aux-legumes.jpg", "Riz cantonais au jambon": "img/riz-cantonais-au-jambon.jpg", "Niangao sauté": "img/niangao-saute.jpg", "Petits pains farcis à la vapeur": "img/petits-pains-farcis-a-la-vapeur.jpg", "Soupe de vermicelles blancs au bœuf": "img/soupe-de-vermicelles-blancs-au-boeuf.jpg", "Golden pain grillé": "img/golden-pain-grille.jpg", "Soupe de nouilles au bœuf": "img/soupe-de-nouilles-au-boeuf.jpg", "Tarte à la citrouille": "img/tarte-a-la-citrouille.jpg", "Litchis": "img/litchis.jpg", "Jus de fruits pressé": "img/jus-de-fruits-presse.jpg"};
+const PHOTOS = {"Brochettes de crevettes grillées": "img/brochettes-crevettes.jpg", "Brochettes de calamar grillé": "img/brochettes-calamar.jpg", "Brochettes de bœuf": "img/brochettes-boeuf.jpg", "Rognons d'agneau grillés": "img/rognons-agneau.jpg", "Pattes de poulet grillées": "img/pattes-poulet-grillees.jpg", "Gésiers de poulet grillés": "img/gesiers-poulet.jpg", "Poitrine de porc grillée": "img/poitrine-porc-grillee.jpg", "Pommes de terre grillées en brochette": "img/pommes-de-terre-brochette.jpg", "Tofu grillé en brochette": "img/tofu-brochette.jpg", "Lotus grillé en brochette": "img/lotus-grille.jpg", "Poulet sauté piment rouge": "img/poulet-saute-piment-rouge.jpg", "Filet de poulet frit": "img/filet-de-poulet-frit.jpg", "Soupe de poulet aux vermicelles": "img/soupe-de-poulet-aux-vermicelles.jpg", "Cuisse de porc à la vapeur": "img/cuisse-de-porc-a-la-vapeur.jpg", "Boulettes de porc sauce soja": "img/boulettes-de-porc-sauce-soja.jpg", "Porc au meicai": "img/porc-au-meicai.jpg", "Crevettes à la vapeur": "img/crevettes-a-la-vapeur.jpg", "Crevettes à la moutarde": "img/crevettes-a-la-moutarde.jpg", "Petites crevettes frites": "img/petites-crevettes-frites.jpg", "Crevettes au pain frit": "img/crevettes-au-pain-frit.jpg", "Crabe sauté au piment": "img/crabe-saute-au-piment.jpg", "Marmite au poisson": "img/marmite-au-poisson.jpg", "Salade au champignon noir": "img/salade-au-champignon-noir.jpg", "Salade de pattes de poulet": "img/salade-de-pattes-de-poulet.jpg", "Suancaiyu": "img/suancaiyu.jpg", "Filet de bœuf dans l'huile pimentée": "img/filet-de-boeuf-dans-l-huile-pimentee.jpg", "Salade au journal (sautée)": "img/salade-au-journal-sautee.jpg", "Mouton sauté au piment": "img/mouton-saute-au-piment.jpg", "Bœuf aux pommes de terre et tomates": "img/boeuf-aux-pommes-de-terre-et-tomates.jpg", "Golden soupe au bœuf": "img/golden-soupe-au-boeuf.jpg", "Tête de poisson à la vapeur": "img/tete-de-poisson-a-la-vapeur.jpg", "Fondue chinoise": "img/fondue-chinoise.jpg", "Salade de concombres": "img/salade-de-concombres.jpg", "Tofu grillé": "img/tofu-grille.jpg", "Tofu aux œufs de cent ans": "img/tofu-aux-oeufs-de-cent-ans.jpg", "Salade de tofu bambou": "img/salade-de-tofu-bambou.jpg", "Salade de pousses de bambou": "img/salade-de-pousses-de-bambou.jpg", "Germes de soja sautés": "img/germes-de-soja-sautes.jpg", "Champignons blancs frits": "img/champignons-blancs-frits.jpg", "Champignons noirs sautés": "img/champignons-noirs-sautes.jpg", "Pommes de terre grillées": "img/pommes-de-terre-grillees.jpg", "Tomates sautées aux œufs": "img/tomates-sautees-aux-oeufs.jpg", "Chou chinois sauté": "img/chou-chinois-saute.jpg", "Salade d'algues vertes": "img/salade-d-algues-vertes.jpg", "Ciboulette chinoise sautée aux œufs": "img/ciboulette-chinoise-sautee-aux-oeufs.jpg", "Mapo tofu": "img/mapo-tofu.jpg", "Marmite aux aubergines": "img/marmite-aux-aubergines.jpg", "Pommes de terre sautées": "img/pommes-de-terre-sautees.jpg", "Filet de bœuf au curry": "img/filet-de-boeuf-au-curry.jpg", "Filet de bœuf aux poivrons verts": "img/filet-de-boeuf-aux-poivrons-verts.jpg", "Bœuf braisé aux épices": "img/boeuf-braise-aux-epices.jpg", "Bœuf dans l'huile pimentée": "img/boeuf-dans-l-huile-pimentee.jpg", "Ailes de poulet grillées": "img/ailes-de-poulet-grillees.jpg", "Poulet sauté au piment vert": "img/poulet-saute-au-piment-vert.jpg", "Poulet au citron": "img/poulet-au-citron.jpg", "Poulet pané frit": "img/poulet-pane-frit.jpg", "Poulet sauce aigre-douce": "img/poulet-sauce-aigre-douce.jpg", "Canard frit aux épices": "img/canard-frit-aux-epices.jpg", "Pieds de porc sauce soja": "img/pieds-de-porc-sauce-soja.jpg", "Porc à l'ananas": "img/porc-a-l-ananas.jpg", "Crevettes aux noix de cajou": "img/crevettes-aux-noix-de-cajou.jpg", "Seiches sauce piquante": "img/seiches-sauce-piquante.jpg", "Langouste à la vapeur": "img/langouste-a-la-vapeur.jpg", "Poisson entier à la vapeur": "img/poisson-entier-a-la-vapeur.jpg", "Poisson entier sauce aigre-douce": "img/poisson-entier-sauce-aigre-douce.jpg", "Saumon nature": "img/saumon-nature.jpg", "Bœuf saté": "img/boeuf-sate.jpg", "Marmite aux fruits de mer": "img/marmite-aux-fruits-de-mer.jpg", "Nouilles sautées aux légumes": "img/nouilles-sautees-aux-legumes.jpg", "Riz cantonais au jambon": "img/riz-cantonais-au-jambon.jpg", "Niangao sauté": "img/niangao-saute.jpg", "Petits pains farcis à la vapeur": "img/petits-pains-farcis-a-la-vapeur.jpg", "Soupe de vermicelles blancs au bœuf": "img/soupe-de-vermicelles-blancs-au-boeuf.jpg", "Golden pain grillé": "img/golden-pain-grille.jpg", "Soupe de nouilles au bœuf": "img/soupe-de-nouilles-au-boeuf.jpg", "Tarte à la citrouille": "img/tarte-a-la-citrouille.jpg", "Litchis": "img/litchis.jpg", "Jus de fruits pressé": "img/jus-de-fruits-presse.jpg"};
 // Les deux fondues partagent la photo
 function photoFor(it){ return PHOTOS[it.name] || (it.name.startsWith("Fondue chinoise") ? PHOTOS["Fondue chinoise"] : null); }
 const ALL = [];
@@ -1236,7 +1269,8 @@ const DICT = {zh: ZH, en: EN}, SECT = {zh: ZH_SECTIONS, en: EN_SECTIONS}, GRP = 
 const tr = it => (DICT[LANG] && DICT[LANG][it.name]) || [];
 const nm = it => tr(it)[0] || it.name;
 const ds = it => {
-  if (LANG === "fr") return it.d || "";
+  if (LANG === "fr") return [it.d || "", it.zh || ""].filter(Boolean).join(" · ");
+  if (LANG === "en" && it.zh) return [tr(it)[1] || "", it.zh, it.name].filter(Boolean).join(" · ");
   const d = tr(it)[1] || "";
   // Nom français affiché dessous pour faciliter la commande auprès du personnel
   return [d, nm(it) !== it.name ? it.name : ""].filter(Boolean).join(" · ");
@@ -1498,7 +1532,7 @@ document.getElementById("histSheet").addEventListener("click", e => {
 document.addEventListener("keydown", e => { if (e.key === "Escape" && document.getElementById("histSheet").classList.contains("open")) closeHist(); });
 
 // Commande en QR : le lien contient la commande (index de l'article + quantité), aucun serveur nécessaire
-const ITEMS = []; for (const c of MENU) for (const it of c.items) if (!it.g) ITEMS.push(it);
+const ITEMS = []; for (const late of [false, true]) for (const c of MENU) if (!!c.late === late) for (const it of c.items) if (!it.g) ITEMS.push(it);
 function orderLink(sel){
   const code = Object.entries(sel).map(([k, q]) => ITEMS.indexOf(BYNAME[k]) + "-" + q).join(".");
   return SHARE_URL + "?o=" + code + "&t=" + Math.floor(Date.now() / 60000).toString(36) + "&id=" + ensureOrder().id;
