@@ -270,7 +270,7 @@ body.hasbar footer{padding-bottom:96px}
 </div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<footer id="foot" data-build="2026.11.01-2154">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
+<footer id="foot" data-build="2026.11.01-2157">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
 
 <script src="lib/qrcode.js"></script>
 <script>
@@ -1489,23 +1489,37 @@ function onOrderMsg(msg){
     const items = {...SEL};
     if (Object.keys(items).length){ HIST.unshift({at: Date.now(), items, served: true}); HIST = HIST.slice(0, 10); saveHist(); }
     const old = Object.keys(SEL); SEL = {}; saveSel(); old.forEach(refreshAdd);
-    ORDER = null; saveOrder(); if (es){ es.close(); es = null; }
+    ORDER = null; saveOrder(); if (es){ es.close(); es = null; } if (pollTimer){ clearInterval(pollTimer); pollTimer = null; }
     closeSel(); document.getElementById("waiter").classList.remove("open");
     updateBar(); updateHistBtn(); celebrate(T("srv1"), T("srv2"), T("srv3"));
   }
 }
-function listenOrder(){
-  if (!ORDER || es || !("EventSource" in window)) return;
-  const id = ORDER.id;
-  // messages déjà envoyés pendant que la page était fermée
-  fetch(NTFY + topic(id) + "/json?poll=1&since=all").then(r => r.text()).then(txt => {
+let pollTimer = null, polling = false;
+function pollOrder(){
+  if (!ORDER || polling) return; polling = true;
+  const id = ORDER.id, ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 5000);
+  fetch(NTFY + topic(id) + "/json?poll=1&since=all", {cache: "no-store", signal: ctl.signal}).then(r => r.text()).then(txt => {
     txt.split("\n").filter(Boolean).forEach(l => { try { const m = JSON.parse(l); if (m.event === "message") onOrderMsg(m.message); } catch(_){} });
-  }).catch(() => {});
-  try {
-    es = new EventSource(NTFY + topic(id) + "/sse");
-    es.onmessage = e => { try { const m = JSON.parse(e.data); if (m.event === "message") onOrderMsg(m.message); } catch(_){} };
-  } catch(_){}
+  }).catch(() => {}).finally(() => { clearTimeout(to); polling = false; });
 }
+function listenOrder(){
+  if (!ORDER) return;
+  pollOrder();                                   // messages envoyés pendant que la page était fermée
+  if ("EventSource" in window && (!es || es.readyState === 2)){
+    try {
+      if (es) es.close();
+      es = new EventSource(NTFY + topic(ORDER.id) + "/sse");
+      es.onmessage = e => { try { const m = JSON.parse(e.data); if (m.event === "message") onOrderMsg(m.message); } catch(_){} };
+    } catch(_){ es = null; }
+  }
+  // Filet de sécurité : vérification toutes les 4 s tant que la commande est en cours et la page visible
+  if (!pollTimer) pollTimer = setInterval(() => {
+    if (!ORDER){ clearInterval(pollTimer); pollTimer = null; return; }
+    if (document.visibilityState === "visible") pollOrder();
+  }, 4000);
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && ORDER) listenOrder(); });
+addEventListener("online", () => { if (ORDER) listenOrder(); });
 function celebrate(a, b, c){
   document.getElementById("w1").textContent = a;
   document.getElementById("w2").textContent = b;
@@ -1517,10 +1531,16 @@ function celebrate(a, b, c){
 }
 // Côté serveur
 async function sendStatus(id, status, btn){
-  const msg = document.getElementById("wActMsg"); btn.disabled = true; msg.style.color = "#555"; msg.textContent = "Envoi…";
+  const msg = document.getElementById("wActMsg"); btn.disabled = true; msg.style.color = "#555"; msg.textContent = "Envoi en cours…";
   try {
-    const r = await fetch(NTFY + topic(id), {method: "POST", body: status});
-    if (!r.ok) throw new Error(r.status);
+    let ok = false;
+    for (let attempt = 0; attempt < 3 && !ok; attempt++){
+      if (attempt) { msg.textContent = "Nouvel essai…"; await new Promise(r => setTimeout(r, 600)); }
+      const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 5000);
+      try { const r = await fetch(NTFY + topic(id), {method: "POST", body: status, signal: ctl.signal, cache: "no-store"}); ok = r.ok; } catch(_){}
+      clearTimeout(to);
+    }
+    if (!ok) throw new Error("send");
     msg.style.color = "#1f8f4e";
     msg.textContent = status === "served" ? "✅ Le client a été notifié : commande terminée." : "✅ Le client voit : commande en préparation.";
     if (status === "served") document.getElementById("wAccept").disabled = true; else btn.disabled = true;
