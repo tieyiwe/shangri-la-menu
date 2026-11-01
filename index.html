@@ -361,7 +361,7 @@ body.hasbar .toast{bottom:calc(92px + env(safe-area-inset-bottom))}
 </div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<footer id="foot" data-build="2026.11.01-2229">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
+<footer id="foot" data-build="2026.11.01-2231">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
 
 <script src="lib/qrcode.js"></script>
 <script>
@@ -1311,7 +1311,8 @@ const PHOTOS = {"Brochettes de crevettes grillées": "img/brochettes-crevettes.j
 function photoFor(it){ return PHOTOS[it.name] || (it.name.startsWith("Fondue chinoise") ? PHOTOS["Fondue chinoise"] : null); }
 const ALL = [];
 let LANG = "fr";
-try { const v = localStorage.getItem("shangrila-lang"); if (v === "zh" || v === "en") LANG = v; } catch(e){}
+// Nouvelle visite = français. Le choix de langue ne vaut que pour la visite en cours (rechargement compris).
+try { localStorage.removeItem("shangrila-lang"); const v = sessionStorage.getItem("shangrila-lang"); if (v === "zh" || v === "en") LANG = v; } catch(e){}
 const T = k => UI[LANG][k];
 const DICT = {zh: ZH, en: EN}, SECT = {zh: ZH_SECTIONS, en: EN_SECTIONS}, GRP = {zh: ZH_GROUPS, en: EN_GROUPS};
 const tr = it => (DICT[LANG] && DICT[LANG][it.name]) || [];
@@ -1878,7 +1879,7 @@ nav.addEventListener("click", e => {
 });
 document.querySelector(".lang").addEventListener("click", e => {
   const b = e.target.closest("button[data-lang]"); if (!b || b.dataset.lang === LANG) return;
-  LANG = b.dataset.lang; try { localStorage.setItem("shangrila-lang", LANG); } catch(e){}
+  LANG = b.dataset.lang; try { sessionStorage.setItem("shangrila-lang", LANG); } catch(e){}
   applyLang(); showWelcome();
 });
 
