@@ -386,7 +386,7 @@ body.hasbar .toast{bottom:calc(92px + env(safe-area-inset-bottom))}
 </div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<footer id="foot" data-build="2026.11.02-0006">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
+<footer id="foot" data-build="2026.11.02-0032">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
 
 <script src="lib/qrcode.js"></script>
 <script>
@@ -1552,11 +1552,12 @@ function setLoc(loc){
   LOC = loc; saveLoc(); claimLoc(true);
 }
 // ===== Inactivité : on ne bloque pas une place indéfiniment =====
-const IDLE_MS = 4 * 60 * 1000, IDLE_COUNT = 30;
-let lastAct = Date.now(), hiddenAt = 0, idleTimer = null, idleLeft = 0, idleOpen = false;
+const IDLE_TEST = /[?&]test=idle\b/.test(location.search);
+const IDLE_MS = IDLE_TEST ? 20 * 1000 : 4 * 60 * 1000, IDLE_COUNT = 30;
+let lastAct = Date.now(), hiddenAt = 0, idleTimer = null, idleLeft = 0, idleOpen = false, ignoreActUntil = 0;
 const holdsPlace = () => !!(LOC && LOC.k !== "e" && !(typeof ORDER !== "undefined" && ORDER));
 function activity(){
-  if (idleOpen) return;
+  if (idleOpen || Date.now() < ignoreActUntil) return;
   lastAct = Date.now();
   if (holdsPlace()) claimLoc(false);        // renouvelle la réservation au plus toutes les 3 min
 }
@@ -1566,7 +1567,7 @@ function releasePlace(reason){
   const old = LOC; sendOcc("free", old); LOC = null; saveLoc(); LOC_LATER = false;
   try { sessionStorage.removeItem("shangrila-later"); } catch(_){}
   updateBar(); if (document.getElementById("selSheet").classList.contains("open")) renderSel();
-  if (reason === "idle") flash(T("idleGone"));
+  if (reason === "idle"){ flash(T("idleGone")); setTimeout(() => flash(T("idleGone")), 2300); }
 }
 function renderIdle(){
   const isT = LOC && LOC.k === "t";
@@ -1577,8 +1578,8 @@ function renderIdle(){
   document.getElementById("idleRing").style.setProperty("--pct", (idleLeft / IDLE_COUNT * 100) + "%");
   document.getElementById("idleYes").textContent = T("idleYes"); document.getElementById("idleNo").textContent = T("idleNo");
 }
-function openIdle(){
-  idleOpen = true; idleLeft = IDLE_COUNT; renderIdle();
+function openIdle(left){
+  idleOpen = true; idleLeft = Math.max(1, Math.min(IDLE_COUNT, left || IDLE_COUNT)); renderIdle();
   document.getElementById("idleSheet").classList.add("open"); document.getElementById("idleYes").focus();
   try { navigator.vibrate && navigator.vibrate([120, 80, 120]); } catch(_){}
   clearInterval(idleTimer);
@@ -1591,17 +1592,21 @@ function closeIdle(keep, reason){
   if (keep) claimLoc(true); else releasePlace(reason || "user");
 }
 document.getElementById("idleYes").addEventListener("click", () => closeIdle(true));
-document.getElementById("idleSheet").addEventListener("click", e => { if (e.target.id === "idleSheet") closeIdle(true); });
+// Seuls les deux boutons répondent (un toucher pour réveiller le téléphone ne doit pas valider)
 document.getElementById("idleNo").addEventListener("click", () => closeIdle(false, "user"));
 setInterval(() => {
   if (idleOpen || document.visibilityState !== "visible" || !holdsPlace()) return;
   if (Date.now() - lastAct >= IDLE_MS) openIdle();
-}, 5000);
+}, IDLE_TEST ? 1000 : 3000);
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden"){ hiddenAt = Date.now(); return; }
-  // de retour : si l'absence a été plus longue que le délai + le compte à rebours, la place est déjà libérée
-  const away = hiddenAt ? Date.now() - hiddenAt : 0; hiddenAt = 0;
-  if (holdsPlace() && away > IDLE_MS + IDLE_COUNT * 1000 && Date.now() - lastAct > IDLE_MS){ if (idleOpen) closeIdle(false, "idle"); else releasePlace("idle"); return; }
+  hiddenAt = 0;
+  // Écran rallumé / retour sur l'appli : le toucher qui réveille le téléphone ne compte pas comme activité
+  ignoreActUntil = Date.now() + 1500;
+  if (!holdsPlace()) return;
+  const idleFor = Date.now() - lastAct;                       // temps écoulé depuis la dernière vraie action
+  if (idleFor >= IDLE_MS + IDLE_COUNT * 1000){ if (idleOpen) closeIdle(false, "idle"); else releasePlace("idle"); return; }
+  if (idleFor >= IDLE_MS){ if (!idleOpen) openIdle(IDLE_COUNT - Math.floor((idleFor - IDLE_MS) / 1000)); return; }
   claimLoc(false);
 });
 
