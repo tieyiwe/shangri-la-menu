@@ -1,0 +1,2691 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TEST · Menu Shangri-La</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#1d1b19">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="apple-touch-icon" href="../img/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Shangri-La">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Noto+Serif+SC:wght@600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout: lacquered dark-wood menu, gold leaf headings, sticky category rail, single column of dotted price rows */
+  --wood:#1d1b19;
+  --panel:#272421;
+  --line:#3a3530;
+  --gold:#d9ad55;
+  --cream:#f3ead8;
+  --muted:#b3a68f;
+  --chili:#e0533d;
+  --display:"Marcellus","Times New Roman",serif;
+  --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--wood);color:var(--cream);font-family:var(--body);font-size:16px;line-height:1.4;-webkit-text-size-adjust:100%}
+header{padding:58px 16px 18px;text-align:center;border-bottom:1px solid var(--line);background:radial-gradient(120% 90% at 50% 0%,#2c2824 0%,var(--wood) 70%)}
+.zh{font-family:"Noto Serif SC",serif;color:var(--gold);letter-spacing:.3em;font-size:15px;margin:0 0 6px}
+h1{font-family:var(--display);font-weight:400;color:var(--gold);margin:0;font-size:clamp(26px,7vw,40px);letter-spacing:.04em;text-wrap:balance}
+.sub{margin:6px 0 0;color:var(--muted);font-size:14px}
+.tools{position:sticky;top:0;z-index:5;background:rgba(29,27,25,.97);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.search{display:flex;gap:8px;padding:10px 16px 6px;max-width:760px;margin:0 auto}
+.search input{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);color:var(--cream);border-radius:10px;padding:10px 12px;font:inherit}
+.search input::placeholder{color:var(--muted)}
+.search input:focus,.chip:focus-visible,.spicy-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.spicy-toggle{background:var(--panel);border:1px solid var(--line);color:var(--cream);border-radius:10px;padding:0 12px;font:inherit;font-size:14px;cursor:pointer;white-space:nowrap}
+.spicy-toggle[aria-pressed="true"]{border-color:var(--chili);color:#fff;background:#4a2119}
+nav{display:flex;gap:8px;overflow-x:auto;padding:6px 16px 10px;max-width:760px;margin:0 auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;text-decoration:none;color:var(--cream);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;background:var(--panel)}
+.chip.on{border-color:var(--gold);color:var(--gold)}
+main{max-width:760px;margin:0 auto;padding:8px 16px 40px}
+section{padding-top:18px;scroll-margin-top:118px}
+h2{font-family:var(--display);font-weight:400;color:var(--gold);font-size:24px;margin:0 0 4px;display:flex;align-items:center;gap:12px}
+h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent);opacity:.5}
+.group{margin:14px 0 2px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+ul{list-style:none;margin:0;padding:0}
+li{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+li .name{flex:1;min-width:0}
+li.photo{cursor:pointer}
+li.photo:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+.thumb{flex:0 0 56px;width:56px;height:56px;border-radius:8px;object-fit:cover;border:1px solid var(--line);background:var(--panel)}
+.cam{display:inline-block;font-size:12px;color:var(--muted);margin-top:3px}
+.lb{position:fixed;inset:0;z-index:20;background:rgba(10,9,8,.88);display:none;align-items:center;justify-content:center;padding:16px}
+.lb.open{display:flex}
+.lb figure{margin:0;max-width:640px;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.lb img{display:block;width:100%;max-height:70vh;object-fit:contain;background:#000}
+.lb figcaption{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;align-items:baseline}
+.lb .x{position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--cream);font-size:22px;cursor:pointer}
+.lb .x:focus-visible{outline:2px solid var(--gold)}
+.no{font-size:12px;font-weight:700;color:var(--wood);background:var(--gold);border-radius:4px;padding:1px 5px;min-width:30px;text-align:center;font-variant-numeric:tabular-nums}
+.name{font-weight:600}
+.desc{display:block;font-weight:400;color:var(--muted);font-size:14px;margin-top:2px}
+.chili{color:var(--chili);font-size:13px;margin-left:4px;white-space:nowrap}
+.new{font-size:11px;font-weight:700;color:var(--wood);background:var(--cream);border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:2px}
+.price{font-variant-numeric:tabular-nums;font-weight:700;color:var(--gold);white-space:nowrap;text-align:right}
+.price.ask{color:var(--muted);font-weight:600;font-size:14px}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 16px 30px;border-top:1px solid var(--line)}
+header{position:relative}
+.lang{position:absolute;top:12px;right:12px;display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel)}
+.lang button{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;padding:6px 12px;cursor:pointer;min-height:32px}
+.lang button[aria-pressed="true"]{background:var(--gold);color:var(--wood);font-weight:700}
+.lang button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.contact{max-width:760px;margin:0 auto;padding:8px 16px 32px;scroll-margin-top:118px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:16px}
+.card h3{margin:0 0 6px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.phones{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.phones a,.addr{display:flex;align-items:center;gap:8px;color:var(--cream);text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-variant-numeric:tabular-nums;font-weight:600}
+.phones a:focus-visible,.wa:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.om{font-variant-numeric:tabular-nums;font-weight:600}
+.wa{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:#1f8f4e;color:#fff;text-decoration:none;font-weight:700;border-radius:12px;padding:14px;font-size:17px}
+.wa-num{font-weight:600;font-size:15px;opacity:.9;font-variant-numeric:tabular-nums}
+.wa-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.wa-row .wa{flex:1 1 220px}
+.wa-qr{width:112px;height:112px;border-radius:8px;background:#fff;padding:4px}
+.wa-note{color:var(--muted);font-size:13px;margin:6px 0 0}
+@media (max-width:360px){.phones{grid-template-columns:1fr}}
+.welcome{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:radial-gradient(90% 70% at 50% 45%,#3c1812,#100e0c);cursor:pointer;transition:opacity .6s ease}
+.welcome.hide{opacity:0;pointer-events:none}
+.welcome canvas{position:absolute;inset:0;width:100%;height:100%}
+.wbox{position:relative;text-align:center;padding:24px}
+.wbox .w1{font-family:var(--display);color:var(--cream);font-size:clamp(22px,6vw,30px);letter-spacing:.08em;margin:0}
+.wbox .w2{font-family:var(--display);color:var(--gold);font-size:clamp(34px,10vw,58px);margin:8px 0 6px;text-wrap:balance;text-shadow:0 2px 24px rgba(217,173,85,.35)}
+.wbox .w3{font-family:"Noto Serif SC",serif;color:var(--gold);letter-spacing:.35em;font-size:16px;margin:0}
+.wbox .tap{color:var(--muted);font-size:13px;margin-top:22px}
+.welcome.run .w1{animation:rise .7s .15s both}
+.welcome.run .w2{animation:pop .9s .45s both}
+.welcome.run .w3{animation:rise .7s .9s both}
+.welcome.run .tap{animation:rise .6s 1.4s both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1.06)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.welcome.run .w1,.welcome.run .w2,.welcome.run .w3,.welcome.run .tap{animation:none}}
+body.locked{overflow:hidden}
+
+.add{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:1px solid var(--gold);background:none;color:var(--gold);font-size:22px;line-height:1;cursor:pointer;display:grid;place-items:center;position:relative;font-family:var(--body)}
+.add.has{background:var(--gold);color:var(--wood);font-size:15px;font-weight:700}
+.add:focus-visible,.selbar:focus-visible,.qbtn:focus-visible,.btn:focus-visible,.cookie:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.selbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:15;max-width:736px;margin:0 auto;display:none;align-items:center;justify-content:space-between;gap:10px;background:var(--gold);color:var(--wood);border:0;border-radius:14px;padding:14px 16px;font:inherit;font-weight:700;font-size:16px;box-shadow:0 8px 28px rgba(0,0,0,.45);cursor:pointer}
+.selbar.on{display:flex}
+body.hasbar footer{padding-bottom:96px}
+.histlink{margin:12px auto 0;display:none;border:1px solid var(--line);background:var(--panel);color:var(--cream);font:inherit;font-size:14px;border-radius:999px;padding:7px 14px;cursor:pointer}
+.histlink.on{display:inline-flex;align-items:center;gap:6px}
+.histlink:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.hist{list-style:none;margin:0;padding:0;max-height:56vh;overflow:auto;display:grid;gap:10px}
+.hist li{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--wood);display:grid;gap:6px}
+.hist .hd{display:flex;justify-content:space-between;gap:8px;font-weight:700}
+.hist .hd span:last-child{color:var(--gold);font-variant-numeric:tabular-nums}
+.hist .it{color:var(--muted);font-size:14px}
+.hist .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.hist .acts .btn{padding:9px;font-size:14px}
+.sel-list{list-style:none;margin:0;padding:0;max-height:42vh;overflow:auto}
+.sel-list li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.sel-list .nm{flex:1;min-width:0;font-weight:600}
+.sel-list .nm small{display:block;color:var(--muted);font-weight:400;font-size:13px}
+.qty{display:flex;align-items:center;gap:6px}
+.qbtn{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--wood);color:var(--cream);font-size:18px;cursor:pointer;font-family:var(--body)}
+.qty b{min-width:20px;text-align:center;font-variant-numeric:tabular-nums}
+.sel-total{display:flex;justify-content:space-between;font-weight:700;font-size:18px;padding:6px 0;color:var(--gold);font-variant-numeric:tabular-nums}
+.sel-note{color:var(--muted);font-size:13px;margin:0}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fields input{min-width:0;background:var(--wood);border:1px solid var(--line);color:var(--cream);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px}
+.fields input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:13px;font:inherit;font-weight:700;font-size:16px;cursor:pointer;border:1px solid var(--line);background:var(--wood);color:var(--cream);text-decoration:none;width:100%}
+.btn.wa-btn{background:#1f8f4e;border-color:#1f8f4e;color:#fff}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--wood)}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.waiter{position:fixed;inset:0;z-index:35;background:#fff;color:#111;display:none;flex-direction:column;padding:20px 18px calc(20px + env(safe-area-inset-bottom));overflow:auto}
+.waiter.open{display:flex}
+.waiter h3{margin:0 0 4px;font-size:22px}
+.waiter p{margin:0 0 12px;color:#555}
+.waiter table{width:100%;border-collapse:collapse;font-size:19px}
+.waiter td{padding:10px 4px;border-bottom:1px solid #ddd;vertical-align:top}
+.waiter td.q{font-weight:800;width:56px}
+.waiter td.n{width:54px;color:#8a6a1e;font-weight:700}
+.waiter td.pr{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.waiter .tot{display:flex;justify-content:space-between;font-size:24px;font-weight:800;padding:14px 4px}
+.wqr{display:flex;align-items:center;gap:14px;margin:16px 0 8px;padding:12px;border:2px dashed #c9b27a;border-radius:12px}
+.wqr[hidden]{display:none}
+.wact{display:grid;gap:10px;margin:14px 0 10px}
+.wact[hidden]{display:none}
+.wact .btn{background:#fff;color:#111;border:2px solid #111;font-size:17px;padding:14px}
+.wact .btn.done{background:#1f8f4e;border-color:#1f8f4e;color:#fff}
+.wact .btn[disabled]{opacity:.45}
+.wact p{margin:0;font-size:15px;color:#1f8f4e;font-weight:700;min-height:20px}
+.ostat{display:none;margin:0 0 4px;padding:6px 10px;border-radius:999px;font-size:13px;font-weight:700;background:rgba(0,0,0,.12)}
+.ostat.on{display:inline-block}
+.wqr img{width:150px;height:150px;flex:0 0 auto;image-rendering:pixelated}
+.wqr p{margin:0;color:#333;font-size:15px}
+.wqr b{display:block;font-size:17px;color:#111;margin-bottom:4px}
+.waiter .btn{margin-top:auto;background:#111;color:#fff;border-color:#111}
+.fortune{max-width:760px;margin:0 auto;padding:8px 16px 8px;scroll-margin-top:118px}
+.fcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 16px;text-align:center;display:grid;gap:10px;justify-items:center}
+.fcard p{margin:0}
+.cookie{border:0;background:none;cursor:pointer;padding:6px;position:relative;width:132px;height:96px}
+.cookie .half{position:absolute;top:10px;width:66px;height:76px;transition:transform .6s cubic-bezier(.2,.8,.3,1.3)}
+.cookie .l{left:0}.cookie .r{right:0}
+.cookie.open .l{transform:translate(-20px,10px) rotate(-28deg)}
+.cookie.open .r{transform:translate(20px,10px) rotate(28deg)}
+.cookie:not(.open){animation:wobble 2.6s ease-in-out infinite}
+@keyframes wobble{0%,85%,100%{transform:rotate(0)}89%{transform:rotate(-6deg)}93%{transform:rotate(6deg)}97%{transform:rotate(-3deg)}}
+.slip{background:#fbf6ea;color:#3a2a12;border-radius:6px;padding:12px 16px;font-family:var(--display);font-size:18px;max-width:420px;box-shadow:0 4px 16px rgba(0,0,0,.35);transform-origin:center;display:none}
+.slip.on{display:block;animation:unroll .55s .25s both}
+@keyframes unroll{from{opacity:0;transform:scaleX(.2)}to{opacity:1;transform:none}}
+.flucky{font-family:var(--body);font-size:13px;color:#8a6a1e;margin-top:6px}
+.fbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.fbtns .btn{width:auto;padding:10px 16px;font-size:14px}
+@media (prefers-reduced-motion:reduce){.cookie:not(.open){animation:none}.slip.on{animation:none}.cookie .half{transition:none}}
+.share-top{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--cream);font:inherit;font-size:13px;padding:6px 12px;min-height:32px;cursor:pointer}
+.share-top svg,.share-big svg{width:16px;height:16px;flex:0 0 auto}
+.share-top:focus-visible,.share-big:focus-visible,.sh-opt:focus-visible,.sh-close:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.share-big{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:1px solid var(--gold);background:none;color:var(--gold);font:inherit;font-weight:700;font-size:16px;border-radius:12px;padding:13px;cursor:pointer}
+.sheet{position:fixed;inset:0;z-index:25;background:rgba(10,9,8,.7);display:none;align-items:flex-end;justify-content:center}
+.sheet.open{display:flex}
+.sheet-box{width:100%;max-width:520px;background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:16px 16px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));display:grid;gap:10px}
+.sheet-box h3{margin:0 0 4px;font-family:var(--display);font-weight:400;color:var(--gold);font-size:22px}
+.sh-opt{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--cream);text-decoration:none;background:var(--wood);font:inherit;font-weight:600;cursor:pointer;width:100%;text-align:left}
+.sh-ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:15px;color:#fff;flex:0 0 auto}
+.sh-close{border:0;background:none;color:var(--muted);font:inherit;padding:10px;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:40;background:var(--cream);color:var(--wood);font-weight:700;border-radius:999px;padding:10px 18px;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.on{opacity:1}
+@media (max-width:360px){.share-top .lbl{display:none}}
+/* ===== Mobile polish ===== */
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+button,a,.chip,li.photo{touch-action:manipulation}
+body{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+header{padding-top:calc(58px + env(safe-area-inset-top))}
+.lang,.share-top{top:calc(10px + env(safe-area-inset-top))}
+.lang button{min-height:40px;padding:8px 14px}
+.share-top{min-height:40px;padding:8px 14px}
+.tools{padding-top:env(safe-area-inset-top)}
+.chip{display:inline-flex;align-items:center;min-height:40px;padding:8px 14px}
+nav{scroll-snap-type:x proximity;scroll-padding-left:16px;-webkit-overflow-scrolling:touch;mask-image:linear-gradient(90deg,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.chip{scroll-snap-align:start}
+.add{width:44px;height:44px}
+.add.pop{animation:addpop .32s ease}
+@keyframes addpop{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+.qbtn{width:40px;height:40px}
+.fields input,.search input{font-size:16px}
+.sheet-box{max-height:88vh;overflow:auto;overscroll-behavior:contain;padding-top:26px;position:relative}
+.sheet-box::before{content:"";position:absolute;top:9px;left:50%;width:42px;height:5px;margin-left:-21px;border-radius:3px;background:var(--line)}
+.sheet.open .sheet-box{animation:slideup .28s ease-out}
+@keyframes slideup{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.lb{touch-action:pan-y;overscroll-behavior:contain}
+.lb .navhint{color:var(--muted);font-size:12px;text-align:center;padding:0 14px 12px}
+.totop{position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:14;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--gold);font-size:20px;display:none;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.4);cursor:pointer}
+.totop.on{display:flex}
+body.hasbar .totop{bottom:calc(84px + env(safe-area-inset-bottom))}
+.totop:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.selbar{min-height:56px}
+@media (max-width:380px){
+  header{padding-bottom:14px}
+  .sub{font-size:13px}
+  li{gap:8px}
+  .thumb{flex-basis:52px;width:52px;height:52px}
+  .price{font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){.add.pop,.sheet.open .sheet-box{animation:none}}
+.share-bar{flex:0 0 44px;width:44px;min-height:44px;border-radius:10px;border:1px solid var(--gold);background:var(--panel);color:var(--gold);display:grid;place-items:center;cursor:pointer;padding:0}
+.share-bar:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.share-bar:active{background:var(--gold);color:var(--wood)}
+@media (max-width:360px){.spicy-toggle{padding:0 10px}}
+/* ===== Tables & salons ===== */
+[hidden]{display:none !important}
+.locb{display:inline-flex;align-items:center;gap:8px;font-weight:800;line-height:1;vertical-align:middle}
+.locb .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+.locb .num{display:inline-grid;place-items:center;font-variant-numeric:tabular-nums;font-family:var(--body)}
+.locb.t .num{min-width:34px;height:34px;padding:0 4px;border-radius:50%;font-size:16px;color:#1d1b19;background:radial-gradient(circle at 32% 28%,#fbe7a8,#d9ad55 58%,#9c6f22);box-shadow:0 0 0 2px var(--wood),0 0 0 3.5px #d9ad55}
+.locb.r .num{height:30px;padding:0 9px;border-radius:7px;font-size:15px;letter-spacing:.06em;color:#fbe7a8;background:linear-gradient(180deg,#c4302b,#7a1712);border:2px solid #d9ad55;box-shadow:0 2px 8px rgba(196,48,43,.35)}
+.locb.e .num{height:30px;padding:0 9px;border-radius:7px;font-size:14px;color:#fff;background:#1f8f4e}
+.locb.big{gap:14px}
+.locb.big .lbl{font-size:15px;opacity:1}
+.locb.big.t .num{min-width:92px;height:92px;font-size:44px;box-shadow:0 0 0 4px #fff,0 0 0 7px #d9ad55,0 8px 24px rgba(156,111,34,.45)}
+.locb.big.r .num{height:76px;padding:0 22px;font-size:42px;border-width:3px;border-radius:12px}
+.locb.big.e .num{height:64px;padding:0 18px;font-size:28px}
+.wloc{display:flex;align-items:center;justify-content:center;gap:14px;margin:6px 0 14px;padding:14px;border-radius:14px;background:#faf6ec;border:2px solid #e8d9b0}
+.wloc .zh{font-family:"Noto Serif SC",serif;color:#8a6a1e;font-size:18px;margin:0;letter-spacing:.1em}
+.wloc.r{background:#fbeceb;border-color:#e9b7b3}
+.wloc.r .zh{color:#7a1712}
+.locrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--wood)}
+.locrow .btn{width:auto;padding:8px 14px;font-size:14px}
+.needloc{border:2px dashed var(--chili);color:#fff;background:rgba(224,83,61,.14)}
+.loc-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--wood);padding:4px;border-radius:12px;border:1px solid var(--line)}
+.loc-tabs button{border:0;border-radius:9px;background:none;color:var(--muted);font:inherit;font-weight:700;font-size:14px;min-height:42px;cursor:pointer}
+.loc-tabs button[aria-selected="true"]{background:var(--gold);color:var(--wood)}
+.loc-grid{display:grid;gap:10px;padding:4px 2px}
+.loc-grid.t{grid-template-columns:repeat(5,1fr)}
+.loc-grid.r{grid-template-columns:repeat(3,1fr)}
+.tbtn{aspect-ratio:1;border-radius:50%;border:2px solid var(--gold);background:var(--wood);color:var(--gold);font:inherit;font-weight:800;font-size:20px;cursor:pointer;font-variant-numeric:tabular-nums}
+.tbtn.on{color:#1d1b19;background:radial-gradient(circle at 32% 28%,#fbe7a8,#d9ad55 58%,#9c6f22)}
+.rbtn{min-height:62px;border-radius:10px;border:2px solid #d9ad55;background:linear-gradient(180deg,#5a1410,#3a0e0b);color:#fbe7a8;font:inherit;font-weight:800;font-size:20px;letter-spacing:.06em;cursor:pointer;display:grid;place-items:center;gap:0}
+.rbtn small{display:block;font-size:10px;letter-spacing:.14em;opacity:.8;font-weight:700}
+.rbtn.on{background:linear-gradient(180deg,#c4302b,#7a1712)}
+.ebtn{min-height:56px;border-radius:12px;border:2px solid #1f8f4e;background:rgba(31,143,78,.15);color:#fff;font:inherit;font-weight:700;font-size:16px;cursor:pointer}
+.tbtn:focus-visible,.rbtn:focus-visible,.ebtn:focus-visible,.loc-tabs button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.selbar .locb .num{box-shadow:0 0 0 2px var(--gold),0 0 0 3.5px var(--wood)}
+.hist .locb{margin-right:4px}
+body.hasbar .toast{bottom:calc(92px + env(safe-area-inset-bottom))}
+.wloc .zh{white-space:nowrap}
+.selbar .locb{margin-right:4px}
+.tbtn,.rbtn{position:relative}
+.tbtn.busy,.rbtn.busy{border-style:dashed;opacity:.62}
+.tbtn.busy::after,.rbtn.busy::after{content:"";position:absolute;top:2px;right:2px;width:12px;height:12px;border-radius:50%;background:var(--chili);box-shadow:0 0 0 2px var(--wood)}
+.loc-legend{display:flex;gap:14px;align-items:center;font-size:12px;color:var(--muted)}
+.loc-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--chili);margin-right:5px;vertical-align:-1px}
+.locwarn{border:2px solid var(--chili);background:rgba(224,83,61,.12);border-radius:12px;padding:14px;display:grid;gap:10px}
+.locwarn b{font-size:17px;color:#fff}
+.locwarn p{margin:0;color:var(--cream);font-size:15px}
+.idle-box{text-align:center;justify-items:center}
+.idle-ring{width:104px;height:104px;border-radius:50%;display:grid;place-items:center;font-size:40px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;background:conic-gradient(var(--chili) var(--pct,100%),var(--line) 0);position:relative}
+.idle-ring::before{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--panel)}
+.idle-ring span{position:relative}
+.idle-box p{margin:0;max-width:360px}
+.idle-box .btn-row{width:100%}
+.var-list{display:grid;gap:10px}
+.var-opt{display:flex;justify-content:space-between;align-items:center;gap:12px;border:2px solid var(--gold);border-radius:12px;background:var(--wood);color:var(--cream);font:inherit;font-weight:700;font-size:17px;padding:14px 16px;cursor:pointer}
+.var-opt b{color:var(--gold);font-variant-numeric:tabular-nums}
+.var-opt:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.powered{display:flex;flex-direction:column;align-items:center;gap:2px;margin:18px auto 10px;padding:10px 18px;width:max-content;max-width:100%;border:1px solid var(--line);border-radius:12px;color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:.06em}
+.powered b{color:var(--gold);letter-spacing:.14em;font-size:14px}
+.powered span{font-size:12px;color:var(--cream);text-decoration:underline;text-underline-offset:3px}
+.powered:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+/* ===== Batch: filtres, notes, envoi comptoir, service, réservation ===== */
+.fbadge{display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:999px;background:var(--gold);color:var(--wood);font-size:12px;font-weight:800;margin-left:6px;padding:0 5px}
+.flist{display:grid;gap:8px}
+.ftog{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;min-height:52px;border:1px solid var(--line);border-radius:12px;background:var(--wood);color:var(--cream);font:inherit;font-weight:600;font-size:16px;padding:10px 14px;cursor:pointer;text-align:left}
+.ftog[aria-pressed="true"]{border-color:var(--gold);background:rgba(217,173,85,.14)}
+.ftog .sw{width:44px;height:26px;border-radius:13px;background:var(--line);position:relative;flex:0 0 auto}
+.ftog .sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--cream);transition:left .15s}
+.ftog[aria-pressed="true"] .sw{background:var(--gold)}
+.ftog[aria-pressed="true"] .sw::after{left:21px;background:var(--wood)}
+.ftog:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.chef{font-size:11px;font-weight:700;color:var(--wood);background:var(--gold);border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:2px}
+.special{max-width:760px;margin:12px auto 0;padding:0 16px}
+.special div{border:1px solid var(--gold);border-radius:14px;padding:12px 14px;background:rgba(217,173,85,.1);display:flex;gap:10px;align-items:center}
+.special b{color:var(--gold)}
+.note-in{width:100%;box-sizing:border-box;margin-top:6px;background:var(--wood);border:1px dashed var(--line);color:var(--cream);border-radius:8px;padding:7px 10px;font:inherit;font-size:16px}
+.note-in:focus{outline:2px solid var(--gold);outline-offset:1px;border-style:solid}
+.note-in::placeholder{color:var(--muted)}
+.wnote{font-size:15px;color:#8a6a1e;font-style:italic;margin-top:2px}
+.bell{position:fixed;right:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:14;width:52px;height:52px;border-radius:50%;border:1px solid var(--gold);background:var(--panel);color:var(--gold);font-size:22px;display:none;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.45);cursor:pointer}
+.bell.on{display:flex}
+body.hasbar .bell{bottom:calc(84px + env(safe-area-inset-bottom))}
+.bell:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.svc{display:grid;gap:10px}
+.svc .btn{min-height:58px;font-size:17px}
+.res-form{display:grid;gap:10px}
+.res-form label{display:grid;gap:4px;font-size:14px;color:var(--muted);font-weight:600}
+.res-form input,.res-form select,.res-form textarea{background:var(--wood);border:1px solid var(--line);color:var(--cream);border-radius:10px;padding:11px 12px;font:inherit;font-size:16px;min-height:44px;box-sizing:border-box;width:100%}
+.res-form input:focus,.res-form select:focus,.res-form textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.res-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.res-err{color:#ff9b8a;font-size:14px;margin:0;min-height:18px}
+.ctc-links{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ctc-links a,.ctc-links button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;border:1px solid var(--line);border-radius:10px;background:var(--wood);color:var(--cream);text-decoration:none;font:inherit;font-weight:700;font-size:15px;cursor:pointer;padding:8px}
+.ctc-links .gold{border-color:var(--gold);color:var(--gold)}
+.hours{display:grid;gap:4px;font-size:15px}
+.hours .open{color:#7fd39b;font-weight:700}
+.hours .closed{color:#ff9b8a;font-weight:700}
+#selSend[disabled]{opacity:.65}
+/* ===== Écran comptoir ===== */
+#cpt{display:none}
+body.cmode #cpt{display:block}
+body.cmode > header, body.cmode > .tools, body.cmode > #special, body.cmode > main, body.cmode > #fortune, body.cmode > #contact, body.cmode > footer, body.cmode > #selbar, body.cmode > #bell, body.cmode > #totop{display:none !important}
+.cpt-top{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;background:var(--wood);border-bottom:1px solid var(--line)}
+.cpt-top h1{font-family:var(--display);font-weight:400;color:var(--gold);font-size:24px;margin:0 auto 0 0;letter-spacing:0}
+.cpt-live{font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.cpt-live.ok{color:#7fd39b}.cpt-live.ko{color:#ff9b8a}
+.cpt-top .btn{width:auto;min-height:44px;padding:8px 14px;font-size:15px}
+.cpt-top .btn[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+.cpt-wrap{padding:14px 16px 40px;display:grid;gap:16px}
+.calls{display:grid;gap:10px}
+.call{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:2px solid var(--chili);background:rgba(224,83,61,.16);border-radius:14px;padding:12px 14px}
+.call.bill{border-color:var(--gold);background:rgba(217,173,85,.14)}
+.call b{font-size:18px}
+.call .ago{color:var(--muted);font-size:14px;margin-right:auto}
+.call .btn{width:auto;min-height:46px;padding:8px 16px}
+.cols{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
+@media (max-width:900px){.cols{grid-template-columns:1fr}}
+.col h2{font-size:20px;margin:0 0 10px;gap:10px}
+.col h2 .cnt{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:999px;background:var(--panel);border:1px solid var(--line);color:var(--cream);font-family:var(--body);font-size:15px;padding:0 6px}
+.col h2::after{display:none}
+.ocard{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:14px;display:grid;gap:10px;margin-bottom:12px}
+.ocard.isnew{border:2px solid var(--gold);box-shadow:0 0 0 3px rgba(217,173,85,.18)}
+.ocard.late{border-color:var(--chili)}
+.ohd{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cz{font-family:"Noto Serif SC",serif;color:var(--gold);font-size:15px;letter-spacing:0}
+.ohd .ago{margin-left:auto;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.ocard.late .ago{color:#ff9b8a;font-weight:700}
+.otag{font-size:12px;font-weight:800;border-radius:6px;padding:2px 7px;background:var(--gold);color:var(--wood)}
+.oitems{list-style:none;margin:0;padding:0}
+.oitems li{display:block;border:0;padding:4px 0;font-size:16px}
+.oitems .q{font-weight:800;color:var(--gold);margin-right:6px;font-variant-numeric:tabular-nums}
+.oitems .nn{color:var(--muted);font-size:13px;margin-right:4px}
+.oitems .nt{display:block;color:#f3d38a;font-style:italic;font-size:14px;margin-left:28px}
+.otot{display:flex;justify-content:space-between;font-weight:800;color:var(--gold);border-top:1px dashed var(--line);padding-top:8px;font-variant-numeric:tabular-nums}
+.oact{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.oact .btn{min-height:48px;font-size:15px;padding:8px}
+.oact .btn.ok{background:#1f8f4e;border-color:#1f8f4e;color:#fff}
+.empty-col{color:var(--muted);font-size:15px;border:1px dashed var(--line);border-radius:12px;padding:18px;text-align:center}
+.tgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+.tcell{min-height:92px;border-radius:14px;border:2px solid var(--line);background:var(--panel);color:var(--cream);font:inherit;display:grid;place-items:center;gap:2px;cursor:pointer;padding:8px;text-align:center}
+.tcell b{font-size:26px;font-variant-numeric:tabular-nums}
+.tcell small{font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.tcell.busy{border-color:var(--gold);background:rgba(217,173,85,.14)}
+.tcell.room b{color:#fbe7a8}
+.tcell:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.pin{max-width:360px;margin:12vh auto 0;padding:24px;display:grid;gap:14px;text-align:center}
+.pin input{font-size:28px;letter-spacing:.4em;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;color:var(--cream);padding:12px;min-height:56px}
+.pin input:focus{outline:2px solid var(--gold)}
+#selSheet .fields{grid-template-columns:1fr 1fr}
+#selTime{grid-column:1 / -1}
+#selSheet .fields input[aria-invalid="true"]{border-color:#ff9b8a;box-shadow:0 0 0 1px #ff9b8a}
+#selWa[aria-disabled="true"]{opacity:.55}
+.take-err{color:#ff9b8a;font-size:14px;margin:0;min-height:0}
+.take-err:empty{display:none}
+</style>
+</head>
+<body>
+<div style="position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:99;background:#B24A26;color:#fff;font:700 12px/1 system-ui,sans-serif;padding:5px 12px;border-radius:0 0 8px 8px;letter-spacing:.08em;pointer-events:none">VERSION DE TEST · pas de vraies commandes</div>
+<header>
+  <button type="button" class="share-top" id="shareTop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span class="lbl" id="shareTopLbl">Partager</span></button>
+  <div class="lang" role="group" aria-label="Langue / Language / 语言"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="zh" aria-pressed="false">中文</button></div>
+  <p class="zh">香格里拉饭店</p>
+  <h1>Restaurant Chinois Shangri-La</h1>
+  <p class="sub" id="sub">Carte du restaurant · prix en francs CFA</p>
+  <button type="button" class="histlink" id="histBtn"></button>
+</header>
+
+<div class="tools">
+  <div class="search">
+    <label for="q" id="qlabel" style="position:absolute;left:-9999px">Rechercher un plat</label>
+    <input id="q" type="search" enterkeyhint="search" placeholder="🔍 Rechercher…" autocomplete="off">
+    <button id="spicy" class="spicy-toggle" type="button" aria-haspopup="dialog">⚙ Filtres</button>
+    <button id="shareBar" class="share-bar" type="button" data-share aria-label="Partager le menu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+  </div>
+  <nav id="nav" aria-label="Catégories"></nav>
+</div>
+
+<div class="welcome hide" id="welcome" role="dialog" aria-modal="true" aria-labelledby="w2"><canvas id="confetti" aria-hidden="true"></canvas><div class="wbox"><p class="w1" id="w1"></p><p class="w2" id="w2"></p><p class="w3" id="w3">香格里拉饭店</p><p class="tap" id="wtap"></p></div></div>
+
+<div class="special" id="special" hidden></div>
+<main id="menu"></main>
+<div id="cpt" aria-live="polite"></div>
+
+<section class="fortune" id="fortune"></section>
+
+<section class="contact" id="contact"></section>
+
+<button type="button" class="bell" id="bell" aria-haspopup="dialog">🔔</button>
+<button type="button" class="totop" id="totop" aria-label="Haut de la page">↑</button>
+<button type="button" class="selbar" id="selbar"><span id="selbarL"></span><span id="selbarR"></span></button>
+
+<div class="sheet" id="selSheet" role="dialog" aria-modal="true" aria-labelledby="selTitle"><div class="sheet-box">
+  <h3 id="selTitle"></h3>
+  <span class="ostat" id="selStat"></span>
+  <div id="selLoc"></div>
+  <ul class="sel-list" id="selList"></ul>
+  <div class="sel-total"><span id="selTotL"></span><span id="selTotR"></span></div>
+  <p class="sel-note" id="selNote"></p>
+  <button type="button" class="btn gold" id="selSend"></button>
+  <button type="button" class="btn" id="selWaiter"></button>
+  <p class="sel-note" id="selTakeL" style="margin-top:6px;font-weight:600;color:var(--cream)"></p>
+  <div class="fields"><label for="selName" style="position:absolute;left:-9999px" id="selNameL">Nom</label><input id="selName" autocomplete="name" required aria-required="true" aria-describedby="selTakeErr"><label for="selPhone" style="position:absolute;left:-9999px" id="selPhoneL">Téléphone</label><input id="selPhone" type="tel" inputmode="tel" autocomplete="tel" required aria-required="true" aria-describedby="selTakeErr"><label for="selTime" style="position:absolute;left:-9999px">Heure</label><input id="selTime"></div>
+  <p class="take-err" id="selTakeErr" role="alert"></p>
+  <a class="btn wa-btn" id="selWa" target="_blank" rel="noopener"></a>
+  <div class="btn-row"><button type="button" class="btn" id="selClear"></button><button type="button" class="btn" id="selClose"></button></div>
+</div></div>
+
+<div class="sheet" id="locSheet" role="dialog" aria-modal="true" aria-labelledby="locTitle"><div class="sheet-box">
+  <h3 id="locTitle"></h3>
+  <p class="sel-note" id="locSub"></p>
+  <div class="loc-tabs" role="tablist" id="locTabs"><button type="button" role="tab" data-tab="t"></button><button type="button" role="tab" data-tab="r"></button><button type="button" role="tab" data-tab="e"></button></div>
+  <p class="loc-legend" id="locLegend" hidden><span><i></i><span id="locLegendT"></span></span></p>
+  <div id="locGrid" class="loc-grid"></div>
+  <div class="locwarn" id="locWarn" hidden role="alertdialog" aria-labelledby="locWarnT"><b id="locWarnT"></b><p id="locWarnP"></p>
+    <div class="btn-row"><button type="button" class="btn" id="locNo"></button><button type="button" class="btn gold" id="locYes"></button></div></div>
+  <button type="button" class="sh-close" id="locLater"></button>
+</div></div>
+
+<div class="sheet" id="idleSheet" role="alertdialog" aria-modal="true" aria-labelledby="idleT" aria-describedby="idleMsg"><div class="sheet-box idle-box">
+  <h3 id="idleT"></h3>
+  <div class="idle-ring" id="idleRing"><span id="idleNum">30</span></div>
+  <p id="idleMsg"></p>
+  <p class="sel-note" id="idleCount" aria-live="polite"></p>
+  <div class="btn-row"><button type="button" class="btn" id="idleNo"></button><button type="button" class="btn gold" id="idleYes"></button></div>
+</div></div>
+
+<div class="sheet" id="varSheet" role="dialog" aria-modal="true" aria-labelledby="varTitle"><div class="sheet-box">
+  <h3 id="varTitle"></h3>
+  <p class="sel-note" id="varSub"></p>
+  <div class="var-list" id="varList"></div>
+  <button type="button" class="sh-close" id="varClose"></button>
+</div></div>
+
+<div class="sheet" id="filtSheet" role="dialog" aria-modal="true" aria-labelledby="filtTitle"><div class="sheet-box">
+  <h3 id="filtTitle"></h3>
+  <div class="flist" id="filtList"></div>
+  <div class="btn-row"><button type="button" class="btn" id="filtReset"></button><button type="button" class="btn gold" id="filtClose"></button></div>
+</div></div>
+
+<div class="sheet" id="bellSheet" role="dialog" aria-modal="true" aria-labelledby="bellTitle"><div class="sheet-box">
+  <h3 id="bellTitle"></h3>
+  <div id="bellLoc"></div>
+  <div class="svc"><button type="button" class="btn gold" id="callWaiter"></button><button type="button" class="btn" id="callBill"></button></div>
+  <p class="sel-note" id="bellNote" aria-live="polite"></p>
+  <button type="button" class="sh-close" id="bellClose"></button>
+</div></div>
+
+<div class="sheet" id="resSheet" role="dialog" aria-modal="true" aria-labelledby="resTitle"><div class="sheet-box">
+  <h3 id="resTitle"></h3>
+  <p class="sel-note" id="resSub"></p>
+  <form class="res-form" id="resForm" novalidate>
+    <div class="res-2"><label for="resDate"><span id="resDateL"></span><input id="resDate" type="date" required></label><label for="resTime"><span id="resTimeL"></span><input id="resTime" type="time" required></label></div>
+    <div class="res-2"><label for="resPeople"><span id="resPeopleL"></span><input id="resPeople" type="number" inputmode="numeric" min="1" max="200" required></label><label for="resRoom"><span id="resRoomL"></span><select id="resRoom"></select></label></div>
+    <label for="resOcc"><span id="resOccL"></span><select id="resOcc"></select></label>
+    <div class="res-2"><label for="resName"><span id="resNameL"></span><input id="resName" autocomplete="name" required></label><label for="resPhone"><span id="resPhoneL"></span><input id="resPhone" type="tel" inputmode="tel" autocomplete="tel"></label></div>
+    <label for="resNote"><span id="resNoteL"></span><textarea id="resNote" rows="2" maxlength="300"></textarea></label>
+    <p class="res-err" id="resErr" role="alert"></p>
+    <button type="submit" class="btn wa-btn" id="resSend"></button>
+  </form>
+  <button type="button" class="sh-close" id="resClose"></button>
+</div></div>
+
+<div class="sheet" id="histSheet" role="dialog" aria-modal="true" aria-labelledby="histTitle"><div class="sheet-box">
+  <h3 id="histTitle"></h3>
+  <ul class="hist" id="histList"></ul>
+  <div class="btn-row"><button type="button" class="btn" id="histClear"></button><button type="button" class="btn" id="histClose"></button></div>
+</div></div>
+
+<div class="waiter" id="waiter" role="dialog" aria-modal="true" aria-labelledby="wTitle">
+  <h3 id="wTitle">Commande · Shangri-La</h3>
+  <p id="wSub"></p>
+  <div class="wloc" id="wLoc" hidden></div>
+  <table id="wTable"></table>
+  <div class="tot"><span>TOTAL</span><span id="wTot"></span></div>
+  <div class="wqr" id="wQr"><img id="wQrImg" alt="QR code de la commande"><p><b>Serveur</b>Scannez ce code avec votre téléphone pour recevoir la commande.</p></div>
+  <div class="wact" id="wAct" hidden>
+    <button type="button" class="btn" id="wAccept">👨‍🍳 Commande acceptée · en préparation</button>
+    <button type="button" class="btn done" id="wServed">🍽 Commande servie · terminée</button>
+    <button type="button" class="btn" id="wFree" hidden>🧹 Libérer la table</button>
+    <p id="wActMsg" role="status" aria-live="polite"></p>
+  </div>
+  <button type="button" class="btn" id="wClose"></button>
+</div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo du plat"><button class="x" id="lbx" type="button" aria-label="Fermer">×</button><figure><img id="lbimg" alt=""><figcaption><span class="name" id="lbname"></span><span class="price" id="lbprice"></span></figcaption><div class="navhint" id="lbhint"></div></figure></div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle"><div class="sheet-box">
+  <h3 id="shTitle"></h3>
+  <a class="sh-opt" id="shWa" target="_blank" rel="noopener"><span class="sh-ic" style="background:#1f8f4e">✆</span><span>WhatsApp</span></a>
+  <a class="sh-opt" id="shFb" target="_blank" rel="noopener"><span class="sh-ic" style="background:#1877f2">f</span><span>Facebook</span></a>
+  <button type="button" class="sh-opt" id="shCopy"><span class="sh-ic" style="background:#6b5d48">⧉</span><span id="shCopyLbl"></span></button>
+  <button type="button" class="sh-close" id="shClose"></button>
+</div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<footer id="foot" data-build="TEST-2026.11.07-0734">📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur.</footer>
+
+<script src="../lib/qrcode.js"></script>
+<script>
+// s: 1 = pimenté, 2 = très pimenté. p: null = prix sur demande. n: numéro de carte (vide si "00").
+const MENU = [
+ {id:"specialites", t:"Spécialités chinoises", items:[
+  {g:"Fondue chinoise"},
+  {name:"Fondue chinoise (petite portion)", p:38000},
+  {name:"Fondue chinoise (grande portion)", p:68000},
+  {g:"Plats du chef"},
+  {name:"Poulet sauté piment rouge", p:7500, s:1},
+  {name:"Filet de poulet frit", p:6000},
+  {name:"Soupe de poulet aux vermicelles", p:7500},
+  {name:"Cuisse de porc à la vapeur", p:9800},
+  {name:"Boulettes de porc sauce soja", p:6000},
+  {name:"Porc au meicai", p:7000},
+  {name:"Crevettes à la vapeur", p:8800},
+  {name:"Crevettes à la moutarde", p:8800, s:1},
+  {name:"Petites crevettes frites", p:8800},
+  {name:"Crevettes au pain frit", p:12800},
+  {name:"Crabe sauté au piment", p:13800, s:1},
+  {name:"Marmite au poisson", p:13800, s:1},
+  {name:"Salade au champignon noir", p:5500, s:1},
+  {name:"Salade de pattes de poulet", p:6500, s:1},
+  {name:"Suancaiyu", d:"Poisson aigre et pimenté", p:9800},
+  {name:"Suancai bœuf", p:8800, s:1},
+  {name:"Filet de bœuf dans l'huile pimentée", p:8800, s:1},
+  {name:"Filet de capitaine dans l'huile pimentée", p:10800, s:2},
+  {name:"Salade au journal (sautée)", p:6800, s:1},
+  {name:"Mouton sauté au piment", p:7500, s:1},
+  {name:"Bœuf aux pommes de terre et tomates", p:7000},
+  {name:"Golden soupe au bœuf", p:8800, s:1},
+  {name:"Tête de poisson à la vapeur", p:10800, s:2}
+ ]},
+ {id:"legumes", t:"Légumes", items:[
+  {n:"30", name:"Champignons noirs sautés", p:5500},
+  {n:"31", name:"Tomates sautées aux œufs", p:4000},
+  {n:"32", name:"Pommes de terre sautées", d:"Aigres et pimentées", p:4000, s:1},
+  {name:"Pommes de terre grillées", p:4000},
+  {n:"33", name:"Marmite aux aubergines", p:4000},
+  {n:"34", name:"Chou sauté", p:4000},
+  {n:"P3", name:"Marmite au chou", p:4500, s:1},
+  {n:"35", name:"Pousses de bambou sautées", p:6000},
+  {n:"P4", name:"Mapo tofu", p:4000, s:1},
+  {n:"P5", name:"Tofu sauce soja", p:4000},
+  {n:"P6", name:"Chou chinois sauté", p:4000},
+  {n:"P7", name:"Salade d'algues vertes", p:4500},
+  {name:"Ciboulette chinoise sautée aux œufs", p:5000},
+  {name:"Salade de concombres", p:2500},
+  {name:"Tofu grillé", p:4800, s:1},
+  {name:"Tofu aux œufs de cent ans", p:4800},
+  {name:"Salade de tofu bambou", p:6000},
+  {name:"Salade de pousses de bambou", p:6000},
+  {name:"Germes de soja sautés", p:5000},
+  {name:"Champignons blancs frits", p:8800}
+ ]},
+ {id:"boeuf", t:"Bœuf", items:[
+  {n:"36", name:"Filet de bœuf sauce piquante", p:5300, s:1},
+  {n:"37", name:"Filet de bœuf à l'ananas", p:5300},
+  {n:"38", name:"Filet de bœuf au gingembre", p:5300},
+  {n:"39", name:"Filet de bœuf aux pousses de bambou", p:6000},
+  {n:"40", name:"Filet de bœuf aux champignons noirs", p:6000},
+  {n:"41", name:"Filet de bœuf aux oignons", p:5300},
+  {n:"42", name:"Filet de bœuf aux poivrons verts", p:5300},
+  {n:"43", name:"Filet de bœuf au curry", p:5300},
+  {n:"44", name:"Filet de bœuf aux légumes", p:5300},
+  {n:"45", name:"Filet de bœuf aux champignons de Paris", p:6000},
+  {n:"46", name:"Filet de bœuf aux champignons et bambou", p:6000},
+  {n:"47", name:"Bœuf braisé aux épices", p:6000},
+  {n:"P13", name:"Salade de bœuf braisé aux épices", p:6500, s:1},
+  {n:"P14", name:"Bœuf sauté au piment vert", d:"Sans sauce", p:6500, s:1},
+  {n:"P15", name:"Bœuf dans l'huile pimentée", p:8800, s:2}
+ ]},
+ {id:"poulet", t:"Poulet", items:[
+  {n:"48", name:"Poulet sauce piquante", p:5300, s:1},
+  {n:"49", name:"Poulet sauce aigre-douce", p:6000},
+  {n:"50", name:"Poulet aux noix de cajou", p:6000},
+  {n:"51", name:"Poulet aux poivrons verts", p:5300},
+  {n:"52", name:"Poulet aux champignons noirs", p:6000},
+  {n:"53", name:"Poulet au curry", p:5300},
+  {n:"54", name:"Poulet au gingembre", p:5300},
+  {n:"55", name:"Poulet aux pousses de bambou", p:6000},
+  {n:"56", name:"Poulet au citron", p:6000},
+  {n:"57", name:"Poulet à l'ananas", p:5300},
+  {n:"58", name:"Poulet aux champignons de Paris", p:6000},
+  {n:"59", name:"Poulet aux légumes", p:5300},
+  {n:"60", name:"Poulet du chef sauce piquante", p:6000, s:1},
+  {n:"P9", name:"Poulet sauce tomate", p:6000},
+  {n:"P10", name:"Poulet pané frit", p:6000},
+  {n:"P11", name:"Ailes de poulet grillées", p:6000},
+  {n:"P12", name:"Poulet sauté au piment vert", d:"Sans sauce", p:6000, s:1},
+  {name:"Poulet local sauté", p:7000}
+ ]},
+ {id:"canard", t:"Canard", items:[
+  {n:"61", name:"Canard sauce piquante", p:7000, s:1},
+  {n:"62", name:"Canard aux légumes", p:7000},
+  {n:"63", name:"Canard au gingembre", p:7000},
+  {n:"64", name:"Canard au curry", p:7000},
+  {n:"65", name:"Canard à l'ananas", p:7000},
+  {n:"66", name:"Canard aux champignons et bambou", p:7000},
+  {n:"67", name:"Canard aux champignons noirs", p:7000},
+  {n:"P16", name:"Canard frit aux épices", p:7500},
+  {n:"P17", name:"Pigeon frit aux épices", p:5600}
+ ]},
+ {id:"porc", t:"Porc", items:[
+  {n:"68", name:"Porc aux oignons", p:5300},
+  {n:"69", name:"Porc sauce piquante", p:5300, s:1},
+  {n:"70", name:"Porc aux poivrons verts", p:5300},
+  {n:"71", name:"Porc au gingembre", p:5300},
+  {n:"72", name:"Porc aux champignons de Paris", p:6000},
+  {n:"73", name:"Porc à l'ananas", p:6000},
+  {n:"74", name:"Porc sauce aigre-douce", p:6000},
+  {n:"75", name:"Porc aux champignons noirs", p:6000},
+  {n:"76", name:"Porc au caramel", p:6000},
+  {n:"77", name:"Porc aux légumes", p:5300},
+  {n:"78", name:"Porc aux champignons et bambou", p:6000},
+  {name:"Pieds de porc sauce soja", p:6000}
+ ]},
+ {id:"fruits-de-mer", t:"Fruits de mer", items:[
+  {g:"Crevettes et seiches"},
+  {n:"79", name:"Crevettes au gingembre", p:8800},
+  {n:"80", name:"Crevettes aux légumes", p:8800},
+  {n:"81", name:"Crevettes aux tomates", p:8800},
+  {n:"82", name:"Crevettes à l'ail", p:8800},
+  {n:"83", name:"Crevettes sauce piquante", p:8800, s:1},
+  {n:"84", name:"Crevettes au curry", p:8800},
+  {n:"85", name:"Crevettes aux noix de cajou", p:8800},
+  {n:"86", name:"Crevettes aux champignons noirs", p:8800},
+  {n:"87", name:"Crevettes sauce aigre-douce", p:8800},
+  {n:"88", name:"Seiches sauce piquante", p:8800, s:1},
+  {n:"89", name:"Seiches sautées", p:8800},
+  {n:"P23", name:"Crevettes frites", p:8800},
+  {g:"Gambas et langouste"},
+  {n:"94", name:"Gambas au caramel", p:12800},
+  {n:"95", name:"Gambas à la vapeur", p:12800},
+  {n:"P18", name:"Gambas sauce piquante", p:12800, s:1},
+  {n:"P19", name:"Gambas sauce légumes", p:12800},
+  {n:"P20", name:"Gambas sauce tomate", p:12800},
+  {n:"P22", name:"Gambas grillées", p:12800},
+  {n:"96", name:"Langouste à la vapeur", p:16800},
+  {n:"P21", name:"Langouste sauce tomate", p:16800},
+  {g:"Poisson"},
+  {n:"90", name:"Filet de capitaine sauce piquante", p:7500, s:1},
+  {n:"91", name:"Filet de capitaine sauce aigre-douce", p:7500},
+  {n:"92", name:"Filet de capitaine sauté", p:7500},
+  {n:"93", name:"Filet de capitaine aux tomates", p:7500},
+  {name:"Poisson entier à la vapeur", p:9800},
+  {name:"Poisson entier sauce légumes", p:9800},
+  {name:"Poisson entier sauce aigre-douce", p:13800},
+  {name:"Saumon nature", p:29800}
+ ]},
+ {id:"chauffants", t:"Marmites et plaques chauffantes", items:[
+  {g:"Marmites"},
+  {n:"97", name:"Marmite aux fruits de mer", p:8800},
+  {n:"98", name:"Marmite aux crevettes", p:8800},
+  {n:"99", name:"Marmite aux trois trésors", p:7800},
+  {n:"100", name:"Marmite aux vermicelles et crevettes", p:8800},
+  {g:"Plaques chauffantes"},
+  {n:"101", name:"Poulet saté", p:7500},
+  {n:"102", name:"Crevettes saté", p:9500},
+  {n:"103", name:"Bœuf saté", p:7500},
+  {n:"104", name:"Seiches", p:8800},
+  {n:"105", name:"Gambas sucrées et pimentées", p:12800, s:1},
+  {n:"106", name:"Gambas à l'ail", p:12800},
+  {n:"107", name:"Mouton", p:7500},
+  {n:"108", name:"Chap shoue", p:8000},
+  {n:"109", name:"Crevettes à la tomate", p:9500},
+  {n:"110", name:"Poisson saté", p:8800},
+  {name:"Tofu saté", p:6000}
+ ]},
+ {id:"brochettes", t:"Brochettes", late:true, items:[
+  {g:"Prix par portion"},
+  {name:"Brochettes de crevettes grillées", zh:"烤虾", p:7000},
+  {name:"Brochettes de calamar grillé", zh:"烤鱿鱼", p:7000},
+  {name:"Brochettes de bœuf", zh:"牛肉串", p:6000},
+  {name:"Rognons d'agneau grillés", zh:"烤羊腰", p:8000},
+  {name:"Pattes de poulet grillées", zh:"生烤鸡爪", p:6000},
+  {name:"Gésiers de poulet grillés", zh:"烤鸡胗", p:6000},
+  {name:"Poitrine de porc grillée", zh:"烤五花肉", p:6000},
+  {name:"Pommes de terre grillées en brochette", zh:"烤土豆片", p:4000},
+  {name:"Tofu grillé en brochette", zh:"烤豆腐", p:5000},
+  {name:"Lotus grillé en brochette", zh:"烤藕片", p:8000}
+ ]},
+ {id:"variantes", t:"", late:true, hidden:true, items:[
+  {name:"Champagne · 48 000 F", p:48000, parent:"Champagne"},
+  {name:"Champagne · 78 000 F", p:78000, parent:"Champagne"}
+ ]},
+ {id:"riz-nouilles", t:"Riz et nouilles", items:[
+  {g:"Riz"},
+  {n:"111", name:"Riz nature", p:1000},
+  {n:"112", name:"Riz cantonais au jambon", p:3800},
+  {n:"113", name:"Riz cantonais au bœuf", p:3800},
+  {n:"114", name:"Riz cantonais aux crevettes", p:4800},
+  {n:"115", name:"Riz sauté au curry", d:"Poulet", p:3800},
+  {n:"116", name:"Riz sauté à l'ananas", d:"Poulet et crevettes", p:4800},
+  {n:"117", name:"Riz sauté à l'ail", p:3000},
+  {n:"118", name:"Riz sauté aux légumes", p:3000},
+  {g:"Nouilles et vermicelles"},
+  {n:"119", name:"Nouilles sautées aux crevettes", p:5500},
+  {n:"120", name:"Nouilles sautées au bœuf", p:5000},
+  {n:"P25", name:"Nouilles sautées au poulet", p:5000},
+  {n:"P26", name:"Nouilles sautées au porc", p:5000},
+  {n:"121", name:"Nouilles sautées aux trois trésors", p:5000},
+  {n:"122", name:"Nouilles sautées aux légumes", p:4500},
+  {n:"123", name:"Vermicelles sautés au porc", p:5000},
+  {n:"124", name:"Vermicelles sautés aux crevettes", p:5800},
+  {n:"125", name:"Vermicelles sautés aux trois trésors", p:5500},
+  {n:"126", name:"Vermicelles sautés aux légumes", p:4500},
+  {name:"Soupe de nouilles au bœuf", p:5000},
+  {name:"Soupe de vermicelles blancs au bœuf", p:5000, s:1},
+  {g:"Accompagnements"},
+  {n:"127", name:"Niangao sauté", d:"Galettes de riz gluant", p:5500},
+  {n:"128", name:"Petits pains farcis à la vapeur", d:"Porc ou bœuf", p:4500},
+  {n:"129", name:"Frites", p:1500},
+  {name:"Tarte à la citrouille", p:4500},
+  {name:"Golden pain grillé", p:4500}
+ ]},
+ {id:"desserts", t:"Desserts", items:[
+  {name:"Litchis", p:3000},
+  {name:"Gingembre confit", p:3000},
+  {name:"Glace (1 boule)", d:"Vanille, chocolat ou fraise", p:1500},
+  {name:"Sorbet (1 boule)", d:"Café, citron, pomme ou mangue", p:1800},
+  {name:"Colonel", d:"2 boules sorbet citron, vodka", p:4500},
+  {name:"Dame blanche", d:"2 boules vanille, sauce chocolat, Get 27, chantilly", p:4500},
+  {name:"Pêche Melba", d:"2 boules vanille, pêche, sauce chocolat, chantilly", p:4500},
+  {name:"Poire Belle-Hélène", d:"2 boules vanille, poire, sauce chocolat, chantilly", p:4500},
+  {name:"Banana split", d:"Banane, vanille, chocolat, fraise, sauce chocolat, chantilly", p:4500},
+  {name:"Salade de fruits", p:1500},
+  {name:"Ananas nature", p:1500},
+  {name:"Beignet de fruit", d:"Pomme, banane ou ananas", p:2500},
+  {name:"Beignet de fruit flambé", d:"Pomme, banane ou ananas", p:3800},
+  {name:"Champignon blanc", p:2500, nw:1}
+ ]},
+ {id:"boissons-chaudes", t:"Boissons chaudes", items:[
+  {name:"Lait chaud", p:1800},
+  {name:"Café espresso", p:1800},
+  {name:"Irish coffee (cognac)", p:4800},
+  {name:"Irish coffee (whisky)", p:3800},
+  {name:"Thé menthe, thé citron, thé Lipton", p:1500},
+  {name:"Thé chinois (thé vert)", p:3500},
+  {name:"Thé au jasmin", p:3500},
+  {name:"Thé rouge", p:3500},
+  {name:"Thé au chrysanthème", p:4500},
+  {name:"Thé à la rose", p:4500},
+  {name:"Thé oolong, thé Pu'er", p:3500},
+  {name:"Thé au ginseng", p:6800},
+  {name:"Thé aux fleurs", p:6800}
+ ]},
+ {id:"boissons-fraiches", t:"Boissons fraîches", items:[
+  {g:"Thés glacés et bubble tea"},
+  {name:"Bubble tea", p:2800, nw:1},
+  {name:"Bubble tea goyave au thé jasmin", p:3800, nw:1},
+  {name:"Bubble tea avocat au thé jasmin", p:3800, nw:1},
+  {name:"Bubble tea café au thé", p:3800, nw:1},
+  {name:"Thé jasmin passion", p:3800, nw:1},
+  {name:"Thé jasmin litchi", p:3800, nw:1},
+  {name:"Thé jasmin pamplemousse", p:3800, nw:1},
+  {name:"Thé noir citron glacé", p:1800, nw:1},
+  {name:"Thé glacé", p:1500},
+  {g:"Sodas, jus et eaux"},
+  {name:"Coca, Fanta, Sprite", p:1500},
+  {name:"Coca Zéro", p:1800},
+  {name:"Tonic (eau gazeuse)", p:1800},
+  {name:"Diabolo menthe", p:2000, nw:1},
+  {name:"Sirop à l'eau minérale 0,5 L", d:"Menthe, cassis, grenadine ou citron", p:1800},
+  {name:"Eau minérale 0,5 L", p:500},
+  {name:"Eau minérale 1,5 L", p:1500},
+  {name:"Jus de fruits (verre)", d:"Orange, pomme, ananas ou mangue", p:1800},
+  {name:"Jus de fruits (boîte 1 L)", d:"Orange, pomme, ananas ou mangue", p:4500},
+  {name:"Jus de fruits pressé", p:3000},
+  {name:"Jus de gingembre (canette)", p:1800},
+  {name:"Jus de tomate", p:2000},
+  {name:"Malta", p:1800},
+  {name:"Red Bull", p:1800},
+  {name:"Yaourt nutritif", p:1800},
+  {name:"Vita milk", p:1500},
+  {g:"Bières"},
+  {name:"Bière 33 cl", d:"Flag, Beaufort, Castel, Brakina, Chill", p:1500},
+  {name:"Bière 66 cl", d:"Brakina, Sobbra, Flag, Castel, Beaufort, Chill, Tequila", p:2000},
+  {name:"Guinness ou Heineken 33 cl", p:2000},
+  {name:"Tsingtao 500 ml", p:2000},
+  {name:"Bière pression (verre)", p:1500},
+  {name:"Bière pression (1 L)", p:3000}
+ ]},
+ {id:"aperitifs", t:"Apéritifs et cocktails", items:[
+  {name:"Johnnie Walker Red, J&B", p:3800},
+  {name:"Ricard, pastis, vodka", p:3200},
+  {name:"Campari, gin, rhum", p:3200},
+  {name:"Campari orange", p:4500},
+  {name:"Martini", d:"Rouge, rosé ou blanc", p:3200},
+  {name:"Porto rouge", p:3500},
+  {name:"Malibu", p:3800},
+  {name:"Vodka orange", p:4500},
+  {name:"Malibu ananas", p:4500},
+  {name:"Cocktail de jus (sans alcool)", d:"Sirop menthe, jus d'orange, ananas, pomme, mangue", p:2800},
+  {name:"Cocktail maison", d:"Rhum, grenadine, jus d'orange, ananas, pomme, mangue", p:4500},
+  {name:"Kir", d:"Vin blanc, crème de cassis", p:3500},
+  {name:"Kir royal", d:"Champagne, crème de cassis", p:5500},
+  {name:"Perroquet", d:"Pastis, sirop de menthe", p:3800},
+  {name:"Tomate", d:"Pastis, sirop de grenadine", p:3800},
+  {name:"Mauresque", d:"Pastis, sirop d'orgeat", p:3800},
+  {name:"Americano", d:"Martini rouge, rosé, blanc, Campari", p:3800},
+  {name:"Bloody Mary", d:"Vodka, jus de tomate", p:4500},
+  {name:"Mojito", d:"Rhum blanc, Sprite, menthe, citron", p:4500},
+  {name:"Mojito sans alcool", d:"Sprite, menthe, citron", p:2500}
+ ]},
+ {id:"digestifs", t:"Digestifs", items:[
+  {name:"Saké (alcool chinois)", p:null},
+  {name:"Marie Brizard", p:3800},
+  {name:"Get 27", p:3800},
+  {name:"Armagnac", p:3800},
+  {name:"Grand Marnier, Cointreau", p:4800},
+  {name:"Chivas Regal, Johnnie Walker Black Label", p:4800},
+  {name:"Cognac", p:null}
+ ]},
+ {id:"vins", t:"Vins", items:[
+  {g:"Vin rosé"},
+  {name:"Listel Gris (1/2 bouteille)", p:8000},
+  {name:"Listel Gris", p:14000},
+  {name:"Côtes de Provence (1/2 bouteille)", p:8500},
+  {name:"Côtes de Provence", p:16000},
+  {g:"Vin rouge"},
+  {name:"Vin rouge sucré", p:10500, nw:1},
+  {name:"J.P. Chenet", p:12000},
+  {name:"Chianti", p:17000},
+  {name:"Beaujolais", p:16000},
+  {name:"Côtes du Rhône", p:17000},
+  {name:"Côtes du Rhône (1/2 bouteille)", p:8500},
+  {name:"Baron de Lestac Bordeaux", p:18000},
+  {name:"Saint-Émilion Château", p:26000},
+  {name:"Haut-Médoc Château d'Arcins", p:39500},
+  {name:"Haut-Médoc Château Barreyre", p:36000},
+  {name:"Mouton Cadet Baron Philippe de Rothschild", p:19000},
+  {name:"Châteauneuf-du-Pape", p:39500},
+  {name:"Maison Castel Pinot Noir", p:17000},
+  {g:"Vin blanc et champagne"},
+  {name:"Sauvignon", p:14000},
+  {name:"Baron d'Orcel", p:12000},
+  {name:"Muscadet", p:16000},
+  {name:"Champagne", p:48000, p2:78000, variants:["Champagne · 48 000 F","Champagne · 78 000 F"]},
+  {g:"Vin en pichet (rouge, rosé, blanc)"},
+  {name:"Verre de vin", p:2800},
+  {name:"1/4 pichet", p:3800},
+  {name:"1/2 pichet", p:6500}
+ ]}
+];
+
+// Traductions chinoises, indexées par le nom français.
+const ZH_SECTIONS = {"brochettes":"烧烤串","specialites":"招牌特色菜","legumes":"蔬菜","boeuf":"牛肉","poulet":"鸡肉","canard":"鸭肉","porc":"猪肉","fruits-de-mer":"海鲜","chauffants":"砂锅与铁板","riz-nouilles":"米饭与面食","desserts":"甜品","boissons-chaudes":"热饮","boissons-fraiches":"冷饮","aperitifs":"开胃酒与鸡尾酒","digestifs":"餐后酒","vins":"葡萄酒"};
+const ZH_GROUPS = {"Prix par portion":"价格按份计","Fondue chinoise":"火锅","Plats du chef":"厨师推荐","Crevettes et seiches":"虾与墨鱼","Gambas et langouste":"大虾与龙虾","Poisson":"鱼","Marmites":"砂锅","Plaques chauffantes":"铁板","Riz":"米饭","Nouilles et vermicelles":"面条与米粉","Accompagnements":"点心小吃","Thés glacés et bubble tea":"冰茶与珍珠奶茶","Sodas, jus et eaux":"汽水、果汁与矿泉水","Bières":"啤酒","Vin rosé":"桃红葡萄酒","Vin rouge":"红葡萄酒","Vin blanc et champagne":"白葡萄酒与香槟","Vin en pichet (rouge, rosé, blanc)":"壶装葡萄酒（红、桃红、白）"};
+const ZH = {
+"Champagne · 48 000 F":["香槟 · 48 000 F"],
+"Champagne · 78 000 F":["香槟 · 78 000 F"],
+"Brochettes de crevettes grillées":["烤虾"],
+"Brochettes de calamar grillé":["烤鱿鱼"],
+"Brochettes de bœuf":["牛肉串"],
+"Rognons d'agneau grillés":["烤羊腰"],
+"Pattes de poulet grillées":["生烤鸡爪"],
+"Gésiers de poulet grillés":["烤鸡胗"],
+"Poitrine de porc grillée":["烤五花肉"],
+"Pommes de terre grillées en brochette":["烤土豆片"],
+"Tofu grillé en brochette":["烤豆腐"],
+"Lotus grillé en brochette":["烤藕片"],
+"Fondue chinoise (petite portion)":["鸳鸯火锅（小份）"],
+"Fondue chinoise (grande portion)":["鸳鸯火锅（大份）"],
+"Poulet sauté piment rouge":["辣子鸡"],
+"Filet de poulet frit":["香酥鸡柳"],
+"Soupe de poulet aux vermicelles":["鸡汤粉丝煲"],
+"Cuisse de porc à la vapeur":["东坡肘子"],
+"Boulettes de porc sauce soja":["红烧狮子头"],
+"Porc au meicai":["梅菜扣肉"],
+"Crevettes à la vapeur":["蒜蓉蒸虾"],
+"Crevettes à la moutarde":["芥末虾球"],
+"Petites crevettes frites":["椒盐小虾"],
+"Crevettes au pain frit":["香酥面包虾"],
+"Crabe sauté au piment":["香辣蟹"],
+"Marmite au poisson":["香辣烤鱼"],
+"Salade au champignon noir":["老醋木耳"],
+"Salade de pattes de poulet":["凉拌无骨凤爪"],
+"Suancaiyu":["酸菜鱼","酸辣"],
+"Suancai bœuf":["酸菜肥牛"],
+"Filet de bœuf dans l'huile pimentée":["水煮牛肉"],
+"Filet de capitaine dans l'huile pimentée":["水煮鱼"],
+"Salade au journal (sautée)":["香辣牛百叶"],
+"Mouton sauté au piment":["香辣羊排"],
+"Bœuf aux pommes de terre et tomates":["番茄土豆炖牛腩"],
+"Golden soupe au bœuf":["金汤肥牛"],
+"Tête de poisson à la vapeur":["剁椒鱼头"],
+"Champignons noirs sautés":["小炒木耳"],
+"Tomates sautées aux œufs":["西红柿炒鸡蛋"],
+"Pommes de terre sautées":["酸辣土豆丝","酸辣"],
+"Pommes de terre grillées":["香煎土豆片"],
+"Marmite aux aubergines":["茄子煲"],
+"Chou sauté":["手撕包菜"],
+"Marmite au chou":["干锅包菜"],
+"Pousses de bambou sautées":["油焖竹笋"],
+"Mapo tofu":["麻婆豆腐"],
+"Tofu sauce soja":["红烧豆腐"],
+"Chou chinois sauté":["炝炒白菜"],
+"Salade d'algues vertes":["凉拌海带丝"],
+"Ciboulette chinoise sautée aux œufs":["韭菜炒鸡蛋"],
+"Salade de concombres":["拍黄瓜"],
+"Tofu grillé":["香煎豆腐"],
+"Tofu aux œufs de cent ans":["皮蛋豆腐"],
+"Salade de tofu bambou":["凉拌腐竹"],
+"Salade de pousses de bambou":["凉拌竹笋"],
+"Germes de soja sautés":["清炒豆芽"],
+"Champignons blancs frits":["椒盐蘑菇"],
+"Filet de bœuf sauce piquante":["香辣牛柳"],
+"Filet de bœuf à l'ananas":["菠萝牛柳"],
+"Filet de bœuf au gingembre":["姜葱牛柳"],
+"Filet de bœuf aux pousses de bambou":["笋片炒牛柳"],
+"Filet de bœuf aux champignons noirs":["木耳炒牛柳"],
+"Filet de bœuf aux oignons":["洋葱炒牛柳"],
+"Filet de bœuf aux poivrons verts":["青椒炒牛柳"],
+"Filet de bœuf au curry":["咖喱牛肉"],
+"Filet de bœuf aux légumes":["杂菜炒牛柳"],
+"Filet de bœuf aux champignons de Paris":["蘑菇炒牛柳"],
+"Filet de bœuf aux champignons et bambou":["双冬牛柳"],
+"Bœuf braisé aux épices":["五香酱牛肉"],
+"Salade de bœuf braisé aux épices":["红油酱牛肉"],
+"Bœuf sauté au piment vert":["小炒黄牛肉", "湘味干炒，无汤汁"],
+"Bœuf dans l'huile pimentée":["水煮牛肉"],
+"Poulet sauce piquante":["香辣鸡丁"],
+"Poulet sauce aigre-douce":["糖醋鸡块"],
+"Poulet aux noix de cajou":["腰果鸡丁"],
+"Poulet aux poivrons verts":["青椒鸡丁"],
+"Poulet aux champignons noirs":["木耳炒鸡片"],
+"Poulet au curry":["咖喱鸡"],
+"Poulet au gingembre":["姜葱鸡"],
+"Poulet aux pousses de bambou":["笋片炒鸡丁"],
+"Poulet au citron":["港式柠檬鸡"],
+"Poulet à l'ananas":["菠萝鸡球"],
+"Poulet aux champignons de Paris":["蘑菇炒鸡片"],
+"Poulet aux légumes":["杂菜炒鸡丁"],
+"Poulet du chef sauce piquante":["厨师招牌香辣鸡"],
+"Poulet sauce tomate":["茄汁鸡块"],
+"Poulet pané frit":["香酥炸鸡"],
+"Ailes de poulet grillées":["奥尔良烤鸡翅"],
+"Poulet sauté au piment vert":["青椒小炒鸡", "干炒，无汤汁"],
+"Poulet local sauté":["小炒土鸡"],
+"Canard sauce piquante":["香辣鸭"],
+"Canard aux légumes":["杂菜炒鸭片"],
+"Canard au gingembre":["子姜炒鸭"],
+"Canard au curry":["咖喱鸭"],
+"Canard à l'ananas":["菠萝鸭片"],
+"Canard aux champignons et bambou":["双冬焖鸭"],
+"Canard aux champignons noirs":["木耳炒鸭片"],
+"Canard frit aux épices":["香酥鸭"],
+"Pigeon frit aux épices":["香酥乳鸽"],
+"Porc aux oignons":["洋葱炒肉片"],
+"Porc sauce piquante":["香辣肉片"],
+"Porc aux poivrons verts":["青椒炒肉"],
+"Porc au gingembre":["姜丝炒肉"],
+"Porc aux champignons de Paris":["蘑菇炒肉片"],
+"Porc à l'ananas":["菠萝咕噜肉"],
+"Porc sauce aigre-douce":["糖醋里脊"],
+"Porc aux champignons noirs":["木耳炒肉片"],
+"Porc au caramel":["红烧肉"],
+"Porc aux légumes":["杂菜炒肉片"],
+"Porc aux champignons et bambou":["双冬炒肉片"],
+"Pieds de porc sauce soja":["红烧猪蹄"],
+"Crevettes au gingembre":["姜葱虾仁"],
+"Crevettes aux légumes":["杂菜虾仁"],
+"Crevettes aux tomates":["茄汁虾仁"],
+"Crevettes à l'ail":["蒜香虾仁"],
+"Crevettes sauce piquante":["香辣虾仁"],
+"Crevettes au curry":["咖喱虾仁"],
+"Crevettes aux noix de cajou":["腰果虾仁"],
+"Crevettes aux champignons noirs":["木耳虾仁"],
+"Crevettes sauce aigre-douce":["糖醋虾仁"],
+"Seiches sauce piquante":["香辣墨鱼"],
+"Seiches sautées":["爆炒墨鱼"],
+"Crevettes frites":["干炸虾"],
+"Gambas au caramel":["油焖大虾"],
+"Gambas à la vapeur":["清蒸大虾"],
+"Gambas sauce piquante":["香辣大虾"],
+"Gambas sauce légumes":["杂菜大虾"],
+"Gambas sauce tomate":["茄汁大虾"],
+"Gambas grillées":["香烤大虾"],
+"Langouste à la vapeur":["蒜蓉粉丝蒸龙虾"],
+"Langouste sauce tomate":["茄汁龙虾"],
+"Filet de capitaine sauce piquante":["香辣鱼片"],
+"Filet de capitaine sauce aigre-douce":["糖醋鱼片"],
+"Filet de capitaine sauté":["滑炒鱼片"],
+"Filet de capitaine aux tomates":["茄汁鱼片"],
+"Poisson entier à la vapeur":["清蒸全鱼"],
+"Poisson entier sauce légumes":["杂菜烩全鱼"],
+"Poisson entier sauce aigre-douce":["糖醋全鱼"],
+"Saumon nature":["三文鱼刺身"],
+"Marmite aux fruits de mer":["海鲜煲"],
+"Marmite aux crevettes":["鲜虾煲"],
+"Marmite aux trois trésors":["三鲜煲"],
+"Marmite aux vermicelles et crevettes":["粉丝虾煲"],
+"Poulet saté":["铁板沙爹鸡"],
+"Crevettes saté":["铁板沙爹虾"],
+"Bœuf saté":["铁板沙爹牛肉"],
+"Seiches":["铁板墨鱼"],
+"Gambas sucrées et pimentées":["铁板甜辣大虾"],
+"Gambas à l'ail":["铁板蒜蓉大虾"],
+"Mouton":["铁板羊肉"],
+"Chap shoue":["铁板杂烩"],
+"Crevettes à la tomate":["铁板茄汁虾"],
+"Poisson saté":["铁板沙爹鱼"],
+"Tofu saté":["铁板沙爹豆腐"],
+"Riz nature":["白米饭"],
+"Riz cantonais au jambon":["扬州炒饭（火腿）"],
+"Riz cantonais au bœuf":["扬州炒饭（牛肉）"],
+"Riz cantonais aux crevettes":["扬州炒饭（虾仁）"],
+"Riz sauté au curry":["咖喱鸡肉炒饭"],
+"Riz sauté à l'ananas":["菠萝炒饭","鸡肉和虾"],
+"Riz sauté à l'ail":["蒜香炒饭"],
+"Riz sauté aux légumes":["素炒饭"],
+"Nouilles sautées aux crevettes":["虾仁炒面"],
+"Nouilles sautées au bœuf":["牛肉炒面"],
+"Nouilles sautées au poulet":["鸡丝炒面"],
+"Nouilles sautées au porc":["肉丝炒面"],
+"Nouilles sautées aux trois trésors":["三鲜炒面"],
+"Nouilles sautées aux légumes":["素炒面"],
+"Vermicelles sautés au porc":["肉丝炒米粉"],
+"Vermicelles sautés aux crevettes":["虾仁炒米粉"],
+"Vermicelles sautés aux trois trésors":["三鲜炒米粉"],
+"Vermicelles sautés aux légumes":["素炒米粉"],
+"Soupe de nouilles au bœuf":["红烧牛肉面"],
+"Soupe de vermicelles blancs au bœuf":["香辣牛肉米线"],
+"Niangao sauté":["炒年糕", "糯米年糕"],
+"Petits pains farcis à la vapeur":["鲜肉包子", "猪肉或牛肉馅"],
+"Frites":["薯条"],
+"Tarte à la citrouille":["南瓜饼"],
+"Golden pain grillé":["黄金烤饼"],
+"Litchis":["荔枝"],
+"Gingembre confit":["蜜饯糖姜"],
+"Glace (1 boule)":["冰淇淋（1球）", "香草、巧克力或草莓味"],
+"Sorbet (1 boule)":["雪芭（1球）", "咖啡、柠檬、苹果或芒果味"],
+"Colonel":["上校冰品（柠檬雪芭配伏特加）", "两球柠檬雪芭，淋伏特加"],
+"Dame blanche":["白夫人圣代","两球香草冰淇淋、巧克力酱、Get 27 薄荷酒、鲜奶油"],
+"Pêche Melba":["蜜桃梅尔巴","两球香草冰淇淋、桃子、巧克力酱、鲜奶油"],
+"Poire Belle-Hélène":["美丽海伦梨","两球香草冰淇淋、梨、巧克力酱、鲜奶油"],
+"Banana split":["香蕉船","香蕉、香草、巧克力、草莓冰淇淋、巧克力酱、鲜奶油"],
+"Salade de fruits":["水果沙拉"],
+"Ananas nature":["原味菠萝"],
+"Beignet de fruit":["脆炸水果", "苹果、香蕉或菠萝"],
+"Beignet de fruit flambé":["火焰脆炸水果", "苹果、香蕉或菠萝"],
+"Champignon blanc":["冰糖银耳羹"],
+"Lait chaud":["热牛奶"],
+"Café espresso":["意式浓缩咖啡"],
+"Irish coffee (cognac)":["爱尔兰咖啡（干邑）"],
+"Irish coffee (whisky)":["爱尔兰咖啡（威士忌）"],
+"Thé menthe, thé citron, thé Lipton":["薄荷茶、柠檬茶、立顿红茶"],
+"Thé chinois (thé vert)":["中国绿茶"],
+"Thé au jasmin":["茉莉花茶"],
+"Thé rouge":["红茶"],
+"Thé au chrysanthème":["菊花茶"],
+"Thé à la rose":["玫瑰花茶"],
+"Thé oolong, thé Pu'er":["乌龙茶、普洱茶"],
+"Thé au ginseng":["人参茶"],
+"Thé aux fleurs":["花草茶"],
+"Bubble tea":["珍珠奶茶"],
+"Bubble tea goyave au thé jasmin":["芭乐茉莉珍珠茶"],
+"Bubble tea avocat au thé jasmin":["牛油果茉莉珍珠茶"],
+"Bubble tea café au thé":["咖啡珍珠奶茶"],
+"Thé jasmin passion":["百香果茉莉茶"],
+"Thé jasmin litchi":["荔枝茉莉茶"],
+"Thé jasmin pamplemousse":["西柚茉莉茶"],
+"Thé noir citron glacé":["柠檬冰红茶"],
+"Thé glacé":["冰茶"],
+"Coca, Fanta, Sprite":["可乐、芬达、雪碧"],
+"Coca Zéro":["零度可乐"],
+"Tonic (eau gazeuse)":["汤力水"],
+"Diabolo menthe":["薄荷苏打"],
+"Sirop à l'eau minérale 0,5 L":["糖浆兑矿泉水 0.5升","薄荷、黑加仑、石榴或柠檬"],
+"Eau minérale 0,5 L":["矿泉水 0.5升"],
+"Eau minérale 1,5 L":["矿泉水 1.5升"],
+"Jus de fruits (verre)":["果汁（杯）","橙、苹果、菠萝或芒果"],
+"Jus de fruits (boîte 1 L)":["果汁（1升盒装）","橙、苹果、菠萝或芒果"],
+"Jus de fruits pressé":["鲜榨果汁"],
+"Jus de gingembre (canette)":["姜汁（罐装）"],
+"Jus de tomate":["番茄汁"],
+"Malta":["麦芽饮料 Malta"],
+"Red Bull":["红牛"],
+"Yaourt nutritif":["营养酸奶"],
+"Vita milk":["维他奶"],
+"Bière 33 cl":["啤酒 33厘升","Flag、Beaufort、Castel、Brakina、Chill"],
+"Bière 66 cl":["啤酒 66厘升","Brakina、Sobbra、Flag、Castel、Beaufort、Chill、Tequila"],
+"Guinness ou Heineken 33 cl":["健力士或喜力 33厘升"],
+"Tsingtao 500 ml":["青岛啤酒 500毫升"],
+"Bière pression (verre)":["扎啤（杯）"],
+"Bière pression (1 L)":["扎啤（1升）"],
+"Johnnie Walker Red, J&B":["尊尼获加红牌、J&B"],
+"Ricard, pastis, vodka":["力加茴香酒、帕斯提斯、伏特加"],
+"Campari, gin, rhum":["金巴利、金酒、朗姆酒"],
+"Campari orange":["金巴利橙汁"],
+"Martini":["马天尼","红、桃红或白"],
+"Porto rouge":["红波特酒"],
+"Malibu":["马利宝"],
+"Vodka orange":["伏特加橙汁"],
+"Malibu ananas":["马利宝菠萝汁"],
+"Cocktail de jus (sans alcool)":["果汁鸡尾酒（无酒精）","薄荷糖浆、橙汁、菠萝汁、苹果汁、芒果汁"],
+"Cocktail maison":["招牌鸡尾酒","朗姆酒、石榴糖浆、橙汁、菠萝汁、苹果汁、芒果汁"],
+"Kir":["基尔","白葡萄酒、黑加仑利口酒"],
+"Kir royal":["皇家基尔","香槟、黑加仑利口酒"],
+"Perroquet":["鹦鹉","茴香酒、薄荷糖浆"],
+"Tomate":["番茄","茴香酒、石榴糖浆"],
+"Mauresque":["摩尔","茴香酒、杏仁糖浆"],
+"Americano":["美国佬","马天尼、金巴利"],
+"Bloody Mary":["血腥玛丽","伏特加、番茄汁"],
+"Mojito":["莫吉托","白朗姆酒、雪碧、薄荷、柠檬"],
+"Mojito sans alcool":["无酒精莫吉托","雪碧、薄荷、柠檬"],
+"Saké (alcool chinois)":["中国白酒"],
+"Marie Brizard":["玛丽布利扎"],
+"Get 27":["Get 27 薄荷酒"],
+"Armagnac":["雅文邑白兰地"],
+"Grand Marnier, Cointreau":["柑曼怡、君度"],
+"Chivas Regal, Johnnie Walker Black Label":["芝华士、尊尼获加黑牌"],
+"Cognac":["干邑"],
+"Listel Gris (1/2 bouteille)":["Listel Gris 桃红（半瓶）"],
+"Listel Gris":["Listel Gris 桃红"],
+"Côtes de Provence (1/2 bouteille)":["普罗旺斯桃红（半瓶）"],
+"Côtes de Provence":["普罗旺斯桃红"],
+"Vin rouge sucré":["甜红葡萄酒"],
+"J.P. Chenet":["J.P. Chenet 香奈"],
+"Chianti":["基安蒂"],
+"Beaujolais":["博若莱"],
+"Côtes du Rhône":["罗纳河谷"],
+"Côtes du Rhône (1/2 bouteille)":["罗纳河谷（半瓶）"],
+"Baron de Lestac Bordeaux":["巴龙德莱斯塔克 波尔多"],
+"Saint-Émilion Château":["圣埃美隆 酒庄"],
+"Haut-Médoc Château d'Arcins":["上梅多克 阿尔仙酒庄"],
+"Haut-Médoc Château Barreyre":["上梅多克 巴雷尔酒庄"],
+"Mouton Cadet Baron Philippe de Rothschild":["木桐嘉棣 菲利普罗斯柴尔德男爵"],
+"Châteauneuf-du-Pape":["教皇新堡"],
+"Maison Castel Pinot Noir":["卡思黛乐 黑皮诺"],
+"Sauvignon":["长相思"],
+"Baron d'Orcel":["奥塞尔男爵"],
+"Muscadet":["密斯卡岱"],
+"Champagne":["香槟"],
+"Verre de vin":["一杯葡萄酒"],
+"1/4 pichet":["1/4 壶"],
+"1/2 pichet":["半壶"]
+};
+// English translations, keyed by the French name.
+const EN_SECTIONS = {"brochettes":"Skewers","specialites":"Chinese specialties","legumes":"Vegetables","boeuf":"Beef","poulet":"Chicken","canard":"Duck","porc":"Pork","fruits-de-mer":"Seafood","chauffants":"Hot pots & sizzling plates","riz-nouilles":"Rice & noodles","desserts":"Desserts","boissons-chaudes":"Hot drinks","boissons-fraiches":"Cold drinks","aperitifs":"Aperitifs & cocktails","digestifs":"After-dinner drinks","vins":"Wines"};
+const EN_GROUPS = {"Prix par portion":"Price per portion","Fondue chinoise":"Chinese hot pot","Plats du chef":"Chef's dishes","Crevettes et seiches":"Shrimp & cuttlefish","Gambas et langouste":"King prawns & lobster","Poisson":"Fish","Marmites":"Hot pots","Plaques chauffantes":"Sizzling plates","Riz":"Rice","Nouilles et vermicelles":"Noodles & vermicelli","Accompagnements":"Sides & snacks","Thés glacés et bubble tea":"Iced teas & bubble tea","Sodas, jus et eaux":"Sodas, juices & water","Bières":"Beers","Vin rosé":"Rosé wine","Vin rouge":"Red wine","Vin blanc et champagne":"White wine & champagne","Vin en pichet (rouge, rosé, blanc)":"Wine by the carafe (red, rosé, white)"};
+const EN = {
+"Champagne · 48 000 F":["Champagne · 48,000 F"],
+"Champagne · 78 000 F":["Champagne · 78,000 F"],
+"Brochettes de crevettes grillées":["Grilled shrimp skewers"],
+"Brochettes de calamar grillé":["Grilled squid skewers"],
+"Brochettes de bœuf":["Beef skewers"],
+"Rognons d'agneau grillés":["Grilled lamb kidneys"],
+"Pattes de poulet grillées":["Grilled chicken feet"],
+"Gésiers de poulet grillés":["Grilled chicken gizzards"],
+"Poitrine de porc grillée":["Grilled pork belly"],
+"Pommes de terre grillées en brochette":["Grilled potato slices"],
+"Tofu grillé en brochette":["Grilled tofu skewers"],
+"Lotus grillé en brochette":["Grilled lotus root slices"],
+"Fondue chinoise (petite portion)":["Chinese hot pot (small)"],
+"Fondue chinoise (grande portion)":["Chinese hot pot (large)"],
+"Poulet sauté piment rouge":["Stir-fried chicken with red chili"],
+"Filet de poulet frit":["Fried chicken strips"],
+"Soupe de poulet aux vermicelles":["Chicken vermicelli soup"],
+"Cuisse de porc à la vapeur":["Steamed pork knuckle"],
+"Boulettes de porc sauce soja":["Pork meatballs in soy sauce"],
+"Porc au meicai":["Pork belly with preserved mustard greens"],
+"Crevettes à la vapeur":["Steamed shrimp"],
+"Crevettes à la moutarde":["Mustard shrimp"],
+"Petites crevettes frites":["Crispy small shrimp"],
+"Crevettes au pain frit":["Breaded fried shrimp"],
+"Crabe sauté au piment":["Spicy stir-fried crab"],
+"Marmite au poisson":["Spicy fish pot"],
+"Salade au champignon noir":["Black fungus salad"],
+"Salade de pattes de poulet":["Chicken feet salad"],
+"Suancaiyu":["Suancaiyu","Fish in sour and spicy pickled cabbage broth"],
+"Suancai bœuf":["Beef with pickled cabbage"],
+"Filet de bœuf dans l'huile pimentée":["Beef fillet in chili oil"],
+"Filet de capitaine dans l'huile pimentée":["Nile perch fillet in chili oil"],
+"Salade au journal (sautée)":["Stir-fried beef tripe"],
+"Mouton sauté au piment":["Spicy stir-fried mutton"],
+"Bœuf aux pommes de terre et tomates":["Beef stew with potatoes and tomatoes"],
+"Golden soupe au bœuf":["Golden beef soup"],
+"Tête de poisson à la vapeur":["Steamed fish head with chili"],
+"Champignons noirs sautés":["Stir-fried black fungus"],
+"Tomates sautées aux œufs":["Stir-fried tomatoes and eggs"],
+"Pommes de terre sautées":["Stir-fried shredded potatoes","Sour and spicy"],
+"Pommes de terre grillées":["Grilled potatoes"],
+"Marmite aux aubergines":["Eggplant clay pot"],
+"Chou sauté":["Stir-fried cabbage"],
+"Marmite au chou":["Dry-pot cabbage"],
+"Pousses de bambou sautées":["Stir-fried bamboo shoots"],
+"Mapo tofu":["Mapo tofu"],
+"Tofu sauce soja":["Tofu in soy sauce"],
+"Chou chinois sauté":["Stir-fried Chinese cabbage"],
+"Salade d'algues vertes":["Seaweed salad"],
+"Ciboulette chinoise sautée aux œufs":["Chinese chives stir-fried with eggs"],
+"Salade de concombres":["Smashed cucumber salad"],
+"Tofu grillé":["Grilled tofu"],
+"Tofu aux œufs de cent ans":["Tofu with century eggs"],
+"Salade de tofu bambou":["Tofu skin salad"],
+"Salade de pousses de bambou":["Bamboo shoot salad"],
+"Germes de soja sautés":["Stir-fried bean sprouts"],
+"Champignons blancs frits":["Crispy fried mushrooms"],
+"Filet de bœuf sauce piquante":["Beef fillet in spicy sauce"],
+"Filet de bœuf à l'ananas":["Beef fillet with pineapple"],
+"Filet de bœuf au gingembre":["Beef fillet with ginger"],
+"Filet de bœuf aux pousses de bambou":["Beef fillet with bamboo shoots"],
+"Filet de bœuf aux champignons noirs":["Beef fillet with black fungus"],
+"Filet de bœuf aux oignons":["Beef fillet with onions"],
+"Filet de bœuf aux poivrons verts":["Beef fillet with green peppers"],
+"Filet de bœuf au curry":["Curry beef fillet"],
+"Filet de bœuf aux légumes":["Beef fillet with vegetables"],
+"Filet de bœuf aux champignons de Paris":["Beef fillet with button mushrooms"],
+"Filet de bœuf aux champignons et bambou":["Beef fillet with mushrooms and bamboo"],
+"Bœuf braisé aux épices":["Spiced braised beef"],
+"Salade de bœuf braisé aux épices":["Spiced braised beef salad"],
+"Bœuf sauté au piment vert":["Beef stir-fried with green chili","Dry, no sauce"],
+"Bœuf dans l'huile pimentée":["Beef in chili oil"],
+"Poulet sauce piquante":["Chicken in spicy sauce"],
+"Poulet sauce aigre-douce":["Sweet and sour chicken"],
+"Poulet aux noix de cajou":["Cashew chicken"],
+"Poulet aux poivrons verts":["Chicken with green peppers"],
+"Poulet aux champignons noirs":["Chicken with black fungus"],
+"Poulet au curry":["Curry chicken"],
+"Poulet au gingembre":["Ginger chicken"],
+"Poulet aux pousses de bambou":["Chicken with bamboo shoots"],
+"Poulet au citron":["Lemon chicken"],
+"Poulet à l'ananas":["Pineapple chicken"],
+"Poulet aux champignons de Paris":["Chicken with button mushrooms"],
+"Poulet aux légumes":["Chicken with vegetables"],
+"Poulet du chef sauce piquante":["Chef's spicy chicken"],
+"Poulet sauce tomate":["Chicken in tomato sauce"],
+"Poulet pané frit":["Breaded fried chicken"],
+"Ailes de poulet grillées":["Grilled chicken wings"],
+"Poulet sauté au piment vert":["Chicken stir-fried with green chili","Dry, no sauce"],
+"Poulet local sauté":["Stir-fried free-range chicken"],
+"Canard sauce piquante":["Duck in spicy sauce"],
+"Canard aux légumes":["Duck with vegetables"],
+"Canard au gingembre":["Ginger duck"],
+"Canard au curry":["Curry duck"],
+"Canard à l'ananas":["Pineapple duck"],
+"Canard aux champignons et bambou":["Duck with mushrooms and bamboo"],
+"Canard aux champignons noirs":["Duck with black fungus"],
+"Canard frit aux épices":["Crispy spiced duck"],
+"Pigeon frit aux épices":["Crispy spiced pigeon"],
+"Porc aux oignons":["Pork with onions"],
+"Porc sauce piquante":["Pork in spicy sauce"],
+"Porc aux poivrons verts":["Pork with green peppers"],
+"Porc au gingembre":["Ginger pork"],
+"Porc aux champignons de Paris":["Pork with button mushrooms"],
+"Porc à l'ananas":["Pineapple pork"],
+"Porc sauce aigre-douce":["Sweet and sour pork"],
+"Porc aux champignons noirs":["Pork with black fungus"],
+"Porc au caramel":["Caramelized braised pork"],
+"Porc aux légumes":["Pork with vegetables"],
+"Porc aux champignons et bambou":["Pork with mushrooms and bamboo"],
+"Pieds de porc sauce soja":["Pig's feet in soy sauce"],
+"Crevettes au gingembre":["Ginger shrimp"],
+"Crevettes aux légumes":["Shrimp with vegetables"],
+"Crevettes aux tomates":["Shrimp with tomatoes"],
+"Crevettes à l'ail":["Garlic shrimp"],
+"Crevettes sauce piquante":["Shrimp in spicy sauce"],
+"Crevettes au curry":["Curry shrimp"],
+"Crevettes aux noix de cajou":["Cashew shrimp"],
+"Crevettes aux champignons noirs":["Shrimp with black fungus"],
+"Crevettes sauce aigre-douce":["Sweet and sour shrimp"],
+"Seiches sauce piquante":["Cuttlefish in spicy sauce"],
+"Seiches sautées":["Stir-fried cuttlefish"],
+"Crevettes frites":["Fried shrimp"],
+"Gambas au caramel":["Caramelized king prawns"],
+"Gambas à la vapeur":["Steamed king prawns"],
+"Gambas sauce piquante":["King prawns in spicy sauce"],
+"Gambas sauce légumes":["King prawns in vegetable sauce"],
+"Gambas sauce tomate":["King prawns in tomato sauce"],
+"Gambas grillées":["Grilled king prawns"],
+"Langouste à la vapeur":["Steamed lobster"],
+"Langouste sauce tomate":["Lobster in tomato sauce"],
+"Filet de capitaine sauce piquante":["Nile perch fillet in spicy sauce"],
+"Filet de capitaine sauce aigre-douce":["Sweet and sour Nile perch fillet"],
+"Filet de capitaine sauté":["Stir-fried Nile perch fillet"],
+"Filet de capitaine aux tomates":["Nile perch fillet with tomatoes"],
+"Poisson entier à la vapeur":["Steamed whole fish"],
+"Poisson entier sauce légumes":["Whole fish in vegetable sauce"],
+"Poisson entier sauce aigre-douce":["Sweet and sour whole fish"],
+"Saumon nature":["Plain salmon"],
+"Marmite aux fruits de mer":["Seafood hot pot"],
+"Marmite aux crevettes":["Shrimp hot pot"],
+"Marmite aux trois trésors":["Three treasures hot pot"],
+"Marmite aux vermicelles et crevettes":["Vermicelli and shrimp hot pot"],
+"Poulet saté":["Sizzling satay chicken"],
+"Crevettes saté":["Sizzling satay shrimp"],
+"Bœuf saté":["Sizzling satay beef"],
+"Seiches":["Sizzling cuttlefish"],
+"Gambas sucrées et pimentées":["Sizzling sweet chili king prawns"],
+"Gambas à l'ail":["Sizzling garlic king prawns"],
+"Mouton":["Sizzling mutton"],
+"Chap shoue":["Sizzling chop suey"],
+"Crevettes à la tomate":["Sizzling tomato shrimp"],
+"Poisson saté":["Sizzling satay fish"],
+"Tofu saté":["Sizzling satay tofu"],
+"Riz nature":["Steamed rice"],
+"Riz cantonais au jambon":["Ham fried rice"],
+"Riz cantonais au bœuf":["Beef fried rice"],
+"Riz cantonais aux crevettes":["Shrimp fried rice"],
+"Riz sauté au curry":["Curry fried rice","Chicken"],
+"Riz sauté à l'ananas":["Pineapple fried rice","Chicken and shrimp"],
+"Riz sauté à l'ail":["Garlic fried rice"],
+"Riz sauté aux légumes":["Vegetable fried rice"],
+"Nouilles sautées aux crevettes":["Shrimp fried noodles"],
+"Nouilles sautées au bœuf":["Beef fried noodles"],
+"Nouilles sautées au poulet":["Chicken fried noodles"],
+"Nouilles sautées au porc":["Pork fried noodles"],
+"Nouilles sautées aux trois trésors":["Three treasures fried noodles"],
+"Nouilles sautées aux légumes":["Vegetable fried noodles"],
+"Vermicelles sautés au porc":["Pork fried vermicelli"],
+"Vermicelles sautés aux crevettes":["Shrimp fried vermicelli"],
+"Vermicelles sautés aux trois trésors":["Three treasures fried vermicelli"],
+"Vermicelles sautés aux légumes":["Vegetable fried vermicelli"],
+"Soupe de nouilles au bœuf":["Beef noodle soup"],
+"Soupe de vermicelles blancs au bœuf":["Beef rice-noodle soup"],
+"Niangao sauté":["Stir-fried rice cakes","Glutinous rice cakes"],
+"Petits pains farcis à la vapeur":["Steamed stuffed buns","Pork or beef"],
+"Frites":["French fries"],
+"Tarte à la citrouille":["Pumpkin cakes"],
+"Golden pain grillé":["Golden toasted bread"],
+"Litchis":["Lychees"],
+"Gingembre confit":["Candied ginger"],
+"Glace (1 boule)":["Ice cream (1 scoop)","Vanilla, chocolate or strawberry"],
+"Sorbet (1 boule)":["Sorbet (1 scoop)","Coffee, lemon, apple or mango"],
+"Colonel":["Colonel","2 scoops lemon sorbet, vodka"],
+"Dame blanche":["Dame blanche sundae","2 scoops vanilla, chocolate sauce, Get 27, whipped cream"],
+"Pêche Melba":["Peach Melba","2 scoops vanilla, peach, chocolate sauce, whipped cream"],
+"Poire Belle-Hélène":["Pear Belle-Hélène","2 scoops vanilla, pear, chocolate sauce, whipped cream"],
+"Banana split":["Banana split","Banana, vanilla, chocolate, strawberry, chocolate sauce, whipped cream"],
+"Salade de fruits":["Fruit salad"],
+"Ananas nature":["Fresh pineapple"],
+"Beignet de fruit":["Fruit fritters","Apple, banana or pineapple"],
+"Beignet de fruit flambé":["Flambéed fruit fritters","Apple, banana or pineapple"],
+"Champignon blanc":["White fungus dessert soup"],
+"Lait chaud":["Hot milk"],
+"Café espresso":["Espresso"],
+"Irish coffee (cognac)":["Irish coffee (cognac)"],
+"Irish coffee (whisky)":["Irish coffee (whisky)"],
+"Thé menthe, thé citron, thé Lipton":["Mint tea, lemon tea, Lipton tea"],
+"Thé chinois (thé vert)":["Chinese green tea"],
+"Thé au jasmin":["Jasmine tea"],
+"Thé rouge":["Black tea"],
+"Thé au chrysanthème":["Chrysanthemum tea"],
+"Thé à la rose":["Rose tea"],
+"Thé oolong, thé Pu'er":["Oolong tea, Pu'er tea"],
+"Thé au ginseng":["Ginseng tea"],
+"Thé aux fleurs":["Flower tea"],
+"Bubble tea":["Bubble tea"],
+"Bubble tea goyave au thé jasmin":["Guava jasmine bubble tea"],
+"Bubble tea avocat au thé jasmin":["Avocado jasmine bubble tea"],
+"Bubble tea café au thé":["Coffee milk tea with bubbles"],
+"Thé jasmin passion":["Passion fruit jasmine tea"],
+"Thé jasmin litchi":["Lychee jasmine tea"],
+"Thé jasmin pamplemousse":["Grapefruit jasmine tea"],
+"Thé noir citron glacé":["Iced lemon black tea"],
+"Thé glacé":["Iced tea"],
+"Coca, Fanta, Sprite":["Coke, Fanta, Sprite"],
+"Coca Zéro":["Coke Zero"],
+"Tonic (eau gazeuse)":["Tonic water"],
+"Diabolo menthe":["Mint lemonade soda"],
+"Sirop à l'eau minérale 0,5 L":["Syrup with mineral water 0.5 L","Mint, blackcurrant, grenadine or lemon"],
+"Eau minérale 0,5 L":["Mineral water 0.5 L"],
+"Eau minérale 1,5 L":["Mineral water 1.5 L"],
+"Jus de fruits (verre)":["Fruit juice (glass)","Orange, apple, pineapple or mango"],
+"Jus de fruits (boîte 1 L)":["Fruit juice (1 L carton)","Orange, apple, pineapple or mango"],
+"Jus de fruits pressé":["Fresh-squeezed juice"],
+"Jus de gingembre (canette)":["Ginger juice (can)"],
+"Jus de tomate":["Tomato juice"],
+"Malta":["Malta (malt drink)"],
+"Red Bull":["Red Bull"],
+"Yaourt nutritif":["Drinking yogurt"],
+"Vita milk":["Vitamilk soy milk"],
+"Bière 33 cl":["Beer 33 cl","Flag, Beaufort, Castel, Brakina, Chill"],
+"Bière 66 cl":["Beer 66 cl","Brakina, Sobbra, Flag, Castel, Beaufort, Chill, Tequila"],
+"Guinness ou Heineken 33 cl":["Guinness or Heineken 33 cl"],
+"Tsingtao 500 ml":["Tsingtao 500 ml"],
+"Bière pression (verre)":["Draft beer (glass)"],
+"Bière pression (1 L)":["Draft beer (1 L)"],
+"Johnnie Walker Red, J&B":["Johnnie Walker Red, J&B"],
+"Ricard, pastis, vodka":["Ricard, pastis, vodka"],
+"Campari, gin, rhum":["Campari, gin, rum"],
+"Campari orange":["Campari orange"],
+"Martini":["Martini","Red, rosé or white"],
+"Porto rouge":["Red port"],
+"Malibu":["Malibu"],
+"Vodka orange":["Vodka orange"],
+"Malibu ananas":["Malibu pineapple"],
+"Cocktail de jus (sans alcool)":["Juice cocktail (alcohol-free)","Mint syrup, orange, pineapple, apple, mango juice"],
+"Cocktail maison":["House cocktail","Rum, grenadine, orange, pineapple, apple, mango juice"],
+"Kir":["Kir","White wine, crème de cassis"],
+"Kir royal":["Kir royal","Champagne, crème de cassis"],
+"Perroquet":["Perroquet","Pastis, mint syrup"],
+"Tomate":["Tomate","Pastis, grenadine syrup"],
+"Mauresque":["Mauresque","Pastis, orgeat syrup"],
+"Americano":["Americano","Martini, Campari"],
+"Bloody Mary":["Bloody Mary","Vodka, tomato juice"],
+"Mojito":["Mojito","White rum, Sprite, mint, lime"],
+"Mojito sans alcool":["Virgin mojito","Sprite, mint, lime"],
+"Saké (alcool chinois)":["Chinese rice spirit"],
+"Marie Brizard":["Marie Brizard"],
+"Get 27":["Get 27 (mint liqueur)"],
+"Armagnac":["Armagnac"],
+"Grand Marnier, Cointreau":["Grand Marnier, Cointreau"],
+"Chivas Regal, Johnnie Walker Black Label":["Chivas Regal, Johnnie Walker Black Label"],
+"Cognac":["Cognac"],
+"Listel Gris (1/2 bouteille)":["Listel Gris (half bottle)"],
+"Listel Gris":["Listel Gris"],
+"Côtes de Provence (1/2 bouteille)":["Côtes de Provence (half bottle)"],
+"Côtes de Provence":["Côtes de Provence"],
+"Vin rouge sucré":["Sweet red wine"],
+"J.P. Chenet":["J.P. Chenet"],
+"Chianti":["Chianti"],
+"Beaujolais":["Beaujolais"],
+"Côtes du Rhône":["Côtes du Rhône"],
+"Côtes du Rhône (1/2 bouteille)":["Côtes du Rhône (half bottle)"],
+"Baron de Lestac Bordeaux":["Baron de Lestac Bordeaux"],
+"Saint-Émilion Château":["Saint-Émilion Château"],
+"Haut-Médoc Château d'Arcins":["Haut-Médoc Château d'Arcins"],
+"Haut-Médoc Château Barreyre":["Haut-Médoc Château Barreyre"],
+"Mouton Cadet Baron Philippe de Rothschild":["Mouton Cadet Baron Philippe de Rothschild"],
+"Châteauneuf-du-Pape":["Châteauneuf-du-Pape"],
+"Maison Castel Pinot Noir":["Maison Castel Pinot Noir"],
+"Sauvignon":["Sauvignon"],
+"Baron d'Orcel":["Baron d'Orcel"],
+"Muscadet":["Muscadet"],
+"Champagne":["Champagne"],
+"Verre de vin":["Glass of wine"],
+"1/4 pichet":["1/4 carafe"],
+"1/2 pichet":["1/2 carafe"]
+};
+
+const UI = {
+ fr:{filters:"Filtres", fSpicy:"🌶 Plats pimentés", fSea:"🦐 Fruits de mer et poisson", fVeg:"🥬 Sans viande ni poisson", fCheap:"💰 Moins de 5 000 F", fChef:"⭐ Suggestions du chef", fReset:"Tout effacer", fApply:"Voir les plats", vegNote:"Sans viande : à confirmer avec le serveur pour les sauces.", chefB:"Chef", special:"Plat du jour", notePh:"📝 Note (ex. sans piment, bien cuit)", sendBtn:"📤 Envoyer la commande au comptoir", sendUpd:"📤 Envoyer la mise à jour", sentOk:"✓ Commande envoyée au comptoir", sending:"Envoi…", sendFail:"Envoi impossible. Vérifiez la connexion, ou montrez la commande au serveur.", stSent:"📤 Commande envoyée au comptoir", released:"Votre table a été libérée par le restaurant. Merci de votre visite !", bellT:"Service", callW:"🙋 Appeler le serveur", callB:"🧾 Demander l’addition", callSent:"✅ C’est noté, un serveur arrive.", callBillSent:"✅ L’addition arrive.", callWait:"Demande déjà envoyée. Patientez un instant.", resT:"Réserver un salon privé", resS:"Envoyez votre demande, le restaurant vous confirme par WhatsApp.", resDate:"Date", resTime:"Heure", resPeople:"Personnes", resRoom:"Salon", resAny:"Peu importe", resOcc:"Occasion", occ:["Anniversaire","Repas d’affaires","Famille","Mariage / fête","Autre"], resName:"Nom", resPhone:"Téléphone", resNote:"Message (facultatif)", resBtn:"Envoyer la demande sur WhatsApp", resErr:"Indiquez la date, l’heure, le nombre de personnes et votre nom.", resOpen:"🎉 Réserver un salon privé", maps:"📍 Itinéraire", review:"⭐ Laisser un avis", hoursT:"Horaires", openNow:"Ouvert maintenant", closedNow:"Fermé", varSub:"Ce produit existe à deux prix. Lequel souhaitez-vous ?", idleT:"Êtes-vous toujours là ?", idleMsgT:"Vous n\u2019avez rien fait depuis quelques minutes. Souhaitez-vous garder la table {x} ?", idleMsgR:"Vous n\u2019avez rien fait depuis quelques minutes. Souhaitez-vous garder le salon {x} ?", idleCount:"Sans réponse, la place sera libérée dans {s} s.", idleYes:"Oui, je continue", idleNo:"Libérer la place", idleGone:"Votre place a été libérée pour inactivité. Choisissez-la à nouveau pour continuer.", busy:"Déjà sélectionnée par un autre client", busyT:"Table déjà occupée ?", busyR:"Salon déjà occupé ?", busyMsgT:"La table {x} est déjà sélectionnée sur le téléphone d\u2019un autre client. Vérifiez bien votre numéro de table.", busyMsgR:"Le salon {x} est déjà sélectionné sur le téléphone d\u2019un autre client. Vérifiez bien votre numéro de salon.", busyAsk:"Si vous êtes assis avec cette personne, vous pouvez continuer.", busyYes:"Oui, c\u2019est bien ma place", busyNo:"Choisir une autre", locTitle:"Où êtes-vous installé ?", locSubStart:"Choisissez votre table ou votre salon pour commencer votre sélection.", locSubWaiter:"Indiquez votre table ou votre salon avant de montrer la commande au serveur.", tabT:"Tables", tabR:"Salons privés", tabE:"À emporter", later:"Choisir plus tard", change:"Changer", needLoc:"📍 Choisir ma table ou mon salon", locReq:"Obligatoire avant de montrer la commande", tableL:"Table", roomL:"Salon", takeL2:"À emporter", takeBtn:"🥡 Commande à emporter (WhatsApp)", swipe:"← Glissez pour voir d\u2019autres photos →", added:"Ajouté", top:"Haut de la page", stPending:"⏳ Commande montrée au serveur", stAccepted:"👨‍🍳 Votre commande est en préparation", srv1:"✅ Commande terminée", srv2:"Vous avez été servi !", srv3:"Bon appétit et merci de votre visite", served:"servie", hist:"Sélections précédentes", histT:"Mes sélections précédentes", reuse:"Reprendre", del:"Supprimer", delAll:"Tout supprimer", histEmpty:"Aucune sélection précédente.", add:"Ajouter", selTitle:"Ma sélection", dish:"article", dishes:"articles", see:"Voir", total:"Total", noteAsk:"Certains prix sont à confirmer avec le serveur.", waiterBtn:"Montrer au serveur", takeL:"Commander à emporter :", namePh:"Votre nom *", phonePh:"Téléphone *", takeErr:"Indiquez votre nom et votre numéro de téléphone pour commander à emporter.", timePh:"Heure de retrait (facultatif)", waBtn:"Envoyer la commande sur WhatsApp", clear:"Tout effacer", closeSel:"Fermer", waiterSub:"Merci de préparer cette commande.", cookieT:"Votre biscuit de la chance", cookieTap:"Touchez le biscuit pour l\u2019ouvrir", again:"Un autre", shareF:"Partager", lucky:"Numéros porte-bonheur :", share:"Partager", shareMenu:"Partager le menu", shareText:"Découvrez le menu du Restaurant Chinois Shangri-La à Ouaga 2000 :", copy:"Copier le lien", copied:"Lien copié !", cancel:"Annuler", w1:"Bienvenue au", w2:"Restaurant Shangri-La", wtap:"Touchez pour voir le menu", sub:"Carte du restaurant · prix en francs CFA", search:"🔍 Rechercher…", searchLabel:"Rechercher un plat", spicy:"🌶 Pimentés", ask:"Sur demande", nw:"Nouveau", empty:"Aucun plat ne correspond à votre recherche.", view:"Voir la photo : ", close:"Fermer", spicy1:"pimenté", spicy2:"très pimenté", nav:"Catégories",
+  foot:"📷 Touchez un plat avec photo pour l'agrandir · 🌶 plat pimenté · 🌶🌶 très pimenté<br>Les prix peuvent changer. Demandez à votre serveur."},
+ en:{filters:"Filters", fSpicy:"🌶 Spicy dishes", fSea:"🦐 Seafood and fish", fVeg:"🥬 No meat or fish", fCheap:"💰 Under 5,000 F", fChef:"⭐ Chef’s suggestions", fReset:"Clear all", fApply:"Show dishes", vegNote:"No meat: please check sauces with your server.", chefB:"Chef", special:"Dish of the day", notePh:"📝 Note (e.g. not spicy, well done)", sendBtn:"📤 Send the order to the front desk", sendUpd:"📤 Send the update", sentOk:"✓ Order sent to the front desk", sending:"Sending…", sendFail:"Could not send. Check your connection, or show the order to the server.", stSent:"📤 Order sent to the front desk", released:"Your table has been released by the restaurant. Thank you for visiting!", bellT:"Service", callW:"🙋 Call the server", callB:"🧾 Ask for the bill", callSent:"✅ Got it, a server is coming.", callBillSent:"✅ The bill is on its way.", callWait:"Request already sent. Please wait a moment.", resT:"Book a private room", resS:"Send your request; the restaurant confirms by WhatsApp.", resDate:"Date", resTime:"Time", resPeople:"People", resRoom:"Room", resAny:"Any", resOcc:"Occasion", occ:["Birthday","Business meal","Family","Wedding / party","Other"], resName:"Name", resPhone:"Phone", resNote:"Message (optional)", resBtn:"Send the request on WhatsApp", resErr:"Please enter the date, time, number of people and your name.", resOpen:"🎉 Book a private room", maps:"📍 Directions", review:"⭐ Leave a review", hoursT:"Opening hours", openNow:"Open now", closedNow:"Closed", varSub:"This item comes at two prices. Which one would you like?", idleT:"Are you still there?", idleMsgT:"You haven\u2019t done anything for a few minutes. Do you want to keep table {x}?", idleMsgR:"You haven\u2019t done anything for a few minutes. Do you want to keep room {x}?", idleCount:"Without an answer, the place will be released in {s} s.", idleYes:"Yes, I\u2019m continuing", idleNo:"Release the place", idleGone:"Your place was released after inactivity. Choose it again to continue.", busy:"Already selected by another customer", busyT:"Table already taken?", busyR:"Room already taken?", busyMsgT:"Table {x} is already selected on another customer\u2019s phone. Please check your table number.", busyMsgR:"Room {x} is already selected on another customer\u2019s phone. Please check your room number.", busyAsk:"If you are sitting with that person, you can continue.", busyYes:"Yes, this is my place", busyNo:"Choose another one", locTitle:"Where are you seated?", locSubStart:"Choose your table or private room to start your selection.", locSubWaiter:"Choose your table or private room before showing the order to the server.", tabT:"Tables", tabR:"Private rooms", tabE:"Takeaway", later:"Choose later", change:"Change", needLoc:"📍 Choose my table or room", locReq:"Required before showing the order", tableL:"Table", roomL:"Room", takeL2:"Takeaway", takeBtn:"🥡 Takeaway order (WhatsApp)", swipe:"← Swipe to see more photos →", added:"Added", top:"Back to top", stPending:"⏳ Order shown to the server", stAccepted:"👨‍🍳 Your order is being prepared", srv1:"✅ Order completed", srv2:"You have been served!", srv3:"Enjoy your meal and thank you for visiting", served:"served", hist:"Previous selections", histT:"My previous selections", reuse:"Reuse", del:"Delete", delAll:"Delete all", histEmpty:"No previous selection.", add:"Add", selTitle:"My selection", dish:"item", dishes:"items", see:"View", total:"Total", noteAsk:"Some prices need to be confirmed with your server.", waiterBtn:"Show to the waiter", takeL:"Order for takeaway:", namePh:"Your name *", phonePh:"Phone number *", takeErr:"Please enter your name and phone number to order takeaway.", timePh:"Pickup time (optional)", waBtn:"Send the order on WhatsApp", clear:"Clear all", closeSel:"Close", waiterSub:"Please prepare this order.", cookieT:"Your fortune cookie", cookieTap:"Tap the cookie to open it", again:"Another one", shareF:"Share", lucky:"Lucky numbers:", share:"Share", shareMenu:"Share the menu", shareText:"Check out the menu of Shangri-La Chinese Restaurant in Ouaga 2000:", copy:"Copy link", copied:"Link copied!", cancel:"Cancel", w1:"Welcome to", w2:"Shangri-La Restaurant", wtap:"Tap to see the menu", sub:"Restaurant menu · prices in CFA francs", search:"🔍 Search…", searchLabel:"Search for a dish", spicy:"🌶 Spicy", ask:"Ask your server", nw:"New", empty:"No dish matches your search.", view:"See photo: ", close:"Close", spicy1:"spicy", spicy2:"very spicy", nav:"Categories",
+  foot:"📷 Tap a dish with a photo to enlarge it · 🌶 spicy · 🌶🌶 very spicy<br>Prices may change. Please ask your server."},
+ zh:{filters:"筛选", fSpicy:"🌶 辣味菜", fSea:"🦐 海鲜和鱼", fVeg:"🥬 无肉无鱼", fCheap:"💰 5 000 F 以下", fChef:"⭐ 厨师推荐", fReset:"全部清除", fApply:"查看菜品", vegNote:"无肉菜品：酱汁请向服务员确认。", chefB:"推荐", special:"今日特餐", notePh:"📝 备注（例如：不要辣、全熟）", sendBtn:"📤 发送订单到前台", sendUpd:"📤 发送更新", sentOk:"✓ 订单已发送到前台", sending:"发送中…", sendFail:"无法发送。请检查网络，或将订单出示给服务员。", stSent:"📤 订单已发送到前台", released:"餐厅已释放您的餐桌。感谢光临！", bellT:"服务", callW:"🙋 呼叫服务员", callB:"🧾 结账", callSent:"✅ 收到，服务员马上来。", callBillSent:"✅ 账单马上送到。", callWait:"请求已发送，请稍候。", resT:"预订包间", resS:"发送您的请求，餐厅将通过 WhatsApp 确认。", resDate:"日期", resTime:"时间", resPeople:"人数", resRoom:"包间", resAny:"不限", resOcc:"场合", occ:["生日","商务宴请","家庭聚餐","婚宴 / 派对","其他"], resName:"姓名", resPhone:"电话", resNote:"留言（可选）", resBtn:"通过 WhatsApp 发送预订", resErr:"请填写日期、时间、人数和姓名。", resOpen:"🎉 预订包间", maps:"📍 路线", review:"⭐ 留下评价", hoursT:"营业时间", openNow:"营业中", closedNow:"已打烊", varSub:"该商品有两种价格，请选择：", idleT:"您还在吗？", idleMsgT:"您已有几分钟没有操作。是否继续保留{x}号桌？", idleMsgR:"您已有几分钟没有操作。是否继续保留{x}包间？", idleCount:"如无回应，该位置将在 {s} 秒后释放。", idleYes:"是的，继续点菜", idleNo:"释放位置", idleGone:"由于长时间未操作，您的位置已被释放。请重新选择以继续。", busy:"已被其他顾客选择", busyT:"该桌已有人？", busyR:"该包间已有人？", busyMsgT:"{x}号桌已被另一位顾客在手机上选择，请确认您的桌号。", busyMsgR:"{x}包间已被另一位顾客在手机上选择，请确认您的包间号。", busyAsk:"如果您与该顾客同桌，可以继续。", busyYes:"是的，这是我的位置", busyNo:"选择其他", locTitle:"请问您坐在哪里？", locSubStart:"请先选择您的桌号或包间，再开始选菜。", locSubWaiter:"出示订单前，请选择您的桌号或包间。", tabT:"大厅桌位", tabR:"包间", tabE:"外卖", later:"稍后选择", change:"更改", needLoc:"📍 选择桌号或包间", locReq:"出示订单前必须选择", tableL:"桌", roomL:"包间", takeL2:"外卖", takeBtn:"🥡 外卖订单（WhatsApp）", swipe:"← 左右滑动查看更多图片 →", added:"已加入", top:"返回顶部", stPending:"⏳ 订单已出示给服务员", stAccepted:"👨‍🍳 您的订单正在准备中", srv1:"✅ 订单已完成", srv2:"您的菜已上齐！", srv3:"祝您用餐愉快，感谢光临", served:"已上菜", hist:"历史选菜", histT:"我的历史选菜", reuse:"重新使用", del:"删除", delAll:"全部删除", histEmpty:"暂无历史选菜。", add:"加入", selTitle:"我的选菜", dish:"项", dishes:"项", see:"查看", total:"合计", noteAsk:"部分价格请向服务员确认。", waiterBtn:"出示给服务员", takeL:"外卖下单：", namePh:"您的姓名 *", phonePh:"电话号码 *", takeErr:"外卖下单请填写姓名和电话号码。", timePh:"取餐时间（可选）", waBtn:"通过 WhatsApp 发送订单", clear:"全部清空", closeSel:"关闭", waiterSub:"请准备以下菜品。", cookieT:"您的幸运饼干", cookieTap:"点击饼干打开", again:"再来一个", shareF:"分享", lucky:"幸运数字：", share:"分享", shareMenu:"分享菜单", shareText:"看看瓦加2000香格里拉饭店的菜单：", copy:"复制链接", copied:"链接已复制！", cancel:"取消", w1:"欢迎光临", w2:"香格里拉饭店", wtap:"点击查看菜单", sub:"菜单 · 价格单位：西非法郎（F）", search:"🔍 搜索菜品…", searchLabel:"搜索菜品", spicy:"🌶 辣味", ask:"请询问服务员", nw:"新品", empty:"没有找到相关菜品。", view:"查看图片：", close:"关闭", spicy1:"辣", spicy2:"特辣", nav:"分类",
+  foot:"📷 点击有图片的菜品可放大 · 🌶 辣 · 🌶🌶 特辣<br>价格可能变动，请咨询服务员。"}
+};
+
+// Toujours ouvrir le menu en haut, quel que soit l'appareil ou le navigateur
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+function toTop(){ window.scrollTo({top: 0, left: 0, behavior: "instant"}); }
+toTop();
+addEventListener("DOMContentLoaded", toTop);
+addEventListener("load", () => { toTop(); setTimeout(toTop, 50); });
+addEventListener("pageshow", e => { if (e.persisted) toTop(); });
+
+const PHOTOS = {"Brochettes de crevettes grillées": "../img/brochettes-crevettes.jpg", "Brochettes de calamar grillé": "../img/brochettes-calamar.jpg", "Brochettes de bœuf": "../img/brochettes-boeuf.jpg", "Rognons d'agneau grillés": "../img/rognons-agneau.jpg", "Pattes de poulet grillées": "../img/pattes-poulet-grillees.jpg", "Gésiers de poulet grillés": "../img/gesiers-poulet.jpg", "Poitrine de porc grillée": "../img/poitrine-porc-grillee.jpg", "Pommes de terre grillées en brochette": "../img/pommes-de-terre-brochette.jpg", "Tofu grillé en brochette": "../img/tofu-brochette.jpg", "Lotus grillé en brochette": "../img/lotus-grille.jpg", "Poulet sauté piment rouge": "../img/poulet-saute-piment-rouge.jpg", "Filet de poulet frit": "../img/filet-de-poulet-frit.jpg", "Soupe de poulet aux vermicelles": "../img/soupe-de-poulet-aux-vermicelles.jpg", "Cuisse de porc à la vapeur": "../img/cuisse-de-porc-a-la-vapeur.jpg", "Boulettes de porc sauce soja": "../img/boulettes-de-porc-sauce-soja.jpg", "Porc au meicai": "../img/porc-au-meicai.jpg", "Crevettes à la vapeur": "../img/crevettes-a-la-vapeur.jpg", "Crevettes à la moutarde": "../img/crevettes-a-la-moutarde.jpg", "Petites crevettes frites": "../img/petites-crevettes-frites.jpg", "Crevettes au pain frit": "../img/crevettes-au-pain-frit.jpg", "Crabe sauté au piment": "../img/crabe-saute-au-piment.jpg", "Marmite au poisson": "../img/marmite-au-poisson.jpg", "Salade au champignon noir": "../img/salade-au-champignon-noir.jpg", "Salade de pattes de poulet": "../img/salade-de-pattes-de-poulet.jpg", "Suancaiyu": "../img/suancaiyu.jpg", "Filet de bœuf dans l'huile pimentée": "../img/filet-de-boeuf-dans-l-huile-pimentee.jpg", "Salade au journal (sautée)": "../img/salade-au-journal-sautee.jpg", "Mouton sauté au piment": "../img/mouton-saute-au-piment.jpg", "Bœuf aux pommes de terre et tomates": "../img/boeuf-aux-pommes-de-terre-et-tomates.jpg", "Golden soupe au bœuf": "../img/golden-soupe-au-boeuf.jpg", "Tête de poisson à la vapeur": "../img/tete-de-poisson-a-la-vapeur.jpg", "Fondue chinoise": "../img/fondue-chinoise.jpg", "Salade de concombres": "../img/salade-de-concombres.jpg", "Tofu grillé": "../img/tofu-grille.jpg", "Tofu aux œufs de cent ans": "../img/tofu-aux-oeufs-de-cent-ans.jpg", "Salade de tofu bambou": "../img/salade-de-tofu-bambou.jpg", "Salade de pousses de bambou": "../img/salade-de-pousses-de-bambou.jpg", "Germes de soja sautés": "../img/germes-de-soja-sautes.jpg", "Champignons blancs frits": "../img/champignons-blancs-frits.jpg", "Champignons noirs sautés": "../img/champignons-noirs-sautes.jpg", "Pommes de terre grillées": "../img/pommes-de-terre-grillees.jpg", "Tomates sautées aux œufs": "../img/tomates-sautees-aux-oeufs.jpg", "Chou chinois sauté": "../img/chou-chinois-saute.jpg", "Salade d'algues vertes": "../img/salade-d-algues-vertes.jpg", "Ciboulette chinoise sautée aux œufs": "../img/ciboulette-chinoise-sautee-aux-oeufs.jpg", "Mapo tofu": "../img/mapo-tofu.jpg", "Marmite aux aubergines": "../img/marmite-aux-aubergines.jpg", "Pommes de terre sautées": "../img/pommes-de-terre-sautees.jpg", "Filet de bœuf au curry": "../img/filet-de-boeuf-au-curry.jpg", "Filet de bœuf aux poivrons verts": "../img/filet-de-boeuf-aux-poivrons-verts.jpg", "Bœuf braisé aux épices": "../img/boeuf-braise-aux-epices.jpg", "Bœuf dans l'huile pimentée": "../img/boeuf-dans-l-huile-pimentee.jpg", "Ailes de poulet grillées": "../img/ailes-de-poulet-grillees.jpg", "Poulet sauté au piment vert": "../img/poulet-saute-au-piment-vert.jpg", "Poulet au citron": "../img/poulet-au-citron.jpg", "Poulet pané frit": "../img/poulet-pane-frit.jpg", "Poulet sauce aigre-douce": "../img/poulet-sauce-aigre-douce.jpg", "Canard frit aux épices": "../img/canard-frit-aux-epices.jpg", "Pieds de porc sauce soja": "../img/pieds-de-porc-sauce-soja.jpg", "Porc à l'ananas": "../img/porc-a-l-ananas.jpg", "Crevettes aux noix de cajou": "../img/crevettes-aux-noix-de-cajou.jpg", "Seiches sauce piquante": "../img/seiches-sauce-piquante.jpg", "Langouste à la vapeur": "../img/langouste-a-la-vapeur.jpg", "Poisson entier à la vapeur": "../img/poisson-entier-a-la-vapeur.jpg", "Poisson entier sauce aigre-douce": "../img/poisson-entier-sauce-aigre-douce.jpg", "Saumon nature": "../img/saumon-nature.jpg", "Bœuf saté": "../img/boeuf-sate.jpg", "Marmite aux fruits de mer": "../img/marmite-aux-fruits-de-mer.jpg", "Nouilles sautées aux légumes": "../img/nouilles-sautees-aux-legumes.jpg", "Riz cantonais au jambon": "../img/riz-cantonais-au-jambon.jpg", "Niangao sauté": "../img/niangao-saute.jpg", "Petits pains farcis à la vapeur": "../img/petits-pains-farcis-a-la-vapeur.jpg", "Soupe de vermicelles blancs au bœuf": "../img/soupe-de-vermicelles-blancs-au-boeuf.jpg", "Golden pain grillé": "../img/golden-pain-grille.jpg", "Soupe de nouilles au bœuf": "../img/soupe-de-nouilles-au-boeuf.jpg", "Tarte à la citrouille": "../img/tarte-a-la-citrouille.jpg", "Litchis": "../img/litchis.jpg", "Jus de fruits pressé": "../img/jus-de-fruits-presse.jpg"};
+// Les deux fondues partagent la photo
+function photoFor(it){ return PHOTOS[it.name] || (it.name.startsWith("Fondue chinoise") ? PHOTOS["Fondue chinoise"] : null); }
+const ALL = [];
+let LANG = "fr";
+// Nouvelle visite = français. Le choix de langue ne vaut que pour la visite en cours (rechargement compris).
+try { localStorage.removeItem("shangrila-test-lang"); const v = sessionStorage.getItem("shangrila-test-lang"); if (v === "zh" || v === "en") LANG = v; } catch(e){}
+const T = k => UI[LANG][k];
+const DICT = {zh: ZH, en: EN}, SECT = {zh: ZH_SECTIONS, en: EN_SECTIONS}, GRP = {zh: ZH_GROUPS, en: EN_GROUPS};
+const tr = it => (DICT[LANG] && DICT[LANG][it.name]) || [];
+const nm = it => tr(it)[0] || it.name;
+const ds = it => {
+  if (LANG === "fr") return [it.d || "", it.zh || ""].filter(Boolean).join(" · ");
+  if (LANG === "en" && it.zh) return [tr(it)[1] || "", it.zh, it.name].filter(Boolean).join(" · ");
+  const d = tr(it)[1] || "";
+  // Nom français affiché dessous pour faciliter la commande auprès du personnel
+  return [d, nm(it) !== it.name ? it.name : ""].filter(Boolean).join(" · ");
+};
+const secT = c => (SECT[LANG] && SECT[LANG][c.id]) || c.t;
+const grpT = g => (GRP[LANG] && GRP[LANG][g]) || g;
+
+const fmt = n => n.toLocaleString("fr-FR").replace(/ | /g," ") + " F";
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+
+const nav = document.getElementById("nav");
+const main = document.getElementById("menu");
+const q = document.getElementById("q");
+const spicyBtn = document.getElementById("spicy");
+let spicyOnly = false;
+// ===== Réglages du restaurant (à compléter avec leurs infos) =====
+const CONFIG = {
+  comptoirPin: "2468",                 // code d'accès de l'écran comptoir (à changer)
+  hours: {0:["10:00","01:00"],1:["10:00","01:00"],2:["10:00","01:00"],3:["10:00","01:00"],4:["10:00","01:00"],5:["10:00","01:00"],6:["10:00","01:00"]},   // tous les jours 10 h à 1 h du matin (0 = dimanche)
+  chefPicks: [],                       // noms français exacts des plats suggérés par le chef
+  special: null,                       // ex. {fr:"Canard laqué", en:"Roast duck", zh:"烤鸭", price:9000}
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Restaurant%20Chinois%20Shangri-La%20Ouaga%202000",
+  reviewUrl: "https://www.google.com/maps/search/?api=1&query=Restaurant%20Chinois%20Shangri-La%20Ouaga%202000"
+};
+const SEA_RE = /crevette|gambas|poisson|capitaine|seiche|crabe|langouste|saumon|calamar|fruits de mer|suancaiyu|tête de poisson/i;
+const MEATLESS = new Set(["Champignons noirs sautés","Tomates sautées aux œufs","Pommes de terre sautées","Pommes de terre grillées","Chou sauté","Chou chinois sauté","Salade d'algues vertes","Ciboulette chinoise sautée aux œufs","Salade de concombres","Tofu grillé","Tofu aux œufs de cent ans","Salade de tofu bambou","Salade de pousses de bambou","Germes de soja sautés","Champignons blancs frits","Pousses de bambou sautées","Tofu sauce soja","Salade au champignon noir","Riz nature","Riz sauté à l'ail","Riz sauté aux légumes","Nouilles sautées aux légumes","Vermicelles sautés aux légumes","Frites","Niangao sauté","Tarte à la citrouille","Golden pain grillé","Pommes de terre grillées en brochette","Tofu grillé en brochette","Lotus grillé en brochette"]);
+const FOOD_SECTIONS = new Set(["specialites","legumes","boeuf","poulet","canard","porc","fruits-de-mer","chauffants","brochettes","riz-nouilles","desserts"]);
+const FILT = {spicy: false, sea: false, veg: false, cheap: false, chef: false};
+let CAT_OF = new Map();
+function passFilters(it){
+  if (FILT.spicy && !it.s) return false;
+  if (FILT.sea && !(CAT_OF.get(it) === "fruits-de-mer" || SEA_RE.test(it.name))) return false;
+  if (FILT.veg && !(MEATLESS.has(it.name) || CAT_OF.get(it) === "desserts")) return false;
+  if (FILT.cheap && !(it.p != null && it.p < 5000 && FOOD_SECTIONS.has(CAT_OF.get(it)))) return false;
+  if (FILT.chef && !CONFIG.chefPicks.includes(it.name)) return false;
+  return true;
+}
+const filtCount = () => Object.values(FILT).filter(Boolean).length;
+
+function buildNav(){
+  nav.innerHTML = MENU.filter(c => !c.hidden).map(c => `<a class="chip" href="#${c.id}" data-id="${c.id}">${esc(secT(c))}</a>`).join("")
+    + `<a class="chip" href="#fortune" data-id="fortune">🥠</a><a class="chip" href="#contact" data-id="contact">${CT[LANG].title}</a>`;
+}
+
+const PHONES = ["63335888","05689158","77299878","73986666"];
+const sp = n => n.replace(/(\d{2})(?=\d)/g,"$1 ");
+const CT = {
+ fr:{title:"Contact", take:"Plats à emporter", wa:"Écrire sur WhatsApp", qr:"QR code WhatsApp", note:"Vous pouvez aussi scanner le QR code pour ajouter le contact WhatsApp.", addr:"Adresse"},
+ en:{title:"Contact", take:"Takeaway orders", wa:"Message us on WhatsApp", qr:"WhatsApp QR code", note:"You can also scan the QR code to add our WhatsApp contact.", addr:"Address"},
+ zh:{title:"联系我们", take:"外卖订餐", wa:"WhatsApp 联系我们", qr:"WhatsApp 二维码", note:"也可以扫描二维码添加 WhatsApp 联系人。", addr:"地址"}
+};
+function hoursHtml(){
+  if (!CONFIG.hours) return "";
+  const days = {fr:["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"], en:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], zh:["周日","周一","周二","周三","周四","周五","周六"]}[LANG];
+  const now = new Date(), d = now.getDay(), hm = now.toTimeString().slice(0, 5), h = CONFIG.hours[d];
+  const open = h && (h[1] > h[0] ? hm >= h[0] && hm < h[1] : hm >= h[0] || hm < h[1]);
+  const to = {fr:" à ", en:" to ", zh:" 至 "}[LANG], closedTxt = {fr:"fermé", en:"closed", zh:"休息"}[LANG];
+  const allSame = [0,1,2,3,4,5,6].every(i => JSON.stringify(CONFIG.hours[i]) === JSON.stringify(CONFIG.hours[1]));
+  const rows = allSame && CONFIG.hours[1] ? `<span>${{fr:"Tous les jours", en:"Every day", zh:"每天"}[LANG]} : ${CONFIG.hours[1].join(to)}</span>`
+    : [1,2,3,4,5,6,0].map(i => `<span>${days[i]} : ${CONFIG.hours[i] ? CONFIG.hours[i].join(to) : closedTxt}</span>`).join("");
+  return `<div><h3>${T("hoursT")}</h3><div class="hours"><span class="${open ? "open" : "closed"}">● ${open ? T("openNow") : T("closedNow")}</span>${rows}</div></div>`;
+}
+function renderContact(){
+  const c = CT[LANG];
+  document.getElementById("contact").innerHTML = `
+  <h2>${c.title}</h2>
+  <div class="card">
+    <div><h3>${c.take}</h3>
+      <div class="phones">${PHONES.map(n=>`<a href="tel:+226${n}">📞 ${sp(n)}</a>`).join("")}</div>
+    </div>
+    <div><h3>WhatsApp</h3>
+      <div class="wa-row">
+        <a class="wa" href="https://wa.me/22677299878"><span>${c.wa}</span><span class="wa-num">+226 77 29 98 78</span></a>
+        <img class="wa-qr" src="../img/whatsapp-qr.png" alt="${c.qr}" loading="lazy">
+      </div>
+      <p class="wa-note">${c.note}</p>
+    </div>
+    <div><h3>Orange Money</h3><span class="om">+226 77 29 98 78</span></div>
+    <div><h3>${c.addr}</h3><span class="addr">📍 Ouaga 2000, Ouagadougou</span></div>
+    <div class="ctc-links"><a href="${CONFIG.mapsUrl}" target="_blank" rel="noopener">${T("maps")}</a><a href="${CONFIG.reviewUrl}" target="_blank" rel="noopener">${T("review")}</a></div>
+    ${hoursHtml()}
+    <button type="button" class="btn gold" id="resOpen" style="min-height:52px">${T("resOpen")}</button>
+    <button type="button" class="share-big" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span>${T("shareMenu")}</span></button>
+  </div>`;
+}
+
+// Accueil animé avec confettis
+const wel = document.getElementById("welcome"), cv = document.getElementById("confetti");
+let wTimer = null, raf = null;
+function confetti(){
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const ctx = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 2);
+  const W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr;
+  const cols = ["#d9ad55","#f3d38a","#e0533d","#c4302b","#f3ead8","#ffcf4a"];
+  const P = Array.from({length: 160}, (_, i) => ({
+    x: W/2 + (Math.random()-.5) * W * .2, y: H * .45,
+    vx: (Math.random()-.5) * 16 * dpr, vy: (-Math.random()*14 - 6) * dpr,
+    w: (6 + Math.random()*6) * dpr, h: (3 + Math.random()*5) * dpr,
+    r: Math.random()*Math.PI, vr: (Math.random()-.5) * .3, c: cols[i % cols.length], d: i * 4
+  }));
+  const t0 = performance.now();
+  cancelAnimationFrame(raf);
+  (function frame(t){
+    const el = t - t0; ctx.clearRect(0,0,W,H); let alive = false;
+    for (const p of P){
+      if (el < p.d) { alive = true; continue; }
+      p.vy += .32 * dpr; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      if (p.y < H + 20) alive = true;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, Math.abs(Math.cos(p.r)) * p.h + 1); ctx.restore();
+    }
+    if (alive && el < 6000) raf = requestAnimationFrame(frame); else ctx.clearRect(0,0,W,H);
+  })(t0);
+}
+function showWelcome(){
+  document.getElementById("w1").textContent = T("w1");
+  document.getElementById("w2").textContent = T("w2");
+  document.getElementById("wtap").textContent = "";
+  document.getElementById("w3").hidden = LANG === "zh";
+  document.body.classList.add("locked"); toTop();
+  wel.classList.remove("hide","run"); void wel.offsetWidth; wel.classList.add("run");
+  confetti(); clearTimeout(wTimer); wTimer = setTimeout(hideWelcome, 3200);
+}
+function hideWelcome(){ clearTimeout(wTimer); wel.classList.add("hide"); document.body.classList.remove("locked"); setTimeout(() => cancelAnimationFrame(raf), 650); }
+wel.addEventListener("click", hideWelcome);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !wel.classList.contains("hide")) hideWelcome(); });
+
+// Partage du menu
+const SHARE_URL = location.origin + location.pathname;
+const sheet = document.getElementById("sheet"), toast = document.getElementById("toast");
+let shareFocus = null;
+function flash(msg){ toast.textContent = msg; toast.classList.add("on"); setTimeout(() => toast.classList.remove("on"), 2000); }
+async function shareMenu(){
+  const data = {title: "Shangri-La", text: T("shareText"), url: SHARE_URL};
+  if (navigator.share){
+    try { await navigator.share(data); return; } catch(e){ if (e && e.name === "AbortError") return; }
+  }
+  const msg = T("shareText") + " " + SHARE_URL;
+  document.getElementById("shTitle").textContent = T("shareMenu");
+  document.getElementById("shWa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
+  document.getElementById("shFb").href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(SHARE_URL);
+  document.getElementById("shCopyLbl").textContent = T("copy");
+  document.getElementById("shClose").textContent = T("cancel");
+  shareFocus = document.activeElement; sheet.classList.add("open"); document.getElementById("shWa").focus();
+}
+function closeSheet(){ sheet.classList.remove("open"); if (shareFocus) shareFocus.focus(); }
+document.getElementById("shareTop").addEventListener("click", shareMenu);
+document.addEventListener("click", e => { if (e.target.closest("[data-share]")) shareMenu(); });
+sheet.addEventListener("click", e => { if (e.target === sheet || e.target.id === "shClose" || e.target.closest(".sh-opt:not(#shCopy)")) closeSheet(); });
+document.getElementById("shCopy").addEventListener("click", async () => {
+  let ok = false;
+  try { await navigator.clipboard.writeText(SHARE_URL); ok = true; } catch(e){
+    const t = document.createElement("textarea"); t.value = SHARE_URL; document.body.appendChild(t); t.select();
+    try { ok = document.execCommand("copy"); } catch(_){} t.remove();
+  }
+  closeSheet(); flash(ok ? T("copied") : SHARE_URL);
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && sheet.classList.contains("open")) closeSheet(); });
+
+// ===== Ma sélection =====
+const BYNAME = {}; for (const c of MENU) for (const it of c.items) if (!it.g) BYNAME[it.name] = it;
+const WA_NUM = "22677299878";
+let SEL = {}, HIST = [], NOTES = {};
+try { NOTES = JSON.parse(localStorage.getItem("shangrila-test-notes") || "{}") || {}; } catch(e){ NOTES = {}; }
+const saveNotes = () => { try { localStorage.setItem("shangrila-test-notes", JSON.stringify(NOTES)); } catch(e){} };
+try { SEL = JSON.parse(localStorage.getItem("shangrila-test-sel") || "{}") || {}; } catch(e){ SEL = {}; }
+try { HIST = JSON.parse(localStorage.getItem("shangrila-test-hist") || "[]") || []; } catch(e){ HIST = []; }
+const saveHist = () => { try { localStorage.setItem("shangrila-test-hist", JSON.stringify(HIST.slice(0, 10))); } catch(e){} };
+// Nouvelle visite (onglet/app rouvert) ou sélection de plus de 3 h : on la range dans l'historique et on repart à zéro.
+// Un simple rechargement pendant la même visite garde la sélection.
+(function(){
+  let sameVisit = false, last = 0;
+  try { sameVisit = sessionStorage.getItem("shangrila-test-visit") === "1"; sessionStorage.setItem("shangrila-test-visit", "1"); } catch(e){}
+  try { last = +localStorage.getItem("shangrila-test-sel-at") || 0; } catch(e){}
+  const stale = last && Date.now() - last > 3 * 3600 * 1000;
+  const items = Object.entries(SEL).filter(([k, q]) => BYNAME[k] && q > 0);
+  let pending = false;
+  try { const o = JSON.parse(localStorage.getItem("shangrila-test-order") || "null"); pending = !!(o && Date.now() - o.at < 12 * 3600 * 1000); } catch(e){}
+  if (items.length && !pending && (!sameVisit || stale)){
+    let oldLoc = null; try { oldLoc = JSON.parse(localStorage.getItem("shangrila-test-loc") || "null"); } catch(e){}
+    HIST.unshift({at: last || Date.now(), items: Object.fromEntries(items), loc: oldLoc}); HIST = HIST.slice(0, 10); saveHist();
+    SEL = {}; NOTES = {}; try { localStorage.setItem("shangrila-test-sel", "{}"); localStorage.setItem("shangrila-test-notes", "{}"); } catch(e){}
+  }
+  // nouvelle visite : on redemande la table / le salon
+  if ((!sameVisit || stale) && !pending){
+    try { localStorage.removeItem("shangrila-test-loc"); sessionStorage.removeItem("shangrila-test-later"); } catch(e){}
+  }
+})();
+for (const k in SEL) if (!BYNAME[k] || !(SEL[k] > 0)) delete SEL[k];
+const saveSel = () => { try { localStorage.setItem("shangrila-test-sel", JSON.stringify(SEL)); localStorage.setItem("shangrila-test-sel-at", String(Date.now())); } catch(e){} };
+const unitP = it => (it.p == null || it.p2) ? null : it.p;     // prix à deux tarifs = à confirmer
+// ===== Table / salon =====
+const TABLES = [1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20].map(String);
+const ROOMS = ["201","202","203","601","602","603","605","606","608","610","616","618"];
+let LOC = null, LOC_LATER = false;
+try { LOC = JSON.parse(localStorage.getItem("shangrila-test-loc") || "null"); } catch(e){}
+if (LOC && !((LOC.k === "t" && TABLES.includes(LOC.v)) || (LOC.k === "r" && ROOMS.includes(LOC.v)) || LOC.k === "e")) LOC = null;
+try { LOC_LATER = sessionStorage.getItem("shangrila-test-later") === "1"; } catch(e){}
+const saveLoc = () => { try { LOC ? localStorage.setItem("shangrila-test-loc", JSON.stringify(LOC)) : localStorage.removeItem("shangrila-test-loc"); } catch(e){} };
+function locText(loc, lang){
+  if (!loc) return ""; const U = UI[lang || LANG];
+  if (loc.k === "e") return U.takeL2;
+  if ((lang || LANG) === "zh") return loc.k === "t" ? loc.v + "号桌" : loc.v + " 包间";
+  return (loc.k === "t" ? U.tableL : U.roomL) + " " + loc.v;
+}
+function locBadge(loc, big){
+  if (!loc) return "";
+  const lbl = loc.k === "e" ? "" : `<span class="lbl">${loc.k === "t" ? T("tableL") : T("roomL")}</span>`;
+  const num = loc.k === "e" ? "🥡 " + T("takeL2") : esc(loc.v);
+  return `<span class="locb ${loc.k}${big ? " big" : ""}">${LANG === "zh" ? "" : lbl}<span class="num">${num}</span>${LANG === "zh" && loc.k !== "e" ? lbl : ""}</span>`;
+}
+// ===== Occupation des tables (partagée entre téléphones via ntfy.sh) =====
+const OCC_TOPIC = "https://ntfy.sh/shangrila-ouaga2000-occ-TEST-7k3p9q";
+const OCC_TTL = 2 * 3600 * 1000;          // une table est considérée libre 2 h après la dernière activité
+let DEVICE = ""; try { DEVICE = localStorage.getItem("shangrila-test-dev") || ""; if (!DEVICE){ DEVICE = Math.random().toString(36).slice(2, 12); localStorage.setItem("shangrila-test-dev", DEVICE); } } catch(e){ DEVICE = Math.random().toString(36).slice(2, 12); }
+let OCC = {}, occAt = 0, lastClaim = 0;
+async function fetchOcc(force){
+  if (!force && Date.now() - occAt < 15000) return OCC;
+  const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 4000);
+  try {
+    const txt = await (await fetch(OCC_TOPIC + "/json?poll=1&since=3h", {cache: "no-store", signal: ctl.signal})).text();
+    const map = {};
+    txt.split("\n").filter(Boolean).forEach(l => { try { const m = JSON.parse(l); if (m.event !== "message") return;
+      const d = JSON.parse(m.message); if (!d || !d.l || !d.d) return; map[d.l] = {a: d.a, d: d.d, at: m.time * 1000, ttl: d.ttl}; } catch(_){} });
+    OCC = map; occAt = Date.now();
+  } catch(_){} finally { clearTimeout(to); }
+  return OCC;
+}
+const locKey = loc => loc.k + loc.v;
+function takenByOther(loc){ const o = OCC[locKey(loc)]; return !!(o && o.a === "claim" && o.d !== DEVICE && Date.now() - o.at < (o.ttl ? o.ttl * 60000 : OCC_TTL)); }
+// Durée de réservation : 8 min pendant qu'on consulte le menu (renouvelée tant qu'on est actif),
+// 120 min une fois la commande montrée au serveur (le client est attablé).
+const claimTtl = () => (typeof ORDER !== "undefined" && ORDER) ? 120 : 8;
+function sendOcc(a, loc){
+  if (!loc || loc.k === "e") return;
+  const ttl = a === "claim" ? claimTtl() : 0;
+  fetch(OCC_TOPIC, {method: "POST", body: JSON.stringify({a, l: locKey(loc), d: DEVICE, ttl}), cache: "no-store"}).catch(() => {});
+  OCC[locKey(loc)] = {a, d: DEVICE, at: Date.now(), ttl};
+}
+function claimLoc(force){ if (LOC && LOC.k !== "e" && (force || Date.now() - lastClaim > 3 * 60 * 1000)){ lastClaim = Date.now(); sendOcc("claim", LOC); } }
+function setLoc(loc){
+  if (LOC && (!loc || locKey(LOC) !== locKey(loc))) sendOcc("free", LOC);   // on libère l'ancienne place
+  LOC = loc; saveLoc(); claimLoc(true);
+}
+// ===== Inactivité : on ne bloque pas une place indéfiniment =====
+const IDLE_TEST = /[?&]test=idle\b/.test(location.search);
+const IDLE_MS = IDLE_TEST ? 20 * 1000 : 4 * 60 * 1000, IDLE_COUNT = 30;
+let lastAct = Date.now(), hiddenAt = 0, idleTimer = null, idleLeft = 0, idleOpen = false, ignoreActUntil = 0;
+const holdsPlace = () => !!(LOC && LOC.k !== "e" && !(typeof ORDER !== "undefined" && ORDER));
+function activity(){
+  if (idleOpen || Date.now() < ignoreActUntil) return;
+  lastAct = Date.now();
+  if (holdsPlace()) claimLoc(false);        // renouvelle la réservation au plus toutes les 3 min
+}
+["scroll","touchstart","pointerdown","keydown","input"].forEach(ev => addEventListener(ev, activity, {passive: true, capture: true}));
+function releasePlace(reason){
+  if (!LOC || LOC.k === "e") return;
+  const old = LOC; sendOcc("free", old); LOC = null; saveLoc(); LOC_LATER = false;
+  try { sessionStorage.removeItem("shangrila-test-later"); } catch(_){}
+  updateBar(); if (document.getElementById("selSheet").classList.contains("open")) renderSel();
+  if (reason === "idle"){ flash(T("idleGone")); setTimeout(() => flash(T("idleGone")), 2300); }
+}
+function renderIdle(){
+  const isT = LOC && LOC.k === "t";
+  document.getElementById("idleT").textContent = T("idleT");
+  document.getElementById("idleMsg").textContent = (isT ? T("idleMsgT") : T("idleMsgR")).replace("{x}", LOC ? LOC.v : "");
+  document.getElementById("idleCount").textContent = T("idleCount").replace("{s}", idleLeft);
+  document.getElementById("idleNum").textContent = idleLeft;
+  document.getElementById("idleRing").style.setProperty("--pct", (idleLeft / IDLE_COUNT * 100) + "%");
+  document.getElementById("idleYes").textContent = T("idleYes"); document.getElementById("idleNo").textContent = T("idleNo");
+}
+function openIdle(left){
+  idleOpen = true; idleLeft = Math.max(1, Math.min(IDLE_COUNT, left || IDLE_COUNT)); renderIdle();
+  document.getElementById("idleSheet").classList.add("open"); document.getElementById("idleYes").focus();
+  try { navigator.vibrate && navigator.vibrate([120, 80, 120]); } catch(_){}
+  clearInterval(idleTimer);
+  idleTimer = setInterval(() => { idleLeft--; renderIdle(); if (idleLeft <= 0) closeIdle(false, "idle"); }, 1000);
+}
+function closeIdle(keep, reason){
+  clearInterval(idleTimer); idleTimer = null; idleOpen = false;
+  document.getElementById("idleSheet").classList.remove("open");
+  lastAct = Date.now();
+  if (keep) claimLoc(true); else releasePlace(reason || "user");
+}
+document.getElementById("idleYes").addEventListener("click", () => closeIdle(true));
+// Seuls les deux boutons répondent (un toucher pour réveiller le téléphone ne doit pas valider)
+document.getElementById("idleNo").addEventListener("click", () => closeIdle(false, "user"));
+setInterval(() => {
+  if (idleOpen || document.visibilityState !== "visible" || !holdsPlace()) return;
+  if (Date.now() - lastAct >= IDLE_MS) openIdle();
+}, IDLE_TEST ? 1000 : 3000);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden"){ hiddenAt = Date.now(); return; }
+  hiddenAt = 0;
+  // Écran rallumé / retour sur l'appli : le toucher qui réveille le téléphone ne compte pas comme activité
+  ignoreActUntil = Date.now() + 1500;
+  if (!holdsPlace()) return;
+  const idleFor = Date.now() - lastAct;                       // temps écoulé depuis la dernière vraie action
+  if (idleFor >= IDLE_MS + IDLE_COUNT * 1000){ if (idleOpen) closeIdle(false, "idle"); else releasePlace("idle"); return; }
+  if (idleFor >= IDLE_MS){ if (!idleOpen) openIdle(IDLE_COUNT - Math.floor((idleFor - IDLE_MS) / 1000)); return; }
+  claimLoc(false);
+});
+
+let locTab = "t", locPendingAdd = null, locAfter = null, locMode = "start", locFocus = null;
+function renderLoc(){
+  document.getElementById("locTitle").textContent = T("locTitle");
+  document.getElementById("locSub").textContent = locMode === "waiter" ? T("locSubWaiter") : T("locSubStart");
+  document.querySelectorAll("#locTabs button").forEach(b => { b.textContent = T("tab" + b.dataset.tab.toUpperCase()); b.setAttribute("aria-selected", b.dataset.tab === locTab); });
+  const g = document.getElementById("locGrid"); g.className = "loc-grid " + locTab;
+  const busy = (k, v) => takenByOther({k, v}) ? " busy" : "", bl = (k, v) => takenByOther({k, v}) ? " · " + T("busy") : "";
+  if (locTab === "t") g.innerHTML = TABLES.map(v => `<button type="button" class="tbtn${LOC && LOC.k === "t" && LOC.v === v ? " on" : ""}${busy("t", v)}" data-loc="t:${v}" aria-label="${T("tableL")} ${v}${bl("t", v)}">${v}</button>`).join("");
+  else if (locTab === "r") g.innerHTML = ROOMS.map(v => `<button type="button" class="rbtn${LOC && LOC.k === "r" && LOC.v === v ? " on" : ""}${busy("r", v)}" data-loc="r:${v}" aria-label="${T("roomL")} ${v}${bl("r", v)}"><small>${T("roomL")}</small>${v}</button>`).join("");
+  else g.innerHTML = `<button type="button" class="ebtn" data-loc="e:">${T("takeBtn")}</button>`;
+  const anyBusy = locTab !== "e" && (locTab === "t" ? TABLES : ROOMS).some(v => takenByOther({k: locTab, v}));
+  document.getElementById("locLegend").hidden = !anyBusy; document.getElementById("locLegendT").textContent = T("busy");
+  document.getElementById("locWarn").hidden = true; g.hidden = false;
+  const later = document.getElementById("locLater"); later.textContent = T("later"); later.hidden = locMode === "waiter";
+}
+function openLoc(mode, after){
+  locMode = mode; locAfter = after || null; locTab = LOC && LOC.k !== "e" ? LOC.k : "t";
+  locFocus = document.activeElement; renderLoc(); document.getElementById("locSheet").classList.add("open");
+  fetchOcc(true).then(() => { if (document.getElementById("locSheet").classList.contains("open") && document.getElementById("locWarn").hidden) renderLoc(); });
+  const first = document.querySelector("#locGrid button"); if (first) first.focus();
+}
+function closeLoc(){ document.getElementById("locSheet").classList.remove("open"); locPendingAdd = null; if (locFocus && document.contains(locFocus)) locFocus.focus(); }
+let PENDING_CAND = null;
+function showBusy(cand){
+  PENDING_CAND = cand;
+  document.getElementById("locGrid").hidden = true; document.getElementById("locLegend").hidden = true;
+  document.getElementById("locWarnT").textContent = "⚠️ " + (cand.k === "t" ? T("busyT") : T("busyR"));
+  document.getElementById("locWarnP").textContent = (cand.k === "t" ? T("busyMsgT") : T("busyMsgR")).replace("{x}", cand.v) + " " + T("busyAsk");
+  document.getElementById("locNo").textContent = T("busyNo"); document.getElementById("locYes").textContent = T("busyYes");
+  document.getElementById("locLater").hidden = true;
+  document.getElementById("locWarn").hidden = false; document.getElementById("locNo").focus();
+}
+function applyLoc(cand){
+  setLoc(cand);
+  const add = locPendingAdd, after = locAfter; locPendingAdd = null; locAfter = null;
+  document.getElementById("locSheet").classList.remove("open");
+  if (add) changeQty(add, 1);
+  updateBar(); if (document.getElementById("selSheet").classList.contains("open")) renderSel();
+  flash("📍 " + locText(LOC));
+  if (after) setTimeout(after, 80);
+}
+document.getElementById("locSheet").addEventListener("click", async e => {
+  const tab = e.target.closest("[data-tab]"); if (tab){ locTab = tab.dataset.tab; renderLoc(); return; }
+  const b = e.target.closest("[data-loc]");
+  if (b){
+    const [k, v] = b.dataset.loc.split(":"), cand = {k, v};
+    if (k !== "e" && !(LOC && locKey(LOC) === locKey(cand))){
+      b.disabled = true; await fetchOcc(true); b.disabled = false;
+      if (takenByOther(cand)){ showBusy(cand); return; }
+    }
+    applyLoc(cand); return;
+  }
+  if (e.target.id === "locNo"){ renderLoc(); return; }
+  if (e.target.id === "locYes"){ applyLoc(PENDING_CAND); return; }
+  if (e.target.id === "locLater"){ LOC_LATER = true; try { sessionStorage.setItem("shangrila-test-later", "1"); } catch(_){} const add = locPendingAdd; closeLoc(); if (add) changeQty(add, 1); return; }
+  if (e.target.id === "locSheet") closeLoc();
+});
+function selLocHtml(){
+  if (LOC) return `<div class="locrow">${locBadge(LOC)}<button type="button" class="btn" data-act="chgloc">${T("change")}</button></div>`;
+  return `<button type="button" class="locrow needloc" data-act="chgloc" style="width:100%;font:inherit;font-weight:700;cursor:pointer;text-align:left"><span>${T("needLoc")}<br><small style="font-weight:400;opacity:.8">${T("locReq")}</small></span><span aria-hidden="true">›</span></button>`;
+}
+
+const qtyOf = it => it.variants ? it.variants.reduce((a, v) => a + (SEL[v] || 0), 0) : (SEL[it.name] || 0);
+function addBtn(it){
+  const q = qtyOf(it);
+  return `<button type="button" class="add${q?" has":""}" data-add="${esc(it.name)}" aria-label="${esc(T("add") + " : " + nm(it))}">${q || "+"}</button>`;
+}
+function selStats(){
+  let count = 0, total = 0, unknown = false;
+  for (const [k, q] of Object.entries(SEL)){ const it = BYNAME[k]; count += q; const u = unitP(it); if (u == null) unknown = true; else total += u * q; }
+  return {count, total, unknown};
+}
+// ===== Service : appeler le serveur / demander l'addition =====
+function updateBell(){ const b = document.getElementById("bell"); if (!b) return; const on = !!(LOC && LOC.k !== "e") && !window.COMPTOIR; b.classList.toggle("on", on); b.setAttribute("aria-label", T("bellT")); }
+let bellFocus = null;
+function renderBell(){
+  document.getElementById("bellTitle").textContent = T("bellT");
+  document.getElementById("bellLoc").innerHTML = LOC ? `<div class="locrow">${locBadge(LOC)}</div>` : "";
+  document.getElementById("callWaiter").textContent = T("callW"); document.getElementById("callBill").textContent = T("callB");
+  document.getElementById("bellClose").textContent = T("closeSel");
+}
+function openBell(){ bellFocus = document.activeElement; document.getElementById("bellNote").textContent = ""; renderBell(); document.getElementById("bellSheet").classList.add("open"); document.getElementById("callWaiter").focus(); }
+function closeBell(){ document.getElementById("bellSheet").classList.remove("open"); if (bellFocus && document.contains(bellFocus)) bellFocus.focus(); }
+async function sendCall(kind){
+  if (!LOC || LOC.k === "e") return;
+  const key = "shangrila-test-call-" + kind, note = document.getElementById("bellNote");
+  let last = 0; try { last = +sessionStorage.getItem(key) || 0; } catch(_){}
+  if (Date.now() - last < 45000){ note.textContent = T("callWait"); return; }
+  const btn = document.getElementById(kind === "bill" ? "callBill" : "callWaiter"); btn.disabled = true; note.textContent = T("sending");
+  const ok = await postRetry(ORD_TOPIC, JSON.stringify({t: "call", k: kind, l: LOC.k + LOC.v, at: Date.now(), cid: Math.random().toString(36).slice(2, 10), dev: DEVICE, id: (typeof ORDER !== "undefined" && ORDER) ? ORDER.id : null}));
+  btn.disabled = false;
+  if (ok){ try { sessionStorage.setItem(key, String(Date.now())); } catch(_){} note.textContent = kind === "bill" ? T("callBillSent") : T("callSent"); claimLoc(true); setTimeout(closeBell, 1600); }
+  else note.textContent = T("sendFail");
+}
+document.getElementById("bell").addEventListener("click", openBell);
+document.getElementById("bellSheet").addEventListener("click", e => {
+  if (e.target.id === "callWaiter") sendCall("waiter");
+  else if (e.target.id === "callBill") sendCall("bill");
+  else if (e.target.id === "bellSheet" || e.target.id === "bellClose") closeBell();
+});
+
+// ===== Réservation d'un salon (demande par WhatsApp) =====
+let resFocus = null;
+function renderRes(){
+  const set = (id, k) => document.getElementById(id).textContent = T(k);
+  set("resTitle","resT"); set("resSub","resS"); set("resDateL","resDate"); set("resTimeL","resTime"); set("resPeopleL","resPeople");
+  set("resRoomL","resRoom"); set("resOccL","resOcc"); set("resNameL","resName"); set("resPhoneL","resPhone"); set("resNoteL","resNote");
+  set("resSend","resBtn"); set("resClose","cancel");
+  const room = document.getElementById("resRoom"), keepR = room.value;
+  room.innerHTML = `<option value="">${esc(T("resAny"))}</option>` + ROOMS.map(v => `<option value="${v}">${esc(T("roomL"))} ${v}</option>`).join(""); room.value = keepR;
+  const occ = document.getElementById("resOcc"), keepO = occ.selectedIndex;
+  occ.innerHTML = UI[LANG].occ.map((o, i) => `<option value="${i}">${esc(o)}</option>`).join(""); occ.selectedIndex = keepO > 0 ? keepO : 0;
+  const d = document.getElementById("resDate"); const t = new Date(); d.min = new Date(t.getTime() - t.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+}
+function openRes(){ resFocus = document.activeElement; document.getElementById("resErr").textContent = ""; renderRes(); document.getElementById("resSheet").classList.add("open"); document.getElementById("resDate").focus(); }
+function closeRes(){ document.getElementById("resSheet").classList.remove("open"); if (resFocus && document.contains(resFocus)) resFocus.focus(); }
+document.addEventListener("click", e => { if (e.target.closest("#resOpen")) openRes(); });
+document.getElementById("resSheet").addEventListener("click", e => { if (e.target.id === "resSheet" || e.target.id === "resClose") closeRes(); });
+document.getElementById("resForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const v = id => document.getElementById(id).value.trim();
+  const date = v("resDate"), time = v("resTime"), ppl = v("resPeople"), name = v("resName");
+  if (!date || !time || !(+ppl > 0) || !name){ document.getElementById("resErr").textContent = T("resErr"); return; }
+  const dFr = new Date(date + "T12:00:00").toLocaleDateString("fr-FR", {weekday: "long", day: "numeric", month: "long", year: "numeric"});
+  const room = v("resRoom"), occ = UI.fr.occ[+v("resOcc") || 0];
+  const lines = ["Bonjour Shangri-La,", "Je souhaite réserver un salon privé :", "",
+    `• Date : ${dFr}`, `• Heure : ${time}`, `• Personnes : ${ppl}`, `• Salon : ${room ? "Salon " + room : "peu importe"}`, `• Occasion : ${occ}`,
+    `• Nom : ${name}`].concat(v("resPhone") ? [`• Téléphone : ${v("resPhone")}`] : []).concat(v("resNote") ? ["", v("resNote")] : []).concat(["", "Merci de me confirmer la disponibilité.", "(Envoyé depuis le menu digital)"]);
+  const url = `https://wa.me/${WA_NUM}?text=${encodeURIComponent(lines.join("\n"))}`;
+  const w = window.open(url, "_blank", "noopener"); if (!w) location.href = url;
+  closeRes();
+});
+
+function updateBar(){
+  const {count, total} = selStats(), bar = document.getElementById("selbar");
+  bar.classList.toggle("on", count > 0); document.body.classList.toggle("hasbar", count > 0);
+  document.getElementById("selbarL").innerHTML = (LOC ? locBadge(LOC) + " " : "🧾 " + esc(T("selTitle")) + " · ") + `${count} ${count > 1 ? T("dishes") : T("dish")}`;
+  const unk = selStats().unknown;
+  updateBell();
+  document.getElementById("selbarR").textContent = total ? fmt(total) + (unk ? " +" : "") : (unk ? T("ask") : fmt(0));
+  if (typeof ORDER !== "undefined" && ORDER && ORDER.status === "accepted" && count) document.getElementById("selbarL").textContent = T("stAccepted");
+}
+function refreshAdd(name){
+  const it = BYNAME[name]; if (it && it.parent) name = it.parent;     // une variante met à jour le bouton du plat
+  const q = BYNAME[name] ? qtyOf(BYNAME[name]) : 0;
+  document.querySelectorAll(".add").forEach(b => { if (b.dataset.add === name){ b.textContent = q || "+"; b.classList.toggle("has", q > 0); } });
+}
+function changeQty(name, d){
+  if (d > 0) claimLoc(false);
+  const q = Math.max(0, (SEL[name] || 0) + d);
+  if (q) SEL[name] = q; else { delete SEL[name]; if (NOTES[name]){ delete NOTES[name]; saveNotes(); } }
+  saveSel(); refreshAdd(name); updateBar();
+  if (document.getElementById("selSheet").classList.contains("open")) renderSel();
+}
+let varFocus = null;
+function openVariants(it){
+  varFocus = document.activeElement;
+  document.getElementById("varTitle").textContent = nm(it);
+  document.getElementById("varSub").textContent = T("varSub");
+  document.getElementById("varList").innerHTML = it.variants.map(v => { const vi = BYNAME[v];
+    return `<button type="button" class="var-opt" data-var="${esc(v)}"><span>${esc(nm(it))}</span><b>${fmt(vi.p)}</b></button>`; }).join("");
+  document.getElementById("varClose").textContent = T("cancel");
+  document.getElementById("varSheet").classList.add("open"); document.querySelector("#varList button").focus();
+}
+function closeVariants(){ document.getElementById("varSheet").classList.remove("open"); if (varFocus && document.contains(varFocus)) varFocus.focus(); }
+document.getElementById("varSheet").addEventListener("click", e => {
+  const o = e.target.closest("[data-var]");
+  if (o){ closeVariants(); addItem(o.dataset.var); return; }
+  if (e.target.id === "varSheet" || e.target.id === "varClose") closeVariants();
+});
+function addItem(name){
+  if (!LOC && !LOC_LATER){ locPendingAdd = name; openLoc("start"); return; }
+  changeQty(name, 1);
+}
+main.addEventListener("click", e => { const b = e.target.closest(".add"); if (b){ e.stopPropagation();
+  const it0 = BYNAME[b.dataset.add]; if (it0 && it0.variants){ openVariants(it0); return; }
+  if (!LOC && !LOC_LATER){ locPendingAdd = b.dataset.add; openLoc("start"); return; }
+  changeQty(b.dataset.add, 1);
+  b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); try { navigator.vibrate && navigator.vibrate(12); } catch(_){} } }, true);
+main.addEventListener("keydown", e => { if (e.target.closest(".add")) e.stopPropagation(); }, true);
+
+function waMessage(){
+  const {total, unknown} = selStats();
+  const lines = ["Bonjour Shangri-La,", "Je voudrais commander à emporter :", ""];
+  for (const [k, q] of Object.entries(SEL)){ const it = BYNAME[k], u = unitP(it);
+    lines.push(`• ${q} × ${it.n ? "[" + it.n + "] " : ""}${it.name}${u != null ? " (" + fmt(u * q) + ")" : " (prix à confirmer)"}${NOTES[k] ? "\n   📝 " + NOTES[k] : ""}`); }
+  lines.push("", `Total : ${fmt(total)}${unknown ? " + prix à confirmer" : ""}`);
+  const n = document.getElementById("selName").value.trim(), t = document.getElementById("selTime").value.trim();
+  if (n) lines.push(`Nom : ${n}`);
+  const ph = document.getElementById("selPhone").value.trim(); if (ph) lines.push(`Téléphone : ${ph}`);
+  if (t) lines.push(`Heure de retrait : ${t}`);
+  lines.push("", "(Envoyé depuis le menu digital)");
+  return lines.join("\n");
+}
+function renderSel(){
+  const {total, unknown} = selStats(), entries = Object.entries(SEL);
+  if (!entries.length){ closeSel(); return; }
+  showOrderStatus();
+  document.getElementById("selTitle").textContent = T("selTitle");
+  document.getElementById("selLoc").innerHTML = selLocHtml();
+  const take = !!(LOC && LOC.k === "e");
+  document.getElementById("selWaiter").hidden = take;
+  document.getElementById("selSend").hidden = take; updateSendBtn();
+  ["selTakeL","selWa","selTakeErr"].forEach(id => document.getElementById(id).hidden = !take);
+  document.querySelector("#selSheet .fields").hidden = !take;
+  document.getElementById("selList").innerHTML = entries.map(([k, q]) => { const it = BYNAME[k], u = unitP(it);
+    return `<li><span class="nm">${it.n ? `<span class="no" style="margin-right:6px">${esc(it.n)}</span>` : ""}${esc(nm(it))}${LANG !== "fr" ? `<small>${esc(it.name)}</small>` : ""}<small>${u != null ? fmt(u * q) : T("ask")}</small><input class="note-in" data-note="${esc(k)}" maxlength="60" placeholder="${esc(T("notePh"))}" value="${esc(NOTES[k] || "")}" aria-label="${esc(T("notePh") + " : " + nm(it))}" enterkeyhint="done"></span>
+      <span class="qty"><button type="button" class="qbtn" data-q="-1" data-k="${esc(k)}" aria-label="−">−</button><b>${q}</b><button type="button" class="qbtn" data-q="1" data-k="${esc(k)}" aria-label="+">+</button></span></li>`; }).join("");
+  document.getElementById("selTotL").textContent = T("total");
+  document.getElementById("selTotR").textContent = total ? fmt(total) + (unknown ? " +" : "") : (unknown ? T("ask") : fmt(0));
+  document.getElementById("selNote").textContent = unknown ? T("noteAsk") : "";
+  document.getElementById("selWaiter").textContent = "📱 " + T("waiterBtn");
+  document.getElementById("selTakeL").textContent = "🥡 " + T("takeL");
+  document.getElementById("selName").placeholder = T("namePh");
+  document.getElementById("selTime").placeholder = T("timePh");
+  document.getElementById("selPhone").placeholder = T("phonePh");
+  document.getElementById("selNameL").textContent = T("namePh"); document.getElementById("selPhoneL").textContent = T("phonePh");
+  takeCheck(false);
+  document.getElementById("selWa").textContent = T("waBtn");
+  document.getElementById("selWa").href = `https://wa.me/${WA_NUM}?text=${encodeURIComponent(waMessage())}`;
+  document.getElementById("selClear").textContent = T("clear");
+  document.getElementById("selClose").textContent = T("closeSel");
+}
+let selFocus = null;
+function openSel(){ selFocus = document.activeElement; renderSel(); document.getElementById("selSheet").classList.add("open"); document.getElementById("selClose").focus(); }
+function closeSel(){ document.getElementById("selSheet").classList.remove("open"); if (selFocus) selFocus.focus(); }
+document.getElementById("selbar").addEventListener("click", openSel);
+document.getElementById("selSheet").addEventListener("click", e => {
+  const qb = e.target.closest(".qbtn"); if (qb){ changeQty(qb.dataset.k, +qb.dataset.q); return; }
+  if (e.target.id === "selSheet" || e.target.id === "selClose") closeSel();
+  if (e.target.id === "selClear"){ const ks = Object.keys(SEL); SEL = {}; ORDER = null; saveOrder(); if (es){ es.close(); es = null; } saveSel(); ks.forEach(refreshAdd); updateBar(); closeSel(); }
+  if (e.target.closest("[data-act=chgloc]")){ openLoc(LOC && LOC.k !== "e" ? "start" : "start"); return; }
+  if (e.target.id === "selSend"){ sendToDesk(); return; }
+  if (e.target.id === "selWaiter"){
+    if (!LOC || LOC.k === "e"){ openLoc("waiter", () => { if (LOC && LOC.k !== "e") openWaiter(); }); return; }
+    openWaiter();
+  }
+});
+document.getElementById("selList").addEventListener("input", e => {
+  const n = e.target.closest(".note-in"); if (!n) return;
+  const v = n.value.replace(/\s+/g, " ").trimStart().slice(0, 60);
+  if (v) NOTES[n.dataset.note] = v; else delete NOTES[n.dataset.note]; saveNotes();
+  document.getElementById("selWa").href = `https://wa.me/${WA_NUM}?text=${encodeURIComponent(waMessage())}`;
+  updateSendBtn();
+});
+document.getElementById("selList").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.closest(".note-in")) e.target.blur(); });
+// À emporter : nom et téléphone obligatoires
+try { const tk = JSON.parse(localStorage.getItem("shangrila-test-take") || "{}"); if (tk.n) document.getElementById("selName").value = tk.n; if (tk.p) document.getElementById("selPhone").value = tk.p; } catch(_){}
+const phoneOk = v => v.replace(/[^0-9]/g, "").length >= 8;
+function takeCheck(show){
+  const n = document.getElementById("selName"), p = document.getElementById("selPhone"), wa = document.getElementById("selWa"), err = document.getElementById("selTakeErr");
+  const okN = n.value.trim().length >= 2, okP = phoneOk(p.value), ok = okN && okP;
+  wa.setAttribute("aria-disabled", ok ? "false" : "true");
+  if (show){ n.setAttribute("aria-invalid", okN ? "false" : "true"); p.setAttribute("aria-invalid", okP ? "false" : "true"); err.textContent = ok ? "" : T("takeErr"); }
+  else if (ok){ err.textContent = ""; n.removeAttribute("aria-invalid"); p.removeAttribute("aria-invalid"); }
+  return ok;
+}
+["selName","selPhone","selTime"].forEach(id => document.getElementById(id).addEventListener("input", () => {
+  document.getElementById("selWa").href = `https://wa.me/${WA_NUM}?text=${encodeURIComponent(waMessage())}`;
+  takeCheck(document.getElementById("selTakeErr").textContent !== "");
+  try { localStorage.setItem("shangrila-test-take", JSON.stringify({n: document.getElementById("selName").value.trim(), p: document.getElementById("selPhone").value.trim()})); } catch(_){}
+}));
+document.getElementById("selWa").addEventListener("click", e => {
+  if (takeCheck(true)) return;
+  e.preventDefault();
+  const n = document.getElementById("selName"); (n.value.trim().length >= 2 ? document.getElementById("selPhone") : n).focus();
+});
+// ===== Historique des sélections =====
+function histTotal(items){ let t = 0, u = false; for (const [k, q] of Object.entries(items)){ const it = BYNAME[k]; if (!it) continue; const p = unitP(it); if (p == null) u = true; else t += p * q; } return fmt(t) + (u ? " +" : ""); }
+function updateHistBtn(){
+  const b = document.getElementById("histBtn");
+  b.classList.add("on");
+  b.textContent = `🕘 ${T("hist")}${HIST.length ? " (" + HIST.length + ")" : ""}`;
+}
+function renderHist(){
+  const loc = {fr:"fr-FR", en:"en-GB", zh:"zh-CN"}[LANG];
+  document.getElementById("histTitle").textContent = T("histT");
+  document.getElementById("histList").innerHTML = HIST.length ? HIST.map((h, i) => {
+    const d = new Date(h.at), names = Object.entries(h.items).filter(([k]) => BYNAME[k]).map(([k, q]) => `${q} × ${nm(BYNAME[k])}`);
+    const n = Object.values(h.items).reduce((a, b) => a + b, 0);
+    return `<li><div class="hd"><span>${h.loc ? locBadge(h.loc) + " " : ""}${d.toLocaleDateString(loc, {day:"numeric", month:"short"})} · ${d.toLocaleTimeString(loc, {hour:"2-digit", minute:"2-digit"})} · ${n} ${n > 1 ? T("dishes") : T("dish")}${h.served ? " · ✅ " + T("served") : ""}</span><span>${histTotal(h.items)}</span></div>
+      <div class="it">${esc(names.join(", "))}</div>
+      <div class="acts"><button type="button" class="btn gold" data-reuse="${i}">↺ ${T("reuse")}</button><button type="button" class="btn" data-del="${i}">🗑 ${T("del")}</button></div></li>`;
+  }).join("") : `<li class="it">${T("histEmpty")}</li>`;
+  document.getElementById("histClear").textContent = T("delAll");
+  document.getElementById("histClear").hidden = !HIST.length;
+  document.getElementById("histClose").textContent = T("closeSel");
+}
+let histFocus = null;
+function openHist(){ histFocus = document.activeElement; renderHist(); document.getElementById("histSheet").classList.add("open"); document.getElementById("histClose").focus(); }
+function closeHist(){ document.getElementById("histSheet").classList.remove("open"); if (histFocus && document.contains(histFocus)) histFocus.focus(); }
+document.getElementById("histBtn").addEventListener("click", openHist);
+document.getElementById("histSheet").addEventListener("click", e => {
+  const r = e.target.closest("[data-reuse]"), d = e.target.closest("[data-del]");
+  if (r){
+    const h = HIST[+r.dataset.reuse]; const old = Object.keys(SEL);
+    SEL = {}; for (const [k, q] of Object.entries(h.items)) if (BYNAME[k]) SEL[k] = q;
+    saveSel(); [...old, ...Object.keys(SEL)].forEach(refreshAdd); updateBar(); closeHist(); openSel(); return;
+  }
+  if (d){ HIST.splice(+d.dataset.del, 1); saveHist(); updateHistBtn(); renderHist(); if (!HIST.length) closeHist(); return; }
+  if (e.target.id === "histClear"){ HIST = []; saveHist(); updateHistBtn(); closeHist(); return; }
+  if (e.target.id === "histSheet" || e.target.id === "histClose") closeHist();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && document.getElementById("histSheet").classList.contains("open")) closeHist(); });
+
+// Commande en QR : le lien contient la commande (index de l'article + quantité), aucun serveur nécessaire
+const ITEMS = []; for (const late of [false, true]) for (const c of MENU) if (!!c.late === late) for (const it of c.items) if (!it.g) ITEMS.push(it);
+function orderLink(sel){
+  const code = Object.entries(sel).map(([k, q]) => ITEMS.indexOf(BYNAME[k]) + "-" + q).join(".");
+  const notes = Object.entries(sel).filter(([k]) => NOTES[k]).map(([k]) => ITEMS.indexOf(BYNAME[k]) + "~" + NOTES[k]).join("|");
+  return SHARE_URL + "?o=" + code + "&t=" + Math.floor(Date.now() / 60000).toString(36) + "&id=" + ensureOrder().id + (LOC && LOC.k !== "e" ? "&l=" + LOC.k + LOC.v : "") + (notes ? "&n=" + encodeURIComponent(notes) : "");
+}
+
+// ===== Canal partagé du restaurant : commandes, appels serveur, libération de table (écran comptoir) =====
+const ORD_TOPIC = "https://ntfy.sh/shangrila-ouaga2000-ord-TEST-4m8x2w";
+async function postRetry(url, body, tries){
+  for (let a = 0; a < (tries || 3); a++){
+    if (a) await new Promise(r => setTimeout(r, 600));
+    const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 5000);
+    try { const r = await fetch(url, {method: "POST", body, signal: ctl.signal, cache: "no-store"}); clearTimeout(to); if (r.ok) return true; } catch(_){ clearTimeout(to); }
+  }
+  return false;
+}
+async function staffFree(loc, orderId){
+  const ok = await postRetry(OCC_TOPIC, JSON.stringify({a: "free", l: loc.k + loc.v, d: "comptoir", ttl: 0}));
+  postRetry(ORD_TOPIC, JSON.stringify({t: "free", l: loc.k + loc.v, id: orderId || null}));
+  if (orderId) postRetry(NTFY + topic(orderId), "released");
+  return ok;
+}
+const selSig = () => Object.entries(SEL).sort().map(([k, q]) => ITEMS.indexOf(BYNAME[k]) + "-" + q + (NOTES[k] ? "~" + NOTES[k] : "")).join(".");
+function updateSendBtn(){
+  const b = document.getElementById("selSend"); if (!b) return;
+  const sent = !!(typeof ORDER !== "undefined" && ORDER && ORDER.sentSig);
+  if (sent && ORDER.sentSig === selSig()){ b.textContent = T("sentOk"); b.disabled = true; }
+  else { b.textContent = sent ? T("sendUpd") : T("sendBtn"); b.disabled = false; }
+}
+async function sendToDesk(){
+  if (!Object.keys(SEL).length) return;
+  if (!LOC || LOC.k === "e"){ openLoc("waiter", sendToDesk); return; }
+  const b = document.getElementById("selSend"); b.disabled = true; b.textContent = T("sending");
+  ensureOrder();
+  const items = Object.entries(SEL).map(([k, q]) => [ITEMS.indexOf(BYNAME[k]), q].concat(NOTES[k] ? [NOTES[k]] : []));
+  const ok = await postRetry(ORD_TOPIC, JSON.stringify({t: "order", id: ORDER.id, l: LOC.k + LOC.v, items, at: Date.now(), dev: DEVICE, lang: LANG}));
+  if (ok){
+    ORDER.sentSig = selSig(); ORDER.sentAt = Date.now(); if (ORDER.status === "pending") ORDER.status = "sent"; saveOrder();
+    claimLoc(true); flash(T("sentOk")); showOrderStatus(); updateBar();
+  } else flash(T("sendFail"));
+  updateSendBtn();
+}
+
+// ===== Suivi de commande (serveur -> client) via ntfy.sh, canal privé aléatoire par commande =====
+const NTFY = "https://ntfy.sh/";
+const topic = id => "shangrila-test-test-" + id;
+let ORDER = null, es = null;
+try { ORDER = JSON.parse(localStorage.getItem("shangrila-test-order") || "null"); } catch(e){}
+if (ORDER && Date.now() - ORDER.at > 12 * 3600 * 1000) ORDER = null;       // au-delà de 12 h, on oublie
+const saveOrder = () => { try { localStorage.setItem("shangrila-test-order", JSON.stringify(ORDER)); } catch(e){} };
+function ensureOrder(){
+  if (!ORDER){
+    const a = new Uint8Array(9); (crypto.getRandomValues ? crypto.getRandomValues(a) : a.forEach((_, i) => a[i] = Math.random() * 256));
+    ORDER = {id: [...a].map(b => b.toString(36).padStart(2, "0")).join("").slice(0, 14), at: Date.now(), status: "pending"};
+    saveOrder();
+  }
+  listenOrder();
+  return ORDER;
+}
+function orderStatusText(){ return !ORDER ? "" : ORDER.status === "accepted" ? T("stAccepted") : ORDER.status === "sent" ? T("stSent") : T("stPending"); }
+function showOrderStatus(){
+  const el = document.getElementById("selStat"); const t = orderStatusText();
+  el.textContent = t; el.classList.toggle("on", !!t);
+  if (ORDER && ORDER.status === "accepted") document.getElementById("selbarL").textContent = T("stAccepted");
+}
+function onOrderMsg(msg){
+  if (!ORDER) return;
+  if (msg === "accepted" && ORDER.status !== "accepted"){ ORDER.status = "accepted"; saveOrder(); showOrderStatus(); flash(T("stAccepted")); }
+  if (msg === "released"){ if (LOC && LOC.k !== "e"){ LOC = null; saveLoc(); updateBar(); updateBell(); } if (ORDER && ORDER.status === "served"){ ORDER = null; saveOrder(); } flash(T("released")); return; }
+  if (msg === "served"){
+    const items = {...SEL};
+    if (Object.keys(items).length){ HIST.unshift({at: Date.now(), items, served: true, loc: LOC}); HIST = HIST.slice(0, 10); saveHist(); }
+    const old = Object.keys(SEL); SEL = {}; saveSel(); old.forEach(refreshAdd);
+    ORDER = null; saveOrder(); if (es){ es.close(); es = null; } if (pollTimer){ clearInterval(pollTimer); pollTimer = null; }
+    NOTES = {}; saveNotes(); updateBell();
+    closeSel(); document.getElementById("waiter").classList.remove("open");
+    updateBar(); updateHistBtn(); celebrate(T("srv1"), T("srv2"), T("srv3"));
+  }
+}
+let pollTimer = null, polling = false;
+function pollOrder(){
+  if (!ORDER || polling) return; polling = true;
+  const id = ORDER.id, ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 5000);
+  fetch(NTFY + topic(id) + "/json?poll=1&since=all", {cache: "no-store", signal: ctl.signal}).then(r => r.text()).then(txt => {
+    txt.split("\n").filter(Boolean).forEach(l => { try { const m = JSON.parse(l); if (m.event === "message") onOrderMsg(m.message); } catch(_){} });
+  }).catch(() => {}).finally(() => { clearTimeout(to); polling = false; });
+}
+function listenOrder(){
+  if (!ORDER) return;
+  pollOrder();                                   // messages envoyés pendant que la page était fermée
+  if ("EventSource" in window && (!es || es.readyState === 2)){
+    try {
+      if (es) es.close();
+      es = new EventSource(NTFY + topic(ORDER.id) + "/sse");
+      es.onmessage = e => { try { const m = JSON.parse(e.data); if (m.event === "message") onOrderMsg(m.message); } catch(_){} };
+    } catch(_){ es = null; }
+  }
+  // Filet de sécurité : vérification toutes les 4 s tant que la commande est en cours et la page visible
+  if (!pollTimer) pollTimer = setInterval(() => {
+    if (!ORDER){ clearInterval(pollTimer); pollTimer = null; return; }
+    if (document.visibilityState === "visible") pollOrder();
+  }, 4000);
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && ORDER) listenOrder(); });
+addEventListener("online", () => { if (ORDER) listenOrder(); });
+function celebrate(a, b, c){
+  document.getElementById("w1").textContent = a;
+  document.getElementById("w2").textContent = b;
+  document.getElementById("wtap").textContent = c;
+  document.getElementById("w3").hidden = false;
+  document.body.classList.add("locked");
+  wel.classList.remove("hide","run"); void wel.offsetWidth; wel.classList.add("run");
+  confetti(); clearTimeout(wTimer); wTimer = setTimeout(hideWelcome, 8000);
+}
+// Côté serveur
+async function sendStatus(id, status, btn){
+  const msg = document.getElementById("wActMsg"); btn.disabled = true; msg.style.color = "#555"; msg.textContent = "Envoi en cours…";
+  try {
+    let ok = false;
+    for (let attempt = 0; attempt < 3 && !ok; attempt++){
+      if (attempt) { msg.textContent = "Nouvel essai…"; await new Promise(r => setTimeout(r, 600)); }
+      const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 5000);
+      try { const r = await fetch(NTFY + topic(id), {method: "POST", body: status, signal: ctl.signal, cache: "no-store"}); ok = r.ok; } catch(_){}
+      if (ok) postRetry(ORD_TOPIC, JSON.stringify({t: "status", id, s: status, by: "qr"}));
+      clearTimeout(to);
+    }
+    if (!ok) throw new Error("send");
+    msg.style.color = "#1f8f4e";
+    msg.textContent = status === "served" ? "✅ Le client a été notifié : commande terminée." : "✅ Le client voit : commande en préparation.";
+    if (status === "served") document.getElementById("wAccept").disabled = true; else btn.disabled = true;
+  } catch(e){
+    btn.disabled = false; msg.style.color = "#b3261e"; msg.textContent = "Échec de l'envoi. Vérifiez la connexion internet et réessayez.";
+  }
+}
+function qrImg(text){
+  const qr = qrcode(0, "M"); qr.addData(text); qr.make();
+  return qr.createDataURL(6, 2);
+}
+let WAITER_SEL = null;   // commande affichée (la sienne ou celle reçue par QR)
+function openWaiter(received){
+  if (!received) claimLoc(true);
+  const sel = received || SEL; WAITER_SEL = sel;
+  let total = 0, unknown = false;
+  for (const [k, q] of Object.entries(sel)){ const u = unitP(BYNAME[k]); if (u == null) unknown = true; else total += u * q; }
+  document.getElementById("wTitle").textContent = received ? "Commande reçue · Shangri-La" : "Commande · Shangri-La";
+  document.getElementById("wQr").hidden = !!received;
+  const wl = received ? received.__loc : (LOC && LOC.k !== "e" ? LOC : null), wEl = document.getElementById("wLoc");
+  wEl.hidden = !wl; wEl.className = "wloc" + (wl ? " " + wl.k : "");
+  if (wl){ const keep = LANG; LANG = "fr"; const html = locBadge(wl, true); LANG = keep;
+    wEl.innerHTML = html + `<p class="zh">${wl.k === "t" ? wl.v + "号桌" : wl.v + " 包间"}</p>`; }
+  const rid = received && received.__id; document.getElementById("wAct").hidden = !rid; document.getElementById("wActMsg").textContent = "";
+  if (rid){ document.getElementById("wAccept").disabled = false; document.getElementById("wServed").disabled = false;
+    document.getElementById("wAccept").onclick = e => sendStatus(rid, "accepted", e.currentTarget);
+    document.getElementById("wServed").onclick = e => sendStatus(rid, "served", e.currentTarget); }
+  const wf = document.getElementById("wFree"); wf.hidden = !(received && received.__loc); wf.disabled = false;
+  wf.onclick = async () => { wf.disabled = true; const ok = await staffFree(received.__loc, rid);
+    const m = document.getElementById("wActMsg"); m.style.color = ok ? "#1f8f4e" : "#b3261e";
+    m.textContent = ok ? "✅ Table libérée pour les autres clients." : "Échec. Vérifiez la connexion et réessayez."; if (!ok) wf.disabled = false; };
+  if (!received) { try { document.getElementById("wQrImg").src = qrImg(orderLink(sel)); } catch(e){ document.getElementById("wQr").hidden = true; } }
+  document.getElementById("wSub").textContent = received ? received.__when : T("waiterSub") + (LANG !== "fr" ? " / Merci de préparer cette commande." : "");
+  document.getElementById("wTable").innerHTML = Object.entries(sel).filter(([k]) => k !== "__when").map(([k, q]) => { const it = BYNAME[k], u = unitP(it);
+    const note = received ? (received.__notes || {})[k] : NOTES[k];
+    return `<tr><td class="q">${q} ×</td><td class="n">${it.n ? esc(it.n) : ""}</td><td>${esc(it.name)}${note ? `<div class="wnote">📝 ${esc(note)}</div>` : ""}</td><td class="pr">${u != null ? fmt(u * q) : "?"}</td></tr>`; }).join("");
+  document.getElementById("wTot").textContent = total ? fmt(total) + (unknown ? " + à confirmer" : "") : (unknown ? "À confirmer" : fmt(0));
+  document.getElementById("wClose").textContent = received ? "Ouvrir le menu" : T("closeSel");
+  document.getElementById("waiter").classList.add("open"); document.getElementById("wClose").focus();
+}
+document.getElementById("wClose").addEventListener("click", () => { document.getElementById("waiter").classList.remove("open"); document.body.classList.remove("locked");
+  if (location.search) history.replaceState(null, "", location.pathname); });
+function readOrderFromLink(){
+  const ps = new URLSearchParams(location.search), o = ps.get("o"); if (!o) return null;
+  const sel = {};
+  for (const part of o.split(".")){ const [i, q] = part.split("-").map(Number); const it = ITEMS[i]; if (it && q > 0 && q < 100) sel[it.name] = (sel[it.name] || 0) + q; }
+  if (!Object.keys(sel).length) return null;
+  const t = parseInt(ps.get("t") || "", 36);
+  const when = t ? new Date(t * 60000) : null;
+  const rid = (ps.get("id") || "").replace(/[^a-z0-9]/g, "").slice(0, 20);
+  const lm = (ps.get("l") || "").match(/^([tr])(\d{1,4})$/);
+  Object.defineProperty(sel, "__loc", {value: lm ? {k: lm[1], v: lm[2]} : null, enumerable: false});
+  Object.defineProperty(sel, "__id", {value: rid, enumerable: false});
+  const notes = {}; (ps.get("n") || "").split("|").forEach(part => { const j = part.indexOf("~"); if (j < 1) return; const it = ITEMS[+part.slice(0, j)]; if (it) notes[it.name] = part.slice(j + 1).slice(0, 60); });
+  Object.defineProperty(sel, "__notes", {value: notes, enumerable: false});
+  Object.defineProperty(sel, "__when", {value: when ? "Envoyée à " + when.toLocaleTimeString("fr-FR", {hour: "2-digit", minute: "2-digit"}) + " · " + when.toLocaleDateString("fr-FR") : "", enumerable: false});
+  return sel;
+}
+document.addEventListener("keydown", e => { if (e.key !== "Escape") return;
+  for (const [id, fn] of [["filtSheet", () => closeFilt()], ["bellSheet", () => closeBell()], ["resSheet", () => closeRes()]]) if (document.getElementById(id).classList.contains("open")) { fn(); return; }
+  if (document.getElementById("locSheet").classList.contains("open")) { closeLoc(); return; }
+  if (document.getElementById("waiter").classList.contains("open")) document.getElementById("waiter").classList.remove("open");
+  else if (document.getElementById("selSheet").classList.contains("open")) closeSel(); });
+
+// ===== Biscuit de la chance =====
+const FORTUNES = [
+ ["Une belle surprise vous attend avant la fin de la semaine.","A pleasant surprise is waiting for you before the week is over.","本周结束前，一个惊喜正在等着您。"],
+ ["Le bonheur se partage mieux autour d\u2019une bonne table.","Happiness is best shared around a good table.","幸福最适合在美食桌旁分享。"],
+ ["Votre générosité vous reviendra au double.","Your generosity will come back to you twice over.","您的慷慨将加倍回报于您。"],
+ ["Un nouvel ami entrera bientôt dans votre vie.","A new friend will soon enter your life.","一位新朋友即将走进您的生活。"],
+ ["Le chemin de mille kilomètres commence par un premier pas.","A journey of a thousand miles begins with a single step.","千里之行，始于足下。"],
+ ["La patience est un arbre aux racines amères mais aux fruits très doux.","Patience is a tree with bitter roots but very sweet fruit.","忍耐之树，根苦果甜。"],
+ ["Une opportunité frappe à votre porte : ouvrez-la.","An opportunity is knocking at your door: open it.","机会正在敲门，请打开它。"],
+ ["Votre sourire illuminera la journée de quelqu\u2019un aujourd\u2019hui.","Your smile will brighten someone\u2019s day today.","今天您的微笑会照亮某人的一天。"],
+ ["Le travail d\u2019aujourd\u2019hui est la réussite de demain.","Today\u2019s work is tomorrow\u2019s success.","今日的努力，就是明日的成功。"],
+ ["Ce que vous cherchez vous cherche aussi.","What you are looking for is also looking for you.","您所寻找的，也在寻找您。"],
+ ["Une bonne nouvelle arrive de loin.","Good news is coming from far away.","好消息正从远方传来。"],
+ ["Celui qui sait se contenter est toujours riche.","He who knows he has enough is always rich.","知足者常乐。"],
+ ["Vos projets prendront bientôt une belle tournure.","Your plans will soon take a wonderful turn.","您的计划很快会有好的转机。"],
+ ["Prenez le temps de savourer : les meilleures choses ne se pressent pas.","Take time to savor: the best things are never rushed.","慢慢品味，美好的事物从不急于一时。"],
+ ["La chance sourit à ceux qui osent.","Fortune favors the bold.","好运眷顾勇敢的人。"],
+ ["Un repas partagé est un souvenir qui dure.","A shared meal is a memory that lasts.","一起吃过的饭，是长久的回忆。"],
+ ["Votre famille sera votre plus grande force cette année.","Your family will be your greatest strength this year.","今年家人将是您最大的力量。"],
+ ["Une petite décision aujourd\u2019hui changera beaucoup demain.","A small decision today will change a lot tomorrow.","今天的一个小决定，将带来明天的大改变。"],
+ ["La sagesse commence par l\u2019écoute.","Wisdom begins with listening.","智慧始于倾听。"],
+ ["Vous réussirez là où d\u2019autres ont hésité.","You will succeed where others hesitated.","别人犹豫之处，正是您成功之地。"],
+ ["La prospérité vous accompagne : gardez le cap.","Prosperity is with you: stay the course.","财运相随，坚持方向。"],
+ ["Le meilleur moment pour planter un arbre, c\u2019est maintenant.","The best time to plant a tree is now.","种一棵树最好的时间就是现在。"],
+ ["Un voyage heureux se prépare pour vous.","A happy journey is being prepared for you.","一段愉快的旅程正在等着您。"],
+ ["Gardez de la place pour le dessert : la vie est douce.","Save room for dessert: life is sweet.","留点肚子吃甜品，生活是甜的。"]
+];
+let fIdx = -1, fNums = [];
+const COOKIE_SVG = side => `<svg class="half ${side}" viewBox="0 0 66 76" aria-hidden="true"><path d="${side === "l" ? "M64 8 C30 0 4 20 4 44 C4 62 22 74 40 70 C34 58 40 40 64 30 Z" : "M2 8 C36 0 62 20 62 44 C62 62 44 74 26 70 C32 58 26 40 2 30 Z"}" fill="#d9a441" stroke="#b07a22" stroke-width="2"/><path d="${side === "l" ? "M20 30 C26 34 30 44 28 56" : "M46 30 C40 34 36 44 38 56"}" fill="none" stroke="#b07a22" stroke-width="2" opacity=".6"/></svg>`;
+function renderFortune(){
+  const L = {fr:0, en:1, zh:2}[LANG];
+  const opened = fIdx >= 0;
+  document.getElementById("fortune").innerHTML = `<div class="fcard">
+    <p style="font-family:var(--display);color:var(--gold);font-size:22px">🥠 ${T("cookieT")}</p>
+    <button type="button" class="cookie${opened ? " open" : ""}" id="cookie" aria-label="${T("cookieTap")}">${COOKIE_SVG("l")}${COOKIE_SVG("r")}</button>
+    ${opened ? `<div class="slip on" id="slip">${esc(FORTUNES[fIdx][L])}<div class="flucky">${T("lucky")} ${fNums.join(" · ")}</div></div>
+      <div class="fbtns"><button type="button" class="btn" id="fAgain">🔄 ${T("again")}</button><button type="button" class="btn" id="fShare">📤 ${T("shareF")}</button></div>`
+      : `<p class="sel-note">${T("cookieTap")}</p>`}
+  </div>`;
+}
+function crack(){
+  let i; do { i = Math.floor(Math.random() * FORTUNES.length); } while (i === fIdx && FORTUNES.length > 1);
+  fIdx = i; const set = new Set(); while (set.size < 4) set.add(1 + Math.floor(Math.random() * 49)); fNums = [...set].sort((a,b) => a - b);
+  renderFortune();
+}
+document.getElementById("fortune").addEventListener("click", async e => {
+  if (e.target.closest("#cookie") && fIdx < 0) crack();
+  else if (e.target.closest("#fAgain")) { fIdx = -1; renderFortune(); setTimeout(crack, 250); }
+  else if (e.target.closest("#fShare")) {
+    const L = {fr:0, en:1, zh:2}[LANG], txt = "🥠 " + FORTUNES[fIdx][L] + " (Shangri-La)";
+    if (navigator.share) { try { await navigator.share({text: txt, url: SHARE_URL}); } catch(_){} }
+    else location.href = "https://wa.me/?text=" + encodeURIComponent(txt + " " + SHARE_URL);
+  }
+});
+
+function applyLang(){
+  document.documentElement.lang = {fr:"fr", en:"en", zh:"zh-CN"}[LANG];
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === LANG));
+  document.getElementById("sub").textContent = T("sub");
+  q.placeholder = T("search");
+  document.getElementById("qlabel").textContent = T("searchLabel");
+  updateFiltBtn();
+  document.getElementById("totop").setAttribute("aria-label", T("top"));
+  document.getElementById("shareTopLbl").textContent = T("share");
+  document.getElementById("shareBar").setAttribute("aria-label", T("shareMenu"));
+  nav.setAttribute("aria-label", T("nav"));
+  document.getElementById("lbx").setAttribute("aria-label", T("close"));
+  document.getElementById("foot").innerHTML = T("foot")
+    + `<a class="powered" href="https://tiblogics.com" target="_blank" rel="noopener">Powered by <b>TIBLOGICS</b><span>tiblogics.com</span></a>`
+    + `<span style="opacity:.55;font-size:11px">Version ${document.getElementById("foot").dataset.build}</span>`;
+  const sp_ = document.getElementById("special");
+  if (CONFIG.special){ sp_.hidden = false; sp_.innerHTML = `<div><span aria-hidden="true">🍽️</span><span><b>${esc(T("special"))} :</b> ${esc(CONFIG.special[LANG] || CONFIG.special.fr)}${CONFIG.special.price ? " · " + fmt(CONFIG.special.price) : ""}</span></div>`; } else sp_.hidden = true;
+  buildNav(); renderContact(); renderFortune(); render(); updateBar(); updateHistBtn(); showOrderStatus();
+  if (document.getElementById("histSheet").classList.contains("open")) renderHist();
+  if (document.getElementById("locSheet").classList.contains("open")) renderLoc();
+  if (idleOpen) renderIdle();
+  if (document.getElementById("selSheet").classList.contains("open")) renderSel();
+}
+nav.addEventListener("click", e => {
+  const a = e.target.closest("a.chip"); if (!a) return;
+  e.preventDefault();
+  const t = document.getElementById(a.dataset.id); if (!t) return;
+  const smooth = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({top: t.getBoundingClientRect().top + scrollY - 112, behavior: smooth ? "smooth" : "instant"});
+});
+document.querySelector(".lang").addEventListener("click", e => {
+  const b = e.target.closest("button[data-lang]"); if (!b || b.dataset.lang === LANG) return;
+  LANG = b.dataset.lang; try { sessionStorage.setItem("shangrila-test-lang", LANG); } catch(e){}
+  applyLang(); showWelcome();
+});
+
+function render(){
+  ALL.length = 0; if (!CAT_OF.size) for (const c of MENU) for (const it of c.items) if (!it.g) CAT_OF.set(it, c.id);
+  const term = norm(q.value.trim());
+  let html = "", shown = 0;
+  for (const cat of MENU){
+    if (cat.hidden) continue;
+    let rows = "", pendingGroup = null, count = 0;
+    for (const it of cat.items){
+      if (it.g){ pendingGroup = it.g; continue; }
+      const hay = norm([it.n||"", it.name, it.d||"", ...(ZH[it.name]||[]), ...(EN[it.name]||[])].join(" "));
+      if (term && !hay.includes(term)) continue;
+      if (!passFilters(it)) continue;
+      if (pendingGroup){ rows += `<li class="group" style="display:block;border:0;padding:0">${esc(grpT(pendingGroup))}</li>`; pendingGroup = null; }
+      const chili = it.s ? `<span class="chili" aria-label="${it.s>1?T("spicy2"):T("spicy1")}">${"🌶".repeat(it.s)}</span>` : "";
+      const nw = (it.nw ? `<span class="new">${T("nw")}</span>` : "") + (CONFIG.chefPicks.includes(it.name) ? `<span class="chef">⭐ ${T("chefB")}</span>` : "");
+      const price = it.p == null ? `<span class="price ask">${T("ask")}</span>`
+        : `<span class="price">${fmt(it.p)}${it.p2 ? `<br>${fmt(it.p2)}` : ""}</span>`;
+      const ph = photoFor(it); let attrs = "";
+      if (ph){ ALL.push(it); attrs = ` class="photo" tabindex="0" role="button" data-i="${ALL.length-1}" aria-label="${T("view")}${esc(nm(it))}"`; }
+      rows += `<li${attrs}>${ph?`<img class="thumb" src="${ph.replace("../img/","../img/t/")}" alt="" loading="lazy" decoding="async" width="56" height="56">`:""}${it.n?`<span class="no">${esc(it.n)}</span>`:""}<span class="name">${esc(nm(it))}${chili}${nw}${ds(it)?`<span class="desc">${esc(ds(it))}</span>`:""}</span>${price}${addBtn(it)}</li>`;
+      count++;
+    }
+    if (count){ shown += count; html += `<section id="${cat.id}"><h2>${esc(secT(cat))}</h2><ul>${rows}</ul></section>`; }
+    nav.querySelector(`[data-id="${cat.id}"]`).style.display = count ? "" : "none";
+  }
+  main.innerHTML = shown ? html : `<p class="empty">${T("empty")}</p>`;
+  observe();
+}
+
+let io;
+function observe(){
+  if (io) io.disconnect();
+  io = new IntersectionObserver(entries => {
+    for (const e of entries) if (e.isIntersecting){
+      nav.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c.dataset.id === e.target.id));
+      const on = nav.querySelector(".chip.on"); if (on) nav.scrollTo({left: on.offsetLeft - (nav.clientWidth - on.offsetWidth)/2});
+    }
+  }, {rootMargin:"-130px 0px -70% 0px"});
+  main.querySelectorAll("section").forEach(s => io.observe(s));
+  io.observe(document.getElementById("contact")); io.observe(document.getElementById("fortune"));
+}
+
+const lb=document.getElementById("lb"), lbimg=document.getElementById("lbimg");
+let lastFocus=null;
+let lbIdx = 0;
+function openLb(it){ if (!lb.classList.contains("open")) lastFocus=document.activeElement; lbIdx = Math.max(0, ALL.indexOf(it)); lbimg.src=photoFor(it); lbimg.alt=nm(it);
+  document.getElementById("lbhint").textContent = ALL.length > 1 ? T("swipe") : "";
+  document.getElementById("lbname").textContent=nm(it);
+  document.getElementById("lbprice").textContent= it.p==null ? T("ask") : fmt(it.p);
+  lb.classList.add("open"); document.getElementById("lbx").focus(); }
+function closeLb(){ lb.classList.remove("open"); lbimg.removeAttribute("src"); if(lastFocus) lastFocus.focus(); }
+main.addEventListener("click", e=>{ const li=e.target.closest("li.photo"); if(li) openLb(ALL[+li.dataset.i]); });
+main.addEventListener("keydown", e=>{ const li=e.target.closest("li.photo"); if(li && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); openLb(ALL[+li.dataset.i]); }});
+lb.addEventListener("click", e=>{ if(e.target===lb || e.target.id==="lbx") closeLb(); });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && lb.classList.contains("open")) closeLb(); });
+q.addEventListener("input", render);
+// ===== Filtres =====
+const FILT_KEYS = ["spicy","sea","veg","cheap","chef"];
+function updateFiltBtn(){ const n = filtCount(); spicyBtn.innerHTML = "⚙ " + esc(T("filters")) + (n ? `<span class="fbadge">${n}</span>` : ""); spicyBtn.setAttribute("aria-label", T("filters") + (n ? " (" + n + ")" : "")); }
+function renderFilt(){
+  document.getElementById("filtTitle").textContent = T("filters");
+  const lbl = {spicy:"fSpicy", sea:"fSea", veg:"fVeg", cheap:"fCheap", chef:"fChef"};
+  document.getElementById("filtList").innerHTML = FILT_KEYS.filter(k => k !== "chef" || CONFIG.chefPicks.length).map(k =>
+    `<button type="button" class="ftog" data-f="${k}" aria-pressed="${FILT[k]}"><span>${esc(T(lbl[k]))}</span><span class="sw" aria-hidden="true"></span></button>`).join("")
+    + (FILT.veg ? `<p class="sel-note">${esc(T("vegNote"))}</p>` : "");
+  document.getElementById("filtReset").textContent = T("fReset"); document.getElementById("filtClose").textContent = T("fApply");
+}
+let filtFocus = null;
+function openFilt(){ filtFocus = document.activeElement; renderFilt(); document.getElementById("filtSheet").classList.add("open"); const f = document.querySelector("#filtList .ftog"); if (f) f.focus(); }
+function closeFilt(){ document.getElementById("filtSheet").classList.remove("open"); if (filtFocus && document.contains(filtFocus)) filtFocus.focus(); }
+spicyBtn.addEventListener("click", openFilt);
+document.getElementById("filtSheet").addEventListener("click", e => {
+  const b = e.target.closest("[data-f]");
+  if (b){ FILT[b.dataset.f] = !FILT[b.dataset.f]; spicyOnly = FILT.spicy; renderFilt(); updateFiltBtn(); render(); const nb = document.querySelector(`#filtList [data-f="${b.dataset.f}"]`); if (nb) nb.focus(); return; }
+  if (e.target.id === "filtReset"){ FILT_KEYS.forEach(k => FILT[k] = false); spicyOnly = false; renderFilt(); updateFiltBtn(); render(); return; }
+  if (e.target.id === "filtClose" || e.target.id === "filtSheet"){ closeFilt(); window.scrollTo({top: Math.min(scrollY, document.getElementById("menu").offsetTop - 120), behavior: "instant"}); }
+});
+// ===== Mobile : bouton retour du téléphone, gestes, haut de page =====
+(function(){
+  const $ = id => document.getElementById(id);
+  const OV = [
+    {el: $("waiter"),     close: () => $("wClose").click()},
+    {el: lb,              close: closeLb},
+    {el: $("idleSheet"),  close: () => closeIdle(true)},
+    {el: $("varSheet"),   close: closeVariants},
+    {el: $("filtSheet"),  close: closeFilt},
+    {el: $("bellSheet"),  close: closeBell},
+    {el: $("resSheet"),   close: closeRes},
+    {el: $("locSheet"),   close: closeLoc},
+    {el: $("histSheet"),  close: closeHist},
+    {el: $("sheet"),      close: closeSheet},
+    {el: $("selSheet"),   close: closeSel},
+  ];
+  let fromPop = false, ignorePop = 0;
+  const openCount = () => OV.filter(o => o.el.classList.contains("open")).length;
+  let lastOpen = 0;
+  const mo = new MutationObserver(() => {
+    const n = openCount();
+    if (n > lastOpen) history.pushState({ov: n}, "");
+    else if (n < lastOpen && !fromPop && history.state && history.state.ov){ ignorePop++; history.back(); }
+    lastOpen = n;
+  });
+  OV.forEach(o => mo.observe(o.el, {attributes: true, attributeFilter: ["class"]}));
+  addEventListener("popstate", () => {
+    if (ignorePop){ ignorePop--; return; }
+    const top = OV.find(o => o.el.classList.contains("open"));
+    if (top){ fromPop = true; top.close(); lastOpen = openCount(); fromPop = false; }
+  });
+
+  // Glisser vers le bas pour fermer un panneau
+  document.querySelectorAll(".sheet").forEach(sh => {
+    const box = sh.querySelector(".sheet-box"); let y0 = null, dy = 0;
+    box.addEventListener("touchstart", e => { y0 = box.scrollTop <= 0 ? e.touches[0].clientY : null; dy = 0; }, {passive: true});
+    box.addEventListener("touchmove", e => { if (y0 == null) return; dy = e.touches[0].clientY - y0; if (dy > 0) box.style.transform = `translateY(${dy}px)`; }, {passive: true});
+    box.addEventListener("touchend", () => { box.style.transform = ""; if (y0 != null && dy > 90){ const o = OV.find(o => o.el === sh); if (o) o.close(); } y0 = null; });
+  });
+
+  // Photos : glisser à gauche/droite pour changer, vers le bas pour fermer
+  let sx = null, sy = null;
+  lb.addEventListener("touchstart", e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive: true});
+  lb.addEventListener("touchend", e => {
+    if (sx == null) return; const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; sx = sy = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) && ALL.length > 1){ openLb(ALL[(lbIdx + (dx < 0 ? 1 : -1) + ALL.length) % ALL.length]); }
+    else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) closeLb();
+  });
+  document.addEventListener("keydown", e => { if (!lb.classList.contains("open") || ALL.length < 2) return;
+    if (e.key === "ArrowRight") openLb(ALL[(lbIdx + 1) % ALL.length]); if (e.key === "ArrowLeft") openLb(ALL[(lbIdx - 1 + ALL.length) % ALL.length]); });
+
+  // Bouton haut de page
+  const tt = $("totop"); let ticking = false;
+  addEventListener("scroll", () => { if (ticking) return; ticking = true; requestAnimationFrame(() => { tt.classList.toggle("on", scrollY > 900); ticking = false; }); }, {passive: true});
+  tt.addEventListener("click", () => window.scrollTo({top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"}));
+
+  // Recherche : "Entrée" ferme le clavier
+  q.addEventListener("keydown", e => { if (e.key === "Enter") q.blur(); });
+})();
+
+// ===== ÉCRAN COMPTOIR (ouvrir le menu avec ?comptoir) =====
+window.COMPTOIR = /[?&]comptoir\b/.test(location.search);
+const CPT = {orders: {}, calls: {}, freed: {}, seen: new Set(), tab: "orders", sound: false, live: false, lastOk: 0, first: true, busy: {}};
+let audioCtx = null, wakeLock = null;
+function beep(){
+  if (!CPT.sound || !audioCtx) return;
+  try {
+    const t = audioCtx.currentTime;
+    [0, 0.22].forEach((d, i) => { const o = audioCtx.createOscillator(), g = audioCtx.createGain(); o.type = "sine"; o.frequency.value = i ? 1046 : 784;
+      g.gain.setValueAtTime(0.0001, t + d); g.gain.exponentialRampToValueAtTime(0.4, t + d + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.2);
+      o.connect(g).connect(audioCtx.destination); o.start(t + d); o.stop(t + d + 0.22); });
+  } catch(_){}
+  try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch(_){}
+}
+const ago = t => { const m = Math.max(0, Math.floor((Date.now() - t) / 60000)); return m < 1 ? "à l'instant" : m < 60 ? "il y a " + m + " min" : "il y a " + Math.floor(m / 60) + " h " + String(m % 60).padStart(2, "0"); };
+const locOf = l => { const m = /^([tr])(\d+)$/.exec(l || ""); return m ? {k: m[1], v: m[2]} : null; };
+function cptBadge(loc){ if (!loc) return ""; const keep = LANG; LANG = "fr"; const h = locBadge(loc); LANG = keep; return h + `<span class="cz">${loc.k === "t" ? loc.v + "号桌" : loc.v + " 包间"}</span>`; }
+function applyMsgs(list){
+  const orders = {}, calls = {}, freed = {};
+  for (const m of list){
+    let d; try { d = JSON.parse(m.message); } catch(_){ continue; }
+    const at = m.time * 1000;
+    if (d.t === "order" && d.id){ const o = orders[d.id] || (orders[d.id] = {id: d.id, status: "sent", versions: 0, first: at});
+      o.l = d.l; o.items = Array.isArray(d.items) ? d.items : []; o.upd = at; o.versions++; o.lang = d.lang; if (o.status === "served") o.status = "sent"; }
+    else if (d.t === "status" && d.id){ const o = orders[d.id]; if (o){ o.status = d.s; o.stAt = at; } }
+    else if (d.t === "call" && d.cid){ calls[d.cid] = {cid: d.cid, k: d.k, l: d.l, at, done: false}; }
+    else if (d.t === "done" && d.cid && calls[d.cid]){ calls[d.cid].done = true; }
+    else if (d.t === "free" && d.l){ freed[d.l] = at; }
+  }
+  // nouvelles commandes / mises à jour / appels jamais vus : alerte
+  let fresh = 0;
+  for (const o of Object.values(orders)) if (o.status === "sent"){ const key = o.id + ":" + o.versions; if (!CPT.seen.has(key)){ CPT.seen.add(key); if (!CPT.first) fresh++; } }
+  for (const c of Object.values(calls)) if (!c.done){ if (!CPT.seen.has(c.cid)){ CPT.seen.add(c.cid); if (!CPT.first) fresh++; } }
+  // garder les actions locales en cours (optimistes) tant que le serveur ne les a pas confirmées
+  for (const [id, st] of Object.entries(CPT.busy)) if (orders[id] && orders[id].status !== st) orders[id].status = st; else delete CPT.busy[id];
+  CPT.orders = orders; CPT.calls = calls; CPT.freed = freed; CPT.first = false;
+  if (fresh) beep();
+}
+let cptPolling = false, cptEs = null;
+async function cptPoll(){
+  if (cptPolling) return; cptPolling = true;
+  const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 6000);
+  try {
+    const txt = await (await fetch(ORD_TOPIC + "/json?poll=1&since=12h", {cache: "no-store", signal: ctl.signal})).text();
+    const list = txt.split("\n").filter(Boolean).map(l => { try { return JSON.parse(l); } catch(_){ return null; } }).filter(m => m && m.event === "message").sort((a, b) => a.time - b.time);
+    applyMsgs(list); CPT.live = true; CPT.lastOk = Date.now();
+  } catch(_){ CPT.live = false; }
+  finally { clearTimeout(to); cptPolling = false; renderBoard(); }
+}
+function cptListen(){
+  if (!("EventSource" in window) || (cptEs && cptEs.readyState !== 2)) return;
+  try { cptEs = new EventSource(ORD_TOPIC + "/sse"); cptEs.onmessage = () => cptPoll(); cptEs.onerror = () => {}; } catch(_){}
+}
+function orderTotal(o){ let t = 0, unk = false; for (const [i, q] of o.items){ const it = ITEMS[i]; if (!it) continue; const u = unitP(it); if (u == null) unk = true; else t += u * q; } return (t ? fmt(t) : "") + (unk ? (t ? " + " : "") + "à confirmer" : ""); }
+function orderCard(o){
+  const loc = locOf(o.l), late = o.status === "sent" && Date.now() - o.upd > 10 * 60000;
+  const items = o.items.map(([i, q, note]) => { const it = ITEMS[i]; if (!it) return "";
+    return `<li><span class="q">${q} ×</span>${it.n ? `<span class="nn">[${esc(it.n)}]</span>` : ""}${esc(it.name)}${note ? `<span class="nt">📝 ${esc(note)}</span>` : ""}</li>`; }).join("");
+  const acts = o.status === "sent" ? `<button type="button" class="btn gold" data-acc="${o.id}">👨‍🍳 Acceptée</button><button type="button" class="btn ok" data-srv="${o.id}">🍽 Servie</button>`
+    : o.status === "accepted" ? `<button type="button" class="btn" data-free="${esc(o.l)}" data-oid="${o.id}">🧹 Libérer</button><button type="button" class="btn ok" data-srv="${o.id}">🍽 Servie</button>`
+    : `<button type="button" class="btn" data-free="${esc(o.l)}" data-oid="${o.id}" style="grid-column:1 / -1">🧹 Libérer la table</button>`;
+  return `<article class="ocard${o.status === "sent" ? " isnew" : ""}${late ? " late" : ""}">
+    <div class="ohd">${cptBadge(loc)}${o.versions > 1 ? `<span class="otag">Modifiée</span>` : ""}<span class="ago">${ago(o.status === "sent" ? o.upd : (o.stAt || o.upd))}</span></div>
+    <ul class="oitems">${items}</ul>
+    <div class="otot"><span>Total</span><span>${orderTotal(o)}</span></div>
+    <div class="oact">${acts}</div></article>`;
+}
+function renderBoard(){
+  if (!window.COMPTOIR) return;
+  const root = document.getElementById("cpt");
+  let ok = false; try { ok = localStorage.getItem("shangrila-test-cpt") === "ok"; } catch(_){}
+  if (!ok){
+    if (!root.querySelector(".pin")) root.innerHTML = `<form class="pin" id="pinForm"><h1 style="font-family:var(--display);font-weight:400;color:var(--gold);margin:0">Comptoir · Shangri-La</h1>
+      <label for="pinIn" class="sel-note">Code d'accès du personnel</label><input id="pinIn" type="password" inputmode="numeric" autocomplete="off" maxlength="8" required>
+      <p class="res-err" id="pinErr" role="alert"></p><button type="submit" class="btn gold">Ouvrir l'écran comptoir</button></form>`;
+    return;
+  }
+  const all = Object.values(CPT.orders), now = Date.now();
+  const nw = all.filter(o => o.status === "sent").sort((a, b) => a.upd - b.upd);
+  const prep = all.filter(o => o.status === "accepted").sort((a, b) => (a.stAt || a.upd) - (b.stAt || b.upd));
+  const done = all.filter(o => o.status === "served" && now - (o.stAt || o.upd) < 3 * 3600000 && !(CPT.freed[o.l] > (o.stAt || o.upd))).sort((a, b) => (b.stAt || b.upd) - (a.stAt || a.upd)).slice(0, 12);
+  const calls = Object.values(CPT.calls).filter(c => !c.done).sort((a, b) => a.at - b.at);
+  document.title = (nw.length + calls.length ? "(" + (nw.length + calls.length) + ") " : "") + "Comptoir · Shangri-La";
+  const head = `<div class="cpt-top"><h1>Comptoir · Shangri-La</h1>
+    <span class="cpt-live ${CPT.live ? "ok" : "ko"}">● ${CPT.live ? "En direct" : "Hors connexion"}</span>
+    <button type="button" class="btn" data-tab="orders" aria-pressed="${CPT.tab === "orders"}">Commandes</button>
+    <button type="button" class="btn" data-tab="tables" aria-pressed="${CPT.tab === "tables"}">Tables</button>
+    <button type="button" class="btn" id="cptSound" aria-pressed="${CPT.sound}">${CPT.sound ? "🔔 Son activé" : "🔕 Activer le son"}</button>
+    <button type="button" class="btn" id="cptExit">Quitter</button></div>`;
+  let body = "";
+  if (CPT.tab === "orders"){
+    const callsH = calls.length ? `<div class="calls">${calls.map(c => { const loc = locOf(c.l);
+      return `<div class="call${c.k === "bill" ? " bill" : ""}"><b>${c.k === "bill" ? "🧾 Addition" : "🙋 Serveur demandé"}</b>${cptBadge(loc)}<span class="ago">${ago(c.at)}</span><button type="button" class="btn gold" data-done="${c.cid}">✓ Traité</button></div>`; }).join("")}</div>` : "";
+    const col = (title, list, emptyTxt) => `<section class="col"><h2>${title} <span class="cnt">${list.length}</span></h2>${list.length ? list.map(orderCard).join("") : `<p class="empty-col">${emptyTxt}</p>`}</section>`;
+    body = callsH + `<div class="cols">${col("Nouvelles", nw, "Aucune nouvelle commande")}${col("En préparation", prep, "Rien en préparation")}${col("Servies", done, "Aucune commande servie récemment")}</div>`;
+  } else {
+    const occ = (k, v) => { const o = OCC[k + v]; return !!(o && o.a === "claim" && now - o.at < (o.ttl ? o.ttl * 60000 : OCC_TTL)); };
+    const cell = (k, v) => { const busy = occ(k, v); return `<button type="button" class="tcell${busy ? " busy" : ""}${k === "r" ? " room" : ""}" ${busy ? `data-free="${k}${v}"` : "disabled"} aria-label="${k === "t" ? "Table" : "Salon"} ${v}${busy ? ", occupée : libérer" : ", libre"}"><small>${k === "t" ? "Table" : "Salon"}</small><b>${v}</b><small>${busy ? "Occupée" : "Libre"}</small></button>`; };
+    body = `<section class="col"><h2>Tables</h2><div class="tgrid">${TABLES.map(v => cell("t", v)).join("")}</div></section>
+      <section class="col"><h2>Salons privés</h2><div class="tgrid">${ROOMS.map(v => cell("r", v)).join("")}</div></section>
+      <p class="sel-note">Touchez une place occupée pour la libérer. Une place se libère aussi seule après inactivité du client.</p>`;
+  }
+  const keep = document.activeElement && document.activeElement.dataset ? Object.entries(document.activeElement.dataset)[0] : null;
+  root.innerHTML = head + `<div class="cpt-wrap">${body}</div>`;
+  if (keep){ const el = root.querySelector(`[data-${keep[0]}="${CSS.escape(keep[1])}"]`); if (el) el.focus(); }
+}
+async function cptAction(id, st){
+  CPT.busy[id] = st; if (CPT.orders[id]){ CPT.orders[id].status = st; CPT.orders[id].stAt = Date.now(); } renderBoard();
+  const ok = await postRetry(NTFY + topic(id), st) && await postRetry(ORD_TOPIC, JSON.stringify({t: "status", id, s: st, by: "comptoir"}));
+  if (!ok){ delete CPT.busy[id]; alert("Échec de l'envoi. Vérifiez la connexion internet et réessayez."); }
+  cptPoll();
+}
+function startComptoir(){
+  document.body.classList.add("cmode"); document.body.classList.remove("locked");
+  document.getElementById("welcome").classList.add("hide");
+  const root = document.getElementById("cpt");
+  root.addEventListener("submit", e => { if (e.target.id !== "pinForm") return; e.preventDefault();
+    if (document.getElementById("pinIn").value === CONFIG.comptoirPin){ try { localStorage.setItem("shangrila-test-cpt", "ok"); } catch(_){} renderBoard(); cptPoll(); fetchOcc(true).then(renderBoard); }
+    else document.getElementById("pinErr").textContent = "Code incorrect."; });
+  root.addEventListener("click", async e => {
+    const t = e.target.closest("button"); if (!t) return;
+    if (t.dataset.tab){ CPT.tab = t.dataset.tab; if (CPT.tab === "tables") fetchOcc(true).then(renderBoard); renderBoard(); return; }
+    if (t.id === "cptSound"){ CPT.sound = !CPT.sound; try { localStorage.setItem("shangrila-test-cpt-sound", CPT.sound ? "1" : "0"); } catch(_){}
+      if (CPT.sound){ try { audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); audioCtx.resume(); beep(); } catch(_){} try { wakeLock = await navigator.wakeLock.request("screen"); } catch(_){} }
+      renderBoard(); return; }
+    if (t.id === "cptExit"){ try { localStorage.removeItem("shangrila-test-cpt"); } catch(_){} location.href = location.pathname; return; }
+    if (t.dataset.acc){ cptAction(t.dataset.acc, "accepted"); return; }
+    if (t.dataset.srv){ cptAction(t.dataset.srv, "served"); return; }
+    if (t.dataset.done){ CPT.calls[t.dataset.done] && (CPT.calls[t.dataset.done].done = true); renderBoard(); postRetry(ORD_TOPIC, JSON.stringify({t: "done", cid: t.dataset.done})).then(cptPoll); return; }
+    if (t.dataset.free){ const loc = locOf(t.dataset.free); if (!loc) return;
+      if (!confirm(`Libérer ${loc.k === "t" ? "la table" : "le salon"} ${loc.v} pour d'autres clients ?`)) return;
+      t.disabled = true; const ok = await staffFree(loc, t.dataset.oid || null);
+      if (!ok) alert("Échec. Vérifiez la connexion internet et réessayez."); else { OCC[loc.k + loc.v] = {a: "free", d: "comptoir", at: Date.now(), ttl: 0}; CPT.freed[loc.k + loc.v] = Date.now(); }
+      renderBoard(); cptPoll(); return; }
+  });
+  try { CPT.sound = localStorage.getItem("shangrila-test-cpt-sound") === "1"; if (CPT.sound) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(_){}
+  renderBoard(); cptPoll(); cptListen(); fetchOcc(true).then(renderBoard);
+  setInterval(() => { if (document.visibilityState === "visible"){ cptPoll(); cptListen(); } }, 4000);
+  setInterval(() => { if (CPT.tab === "tables") fetchOcc(true).then(renderBoard); else renderBoard(); }, 20000);
+  document.addEventListener("visibilitychange", async () => { if (document.visibilityState === "visible"){ cptPoll(); if (CPT.sound){ try { wakeLock = await navigator.wakeLock.request("screen"); } catch(_){} } } });
+}
+
+applyLang();
+const RECEIVED = window.COMPTOIR ? null : readOrderFromLink();
+if (!RECEIVED && ORDER) listenOrder();
+if (window.COMPTOIR) startComptoir(); else if (RECEIVED) { document.body.classList.add("locked"); openWaiter(RECEIVED); } else showWelcome();
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  const hadController = !!navigator.serviceWorker.controller;
+  addEventListener("load", () => navigator.serviceWorker.register("sw.js", {updateViaCache: "none"}).then(r => r.update()).catch(() => {}));
+  // Nouvelle version installée : on recharge une fois pour l'afficher (sauf si une commande reçue est affichée)
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!hadController || (location.search && !window.COMPTOIR)) return;
+    try { if (sessionStorage.getItem("shangrila-test-reloaded") === "1") return; sessionStorage.setItem("shangrila-test-reloaded", "1"); } catch(e){}
+    location.reload();
+  });
+  // Quand on revient sur l'onglet ou l'appli, on vérifie s'il y a une mise à jour
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") navigator.serviceWorker.getRegistration().then(r => r && r.update()).catch(() => {}); });
+}
+</script>
+</body>
+</html>
