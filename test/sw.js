@@ -1,5 +1,5 @@
 // Service worker : le menu fonctionne hors ligne après la première visite.
-const VERSION = "test-202611070734";
+const VERSION = "test-202611070745";
 const CORE = ["./", "./index.html", "../lib/qrcode.js"];
 const IMAGES = [];
 
